@@ -12,8 +12,17 @@
 # Description:
 #   Open source Census protos.
 
+load("@io_bazel//tools/build_rules:genproto.bzl", "java_proto_library")
+
+package(default_visibility = ["//visibility:public"])
+
 proto_library(
     name = "census-proto",
     srcs = glob(["*.proto"]),
     deps = [],
+)
+
+java_proto_library(
+    name = "census-proto-java",
+    src = "census_context.proto",
 )

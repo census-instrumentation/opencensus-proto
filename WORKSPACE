@@ -8,3 +8,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+git_repository(
+    name = "io_bazel",
+    remote = "https://github.com/bazelbuild/bazel",
+    tag = "0.3.1",
+)
