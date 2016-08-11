@@ -15,15 +15,8 @@ guideline and information about how to do so.
 In order to protect both you and ourselves, you will need to sign the
 [Contributor License Agreement](https://cla.developers.google.com/clas).
 
-We follow the [Google Java Style
-Guide](https://google-styleguide.googlecode.com/svn/trunk/javaguide.html). Our
-build automatically will provide warnings for style issues.
-[Eclipse](https://google-styleguide.googlecode.com/svn/trunk/eclipse-java-google-style.xml)
-and
-[IntelliJ](https://google-styleguide.googlecode.com/svn/trunk/intellij-java-google-style.xml)
-style configurations are commonly useful. For IntelliJ 14, copy the style to
-`~/.IdeaIC14/config/codestyles/`, start IntelliJ, go to File > Settings > Code
-Style, and set the Scheme to `GoogleStyle`.
+We follow the [Google Proto Style Guide](
+https://developers.google.com/protocol-buffers/docs/style).
 
 ## Proposing changes
 
