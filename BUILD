@@ -17,6 +17,11 @@ load("@io_bazel//tools/build_rules:genproto.bzl", "java_proto_library")
 package(default_visibility = ["//visibility:public"])
 
 java_proto_library(
-    name = "census-proto-java",
-    srcs = glob(["*.proto"]),
+    "census-proto-java",
+    "census.proto",
+)
+
+java_proto_library(
+    "census_context-proto-java",
+    "census_context.proto",
 )
