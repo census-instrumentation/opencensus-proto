@@ -13,7 +13,7 @@ syntax = "proto3";
 
 package google.census;
 
-option java_package = "com.google.census";
+option java_package = "com.google.census.proto";
 option java_outer_classname = "CensusProto";
 
 // All the census protos.
