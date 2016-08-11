@@ -2,7 +2,8 @@
 
 If you received an error message, please include it and any exceptions.
 
-We commonly need to know what platform you are on:
+We commonly need to know which language you are using (e.g. Java) and what
+platform you are on:
  * Operating system (i.e., ```uname -a```)
 
 # How to contribute
