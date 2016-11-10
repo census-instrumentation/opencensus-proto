@@ -1,5 +1,7 @@
 Census Proto - Language Independent Interface Types For Census
 ===============================================================
+[![Build Status](https://travis-ci.org/google/instrumentation-proto.svg?branch=master)](https://travis-ci.org/google/instrumentation-proto)
+
 Census provides a framework to define and collect stats against metrics and to
 break those stats down across user-defined dimensions.
 
