@@ -11,7 +11,7 @@
 
 syntax = "proto3";
 
-package google.census;
+package google.instrumentation;
 
 option java_package = "com.google.instrumentation.stats.proto";
 option java_outer_classname = "CensusProto";
