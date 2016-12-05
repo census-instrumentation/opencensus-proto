@@ -22,6 +22,6 @@ java_proto_library(
 )
 
 java_proto_library(
-    "census_context-proto-java",
-    "census_context.proto",
+    "stats_context-proto-java",
+    "stats_context.proto",
 )

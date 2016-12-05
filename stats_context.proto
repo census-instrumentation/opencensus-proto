@@ -14,8 +14,8 @@ syntax = "proto3";
 package google.instrumentation;
 
 option java_package = "com.google.instrumentation.stats.proto";
-option java_outer_classname = "CensusContextProto";
+option java_outer_classname = "StatsContextProto";
 
-message CensusContext {
+message StatsContext {
   string tags = 1;
 }
