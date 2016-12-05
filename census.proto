@@ -18,22 +18,24 @@ option java_outer_classname = "CensusProto";
 
 // All the census protos.
 //
-// Nomenclature note: capitalized names below (like Metric) are protos.
+// Nomenclature notes:
+//   * Capitalized names below (like View) are protos.
+//   * Protos which describe types are named with a Descriptor suffix (e.g.
+//     MesurementDescriptor).
 //
-// Census lets you define a Metric - something which can be measured, like the
-// latency of an RPC, the number of CPU cycles spent on an operation, or
-// anything else you care to measure. You can record individual instances of
-// measurements (a double value) for every metric of interest. These
-// individual measurements are aggregated together into an Aggregation. There
-// are two Aggregation types available: Distribution (describes the
-// distribution of all measurements, possibly with a histogram) and
-// IntervalStats (the count and mean of measurements across specified time
+// Census lets you define the type and description of the data being measured
+// (e.g. the latency of an RPC or the number of CPU cycles spent on an
+// operation using MeasurementDescriptor. As individual measurements (a double
+// value) for are recorded, they are aggregated together into an
+// Aggregation. There are two Aggregation types available: Distribution
+// (describes the distribution of all measurements, possibly with a histogram)
+// and IntervalStats (the count and mean of measurements across specified time
 // periods). An Aggregation is described by an AggregationDescriptor.
 //
-// You can define how your stats are broken down by Tag values and which
-// Aggregations to use through a View. The corresponding combination of
-// Metric/View/Aggregation which is available to census clients is called a
-// ViewAggregation.
+// You can define how your measurements (described by a MeasurementDescriptor)
+// are broken down by Tag values and which Aggregations to use through a
+// ViewDescriptor. The output (all measurements broken down by tag values into
+// specific Aggregations) is called a View.
 
 
 // The following two types are copied from
@@ -70,26 +72,25 @@ message Timestamp {
   int32 nanos = 2;
 }
 
-// Describes a metric
-message Metric {
-  // name of metric, e.g. rpc_latency, cpu.
+// MeasurementDescriptor describes a data point (measurement) type.
+message MeasurementDescriptor {
+  // A descriptive name, e.g. rpc_latency, cpu. Must be unique.
   string name = 1;
 
-  // More detailed description of the metric, used in documentation.
+  // More detailed description of the resource, used in documentation.
   string description = 2;
 
   // Fundamental units of measurement supported by Census
   // TODO(aveitch): expand this to include other S.I. units?
-  message BasicUnit {
-    enum Measure {
-      UNKNOWN = 0;
-      BITS = 1;
-      BYTES = 2;
-      SECS = 3;
-      CORES = 4;
-      MAX_UNITS = 5;
-    }
-    Measure type = 1;
+  enum BasicUnit {
+    UNKNOWN = 0;    // Implementations should not use this
+    SCALAR = 1;     // Dimensionless
+    BITS = 2;       // A single bit
+    BYTES = 3;      // An 8-bit byte
+    SECONDS = 4;    // S.I. unit
+    CORES = 5;      // CPU core usage
+    MAX_UNITS = 6;  // Last defined value; implementations should only use
+                    // this for validation.
   }
 
   // MeasurementUnit lets you build compound units of the form
@@ -105,95 +106,57 @@ message Metric {
   //     numerator: SECS
   //
   // - events/sec^2 (i.e. rate of change of events/sec):
-  //     numerator: COUNT
+  //     numerator: SCALAR
   //     denominator: SECS
   //     denominator: SECS
   //
-  // To specify multiples (in power of 10) units, specify a non-zero prefix
-  // value, for example:
+  // To specify multiples (in power of 10) of units, specify a non-zero
+  // 'power10' value, for example:
   //
   // - MB/s (i.e. megabytes / s):
-  //     prefix: 6
+  //     power10: 6
   //     numerator: BYTES
   //     denominator: SECS
   //
   // - nanoseconds
-  //     prefix: -9
+  //     power10: -9
   //     numerator: SECS
   message MeasurementUnit {
-    int32 prefix = 1;
-    repeated BasicUnit numerator = 2;
-    repeated BasicUnit denominator = 3;
+    int32 power10 = 1;
+    repeated BasicUnit numerators = 2;
+    repeated BasicUnit denominators = 3;
   }
 
-  // The units in which the Metric value is reported.
+  // The units used by this type of measurement.
   MeasurementUnit unit = 3;
-
-  // Metrics will be assigned an ID when registered. Invalid if <= 0.
-  int32 id = 4;
 }
 
-// An Aggregation summarizes a series of individual Metric measurements, an
-// AggregationDescriptor describes an Aggregation.
-message AggregationDescriptor {
-  // At most one set of options. If neither option is set, a default type
-  // of Distribution (without a histogram component) will be used.
-  oneof options {
-    // Defines the histogram bucket boundaries for Distributions.
-    BucketBoundaries bucket_boundaries = 1;
-    // Defines the time windows to record for IntervalStats.
-    IntervalBoundaries interval_boundaries = 2;
-  }
+// An aggregation summarizes a series of individual measurements. There are
+// two types of aggregation (IntervalAggregation and DistributionAggregation),
+// unique types of each can be set using descriptors for each.
 
-  // A Distribution may optionally contain a histogram of the values in the
-  // population. The bucket boundaries for that histogram is described by
-  // `bucket_boundaries`.
-  //
-  // Describes histogram bucket boundaries. Defines `size(bounds) + 1` (= N)
-  // buckets (for size(bounds) >= 1; if size(bounds) == 0, then no histogram
-  // will be defined. The boundaries for bucket index i are:
-  //
-  // [-infinity, bounds[i]) for i == 0
-  // [bounds[i-1], bounds[i]) for 0 < i < N-2
-  // [bounds[i-1], +infinity) for i == N-1
-  //
-  // i.e. an underflow bucket (number 0), zero or more finite buckets (1
-  // through N - 2, and an overflow bucket (N - 1), with inclusive lower
-  // bounds and exclusive upper bounds.
-  //
-  // There must be at least one element in `bounds`.  If `bounds` has only one
-  // element, there are no finite buckets, and that single element is the
-  // common boundary of the overflow and underflow buckets.
-  message BucketBoundaries {
-    // The values must be monotonically increasing.
-    repeated double bounds = 1;
-  }
-
-  // For Interval stats, describe the size of each window.
-  message IntervalBoundaries {
-    // For each time window, specify a duration in seconds.
-    repeated double window_size = 1;
-  }
-}
-
-// Distribution contains summary statistics for a population of values and,
-// optionally, a histogram representing the distribution of those values across
-// a specified set of histogram buckets, as defined in
-// Aggregation.bucket_options.
+// DistributionAggregation contains summary statistics for a population of
+// values and, optionally, a histogram representing the distribution of those
+// values across a specified set of histogram buckets, as defined in
+// DistributionAggregationDescriptor.bucket_bounds.
 //
-// The summary statistics are the count, mean, sum of the squared deviation from
-// the mean, the minimum, and the maximum of the set of population of values.
+// The summary statistics are the count, mean, minimum, and the maximum of the
+// set of population of values.
 //
 // Although it is not forbidden, it is generally a bad idea to include
 // non-finite values (infinities or NaNs) in the population of values, as this
 // will render the `mean` field meaningless.
-message Distribution {
+message DistributionAggregation {
   // The number of values in the population. Must be non-negative.
   int64 count = 1;
 
   // The arithmetic mean of the values in the population. If `count` is zero
   // then this field must be zero.
   double mean = 2;
+
+  // The sum of the values in the population.  If `count` is zero then this
+  // field must be zero.
+  double sum = 3;
 
   // Describes a range of population values.
   message Range {
@@ -205,13 +168,13 @@ message Distribution {
 
   // The range of the population values. If `count` is zero, this field will not
   // be defined.
-  Range range = 3;
+  Range range = 4;
 
   // A Distribution may optionally contain a histogram of the values in the
-  // population.  The histogram is given in `bucket_count` as counts of values
+  // population. The histogram is given in `bucket_count` as counts of values
   // that fall into one of a sequence of non-overlapping buckets, as described
-  // by `AggregationDescriptor.options.bucket_boundaries`.
-  // The sum of the values in `bucket_counts` must equal the value in `count`.
+  // by `DistributionAggregationDescriptor.bucket_boundaries`. The sum of the
+  // values in `bucket_counts` must equal the value in `count`.
   //
   // Bucket counts are given in order under the numbering scheme described
   // above (the underflow bucket has number 0; the finite buckets, if any,
@@ -221,23 +184,73 @@ message Distribution {
   // `bucket_boundaries`.
   //
   // Any suffix of trailing zero bucket_count fields may be omitted.
-  repeated int64 bucket_count = 4;
+  repeated int64 bucket_counts = 5;
+
+  // Tags associated with this DistributionAggregation. These will be filled
+  // in based on the View specification.
+  repeated Tag tags = 6;
 }
 
-// Record summary stats over various time windows.
-message IntervalStats {
-  // Summary statistic over a single time window.
-  message Window {
-    // The window duration.
-    Duration window_size = 1;
-    // The number of measurements in this window.
-    int64 count = 2;
-    // The arithmetic mean of all measurements in the window.
-    double mean = 3;
+message DistributionAggregationDescriptor {
+  // A Distribution may optionally contain a histogram of the values in the
+  // population. The bucket boundaries for that histogram are described by
+  // `bucket_bounds`. This defines `size(bucket_bounds) + 1` (= N)
+  // buckets. The boundaries for bucket index i are:
+  //
+  // [-infinity, bucket_bounds[i]) for i == 0
+  // [bucket_bounds[i-1], bucket_bounds[i]) for 0 < i < N-2
+  // [bucket_bounds[i-1], +infinity) for i == N-1
+  //
+  // i.e. an underflow bucket (number 0), zero or more finite buckets (1
+  // through N - 2, and an overflow bucket (N - 1), with inclusive lower
+  // bounds and exclusive upper bounds.
+  //
+  // If `bucket_bounds` has no elements (zero size), then there is no
+  // histogram associated with the Distribution. If `bucket_bounds` has only
+  // one element, there are no finite buckets, and that single element is the
+  // common boundary of the overflow and underflow buckets. The values must
+  // be monotonically increasing.
+  repeated double bucket_bounds = 1;
+}
+
+// An IntervalAggreation records summary stats over various time
+// windows. These stats are approximate, with the degree of accuracy
+// controlled by setting the n_sub_intervals parameter in the
+// IntervalAggregationDescriptor.
+message IntervalAggregation {
+  // Summary statistic over a single time interval.
+  message Interval {
+    // The interval duration. Must be positive.
+    Duration interval_size = 1;
+    // Approximate number of measurements recorded in this interval.
+    double count = 2;
+    // The cumulative sum of measurements in this interval.
+    double sum = 3;
   }
 
-  // Full set of windows for this metric.
-  repeated Window window = 1;
+  // Full set of intervals for this aggregation.
+  repeated Interval intervals = 1;
+
+  // Tags associated with this IntervalAggregation. These will be filled in
+  // based on the View specification.
+  repeated Tag tags = 2;
+}
+
+// An IntervalAggreationDescriptor specifies time intervals for an
+// IntervalAggregation.
+message IntervalAggregationDescriptor {
+  // Number of internal sub-intervals to use when collecting stats for each
+  // interval. The max error in interval measurements will be approximately
+  // 1/n_sub_intervals (although in practice, this will only be approached in
+  // the presence of very large and bursty workload changes), and underlying
+  // memory usage will be roughly proportional to the value of this
+  // field. Must be in the range [2, 20]. A value of 5 will be used if this is
+  // unspecified.
+  int32 n_sub_intervals = 1;
+
+  // The size of each interval, as a time duration. Must have at least one
+  // element.
+  repeated Duration interval_sizes = 2;
 }
 
 // A Tag: key-value pair.
@@ -246,53 +259,57 @@ message Tag {
   string value = 2;
 }
 
-// A View specifies an Aggregation and a set of tag keys. The Aggregation will
-// be broken down by the unique set of matching tag values for each measurement.
-message View {
-  // Name of view.
+// A ViewDescriptor specifies an AggregationDescriptor and a set of tag
+// keys. Views instantiated from this descriptor will contain Aggregations
+// broken down by the unique set of matching tag values for each measurement.
+message ViewDescriptor {
+  // Name of view. Must be unique.
   string name = 1;
 
   // More detailed description, for documentation purposes.
   string description = 2;
 
-  // ID of Metric to associate with this View.
-  int32 metric_id = 3;
+  // Name of a MeasurementDescriptor to be used for this view.
+  string measurement_descriptor_name = 3;
 
-  // Aggregation type to associate with this View.
-  AggregationDescriptor aggregation = 4;
-
-  // Tag keys to match with a given Metric. If no keys are specified, then all
-  // stats for the Metric are recorded. Keys must be unique.
-  repeated string tag_key = 5;
-}
-
-// An Aggregation summarizes a series of individual Metric measures.
-message Aggregation {
-  // Name of this aggregation.
-  string name = 1;
-
-  // More detailed description, for documentation purposes.
-  string description = 2;
-
-  // The data for this Aggregation.
-  oneof data {
-    Distribution distribution = 3;
-    IntervalStats interval_stats = 4;
+  // Aggregation type to associate with View.
+  oneof aggregation {
+    IntervalAggregationDescriptor interval_aggregation = 4;
+    DistributionAggregationDescriptor distribution_aggregation = 5;
   }
 
-  // Tags associated with this Aggregation.
-  repeated Tag tag = 5;
+  // Tag keys to match with a given measurement. If no keys are specified,
+  // then all stats are recorded. Keys must be unique.
+  repeated string tag_keys = 6;
 }
 
-// A ViewAggregations represents all the Aggregations for a particular view.
-message ViewAggregations {
+// DistributionView contains all aggregations for a view specified using a
+// DistributionAggregationDescriptor.
+message DistributionView {
   // Aggregations - each will have a unique set of tag values for the tag_keys
   // associated with the corresponding View.
-  repeated Aggregation aggregation = 1;
+  repeated DistributionAggregation aggregations = 1;
 
-  // Start and end timestamps over which the value was accumulated. These
-  // values are not relevant/defined for IntervalStats aggregations, which are
-  // always accumulated over a fixed time period.
+  // Start and end timestamps over which aggregations was accumulated.
   Timestamp start = 2;
   Timestamp end = 3;
+}
+
+// IntervalView contains all aggregations for a view specified using a
+// IntervalAggregationDescriptor.
+message IntervalView {
+  // Aggregations - each will have a unique set of tag values for the tag_keys
+  // associated with the corresponding View.
+  repeated IntervalAggregation aggregations = 1;
+}
+
+// A View contains the aggregations based on a ViewDescriptor.
+message View {
+  // ViewDescriptor name associated with this set of View.
+  string view_name = 1;
+
+  oneof view {
+    DistributionView distribution_view = 2;
+    IntervalView interval_view = 3;
+  }
 }
