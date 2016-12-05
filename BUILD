@@ -18,10 +18,10 @@ package(default_visibility = ["//visibility:public"])
 
 java_proto_library(
     "census-proto-java",
-    "census.proto",
+    "stats/census.proto",
 )
 
 java_proto_library(
     "stats_context-proto-java",
-    "stats_context.proto",
+    "stats/stats_context.proto",
 )
