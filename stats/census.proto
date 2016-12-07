@@ -220,15 +220,14 @@ message DistributionAggregationDescriptor {
 message IntervalAggregation {
   // Summary statistic over a single time interval.
   message Interval {
-    // The interval duration. Must be positive.
-    Duration interval_size = 1;
     // Approximate number of measurements recorded in this interval.
-    double count = 2;
+    double count = 1;
     // The cumulative sum of measurements in this interval.
-    double sum = 3;
+    double sum = 2;
   }
 
-  // Full set of intervals for this aggregation.
+  // Full set of intervals for this aggregation, corresponding to the
+  // interval_sizes in the associated IntervalAggregationDescriptor.
   repeated Interval intervals = 1;
 
   // Tags associated with this IntervalAggregation. These will be filled in
@@ -249,7 +248,7 @@ message IntervalAggregationDescriptor {
   int32 n_sub_intervals = 1;
 
   // The size of each interval, as a time duration. Must have at least one
-  // element.
+  // element. Each element must be positive.
   repeated Duration interval_sizes = 2;
 }
 
