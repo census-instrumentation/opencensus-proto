@@ -254,6 +254,7 @@ message IntervalAggregationDescriptor {
 }
 
 // A Tag: key-value pair.
+// Both strings must be printable ASCII.
 message Tag {
   string key = 1;
   string value = 2;
