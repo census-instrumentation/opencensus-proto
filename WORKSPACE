@@ -12,5 +12,5 @@
 git_repository(
     name = "io_bazel",
     remote = "https://github.com/bazelbuild/bazel",
-    tag = "0.3.1",
+    tag = "0.4.4",
 )
