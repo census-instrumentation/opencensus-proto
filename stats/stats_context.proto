@@ -27,5 +27,9 @@ message StatsContext {
   // All implementations must honor these specs:
   //  * The num_tags is represented using varint.
   //  * The key/value lengths are represented using varint.
+  //  * All key/values must be US-ASCII.
+  //
+  // For details about varint, see:
+  //  https://developers.google.com/protocol-buffers/docs/encoding#varints
   bytes tags = 1;
 }
