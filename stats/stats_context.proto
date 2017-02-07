@@ -27,6 +27,5 @@ message StatsContext {
   // All implementations must honor these specs:
   //  * The num_tags is represented using varint.
   //  * The key/value lengths are represented using varint.
-  //  * keys/values do not include the terminating character '\0'.
   bytes tags = 1;
 }
