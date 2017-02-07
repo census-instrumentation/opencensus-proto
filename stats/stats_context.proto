@@ -16,6 +16,20 @@ package google.instrumentation;
 option java_package = "com.google.instrumentation.stats.proto";
 option java_outer_classname = "StatsContextProto";
 
+// Wire format of instrumentation stats (aka Census) tags.
 message StatsContext {
-  string tags = 1;
+  // Encodes all stats tags (aka Census tags) to propagate over an RPC in a
+  // single byte vector.
+  //
+  // The format is:
+  //  num_tags [key_len key_bytes value_len value_bytes]*
+  //
+  // All implementations must honor these specs:
+  //  * The num_tags is represented using varint.
+  //  * The key/value lengths are represented using varint.
+  //  * All key/values must be US-ASCII.
+  //
+  // For details about varint, see:
+  //  https://developers.google.com/protocol-buffers/docs/encoding#varints
+  bytes tags = 1;
 }
