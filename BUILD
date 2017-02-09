@@ -25,3 +25,8 @@ java_proto_library(
     "stats_context-proto-java",
     "stats/stats_context.proto",
 )
+
+java_proto_library(
+    "span_context-proto-java",
+    "trace/span_context.proto",
+)
