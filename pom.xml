@@ -19,6 +19,7 @@
     <groupId>com.google</groupId>
     <artifactId>google</artifactId>
     <version>5</version>
+    <relativePath></relativePath>
   </parent>
 
   <licenses>
