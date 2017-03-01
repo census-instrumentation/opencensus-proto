@@ -20,11 +20,13 @@ option java_outer_classname = "StatsContextProto";
 // for passing across RPC's.
 message StatsContext {
   // Tags are encoded as a single byte sequence. The format is:
-  // [tag_type key_len key_bytes value_len value_bytes]*
+  // [tag_metadata key_len key_bytes value_len value_bytes]*
   //
   // Where:
-  //  * tag_type is one byte, and is used to describe the format of value_bytes.
-  //    In particular, the low 2 bits of this byte are used as follows:
+  //  * tag_metadata is one byte and is for encoding metadata about the tag. The
+  //    low 2 bits of this byte are used to encode the type of the value bytes.
+  //    The high 6 bits are reserved for future use. The value_bytes type is
+  //    encoded as:
   //    00 (value 0): string (UTF-8) encoding
   //    01 (value 1): integer (varint int64 encoding). See
   //      https://developers.google.com/protocol-buffers/docs/encoding#varints
@@ -32,10 +34,12 @@ message StatsContext {
   //    10 (value 2): boolean format. In this case value_len should equal 1, and
   //       the value_bytes will be a single byte containing either 0 (false) or
   //       1 (true).
+  //    11 (value 3): Reserved for future use.
   //  * The key_len and value_len fields are represented using a varint, with a
   //    maximum value of 16383 bytes (this value is guaranteed to fit in at most
   //    2 bytes). Zero length keys or values are not allowed.
-  //  * The value in key_bytes is a US-ASCII format string.
+  //  * The value in key_bytes is a US-ASCII format string. Only the characters
+  //    from 0x20 (' ') to 0x7e ('~') are valid.
   bytes tags = 1;
 }
 
