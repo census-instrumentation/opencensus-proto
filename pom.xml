@@ -38,6 +38,9 @@
         <configuration>
           <protocExecutable>protoc</protocExecutable>
           <protoSourceRoot>.</protoSourceRoot>
+	  <includes>
+	    <include>stats/*.proto</include>
+	  </includes>
         </configuration>
         <executions>
           <execution>
