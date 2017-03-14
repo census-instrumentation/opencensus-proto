@@ -1,0 +1,770 @@
+# Constants for collecting rpc stats.
+rpc_constants {
+  # Census defined rpc client MeasurementDescriptors.
+  measurement_descriptor {
+    name: "/rpc/client/error_count"
+    description: "RPC Errors"
+    unit: {
+      power10: 0
+      numerators: SCALAR
+    }
+  }
+
+  measurement_descriptor {
+    name: "/rpc/client/request_bytes"
+    description: "Request bytes"
+    unit: {
+      power10: 0
+      numerators: BYTES
+    }
+  }
+
+  measurement_descriptor {
+    name: "/rpc/client/response_bytes"
+    description: "Response bytes"
+    unit: {
+      power10: 0
+      numerators: BYTES
+    }
+  }
+
+  measurement_descriptor {
+    name: "/rpc/client/roundtrip_latency"
+    description: "RPC roundtrip latency msec"
+    unit: {
+      power10: -3
+      numerators: SECONDS
+    }
+  }
+
+  measurement_descriptor {
+    name: "/rpc/client/server_elapsed_time"
+    description: "Server elapsed time in msecs"
+    unit: {
+      power10: -3
+      numerators: SECONDS
+    }
+  }
+
+  measurement_descriptor {
+    name: "/rpc/client/uncompressed_request_bytes"
+    description: "Uncompressed Request bytes"
+    unit: {
+      power10: 0
+      numerators: BYTES
+    }
+  }
+
+  measurement_descriptor {
+    name: "/rpc/client/uncompressed_response_bytes"
+    description: "Uncompressed Response bytes"
+    unit: {
+      power10: 0
+      numerators: BYTES
+    }
+  }
+
+  #Census defined rpc server MeasurementDescriptors.
+  measurement_descriptor {
+    name: "/rpc/server/error_count"
+    description: "RPC Errors"
+    unit: {
+      power10: 0
+      numerators: BYTES
+    }
+  }
+
+  measurement_descriptor {
+    name: "/rpc/server/request_bytes"
+    description: "Request bytes"
+    unit: {
+      power10: 0
+      numerators: BYTES
+    }
+  }
+
+  measurement_descriptor {
+    name: "/rpc/server/response_bytes"
+    description: "Response bytes"
+    unit: {
+      power10: 0
+      numerators: BYTES
+    }
+  }
+
+  measurement_descriptor {
+    name: "/rpc/server/server_elapsed_time"
+    description: "Server elapsed time in msecs"
+    unit: {
+      power10: -3
+      numerators: SECONDS
+    }
+  }
+
+  measurement_descriptor {
+    name: "/rpc/server/server_latency"
+    description: "Latency in msecs"
+    unit: {
+      power10: -3
+      numerators: SECONDS
+    }
+  }
+
+  measurement_descriptor {
+    name: "/rpc/server/uncompressed_request_bytes"
+    description: "Uncompressed Request bytes"
+    unit: {
+      power10: 0
+      numerators: BYTES
+    }
+  }
+
+  measurement_descriptor {
+    name: "/rpc/server/uncompressed_response_bytes"
+    description: "Uncompressed Response bytes"
+    unit: {
+      power10: 0
+      numerators: BYTES
+    }
+  }
+
+  measurement_descriptor {
+    name: "/rpc/server/started_count"
+    description: "Number of RPCs started"
+    unit: {
+      power10: 0
+      numerators: SCALAR
+    }
+  }
+
+  measurement_descriptor {
+    name: "/rpc/server/finished_count"
+    description: "Number of RPCs finished"
+    unit: {
+      power10: 0
+      numerators: SCALAR
+    }
+  }
+
+  # Census defined rpc client ViewDescriptors.
+  view_descriptor {
+    name: "rpc client error_count"
+    description: "RPC Errors"
+    measurement_descriptor_name: "/rpc/client/error_count"
+    distribution_aggregation: {
+    }
+    tag_keys: "OpStatus"
+    tag_keys: "method"
+  }
+
+  view_descriptor {
+    name: "rpc client roundtrip_latency"
+    description: "Latency in msecs"
+    measurement_descriptor_name: "/rpc/client/roundtrip_latency"
+    distribution_aggregation: {
+      bucket_bounds: 0.0
+      bucket_bounds: 1.0
+      bucket_bounds: 2.0
+      bucket_bounds: 3.0
+      bucket_bounds: 4.0
+      bucket_bounds: 5.0
+      bucket_bounds: 6.0
+      bucket_bounds: 8.0
+      bucket_bounds: 10.0
+      bucket_bounds: 13.0
+      bucket_bounds: 16.0
+      bucket_bounds: 20.0
+      bucket_bounds: 25.0
+      bucket_bounds: 30.0
+      bucket_bounds: 40.0
+      bucket_bounds: 50.0
+      bucket_bounds: 65.0
+      bucket_bounds: 80.0
+      bucket_bounds: 100.0
+      bucket_bounds: 130.0
+      bucket_bounds: 160.0
+      bucket_bounds: 200.0
+      bucket_bounds: 250.0
+      bucket_bounds: 300.0
+      bucket_bounds: 400.0
+      bucket_bounds: 500.0
+      bucket_bounds: 650.0
+      bucket_bounds: 800.0
+      bucket_bounds: 1000.0
+      bucket_bounds: 2000.0
+      bucket_bounds: 5000.0
+      bucket_bounds: 10000.0
+      bucket_bounds: 20000.0
+      bucket_bounds: 50000.0
+      bucket_bounds: 100000.0
+    }
+    tag_keys: "method"
+  }
+
+  view_descriptor {
+    name: "rpc client server_elapsed_time"
+    description: "Server elapsed time in msecs"
+    measurement_descriptor_name: "/rpc/client/server_elapsed_time"
+    distribution_aggregation: {
+      bucket_bounds: 0.0
+      bucket_bounds: 1.0
+      bucket_bounds: 2.0
+      bucket_bounds: 3.0
+      bucket_bounds: 4.0
+      bucket_bounds: 5.0
+      bucket_bounds: 6.0
+      bucket_bounds: 8.0
+      bucket_bounds: 10.0
+      bucket_bounds: 13.0
+      bucket_bounds: 16.0
+      bucket_bounds: 20.0
+      bucket_bounds: 25.0
+      bucket_bounds: 30.0
+      bucket_bounds: 40.0
+      bucket_bounds: 50.0
+      bucket_bounds: 65.0
+      bucket_bounds: 80.0
+      bucket_bounds: 100.0
+      bucket_bounds: 130.0
+      bucket_bounds: 160.0
+      bucket_bounds: 200.0
+      bucket_bounds: 250.0
+      bucket_bounds: 300.0
+      bucket_bounds: 400.0
+      bucket_bounds: 500.0
+      bucket_bounds: 650.0
+      bucket_bounds: 800.0
+      bucket_bounds: 1000.0
+      bucket_bounds: 2000.0
+      bucket_bounds: 5000.0
+      bucket_bounds: 10000.0
+      bucket_bounds: 20000.0
+      bucket_bounds: 50000.0
+      bucket_bounds: 100000.0
+    }
+    tag_keys: "method"
+  }
+
+  view_descriptor {
+    name: "rpc client request_bytes"
+    description: "Request bytes"
+    measurement_descriptor_name: "/rpc/client/request_bytes"
+    distribution_aggregation: {
+      bucket_bounds: 0.0
+      bucket_bounds: 1024.0
+      bucket_bounds: 2048.0
+      bucket_bounds: 4096.0
+      bucket_bounds: 16384.0
+      bucket_bounds: 65536.0
+      bucket_bounds: 262144.0
+      bucket_bounds: 1048576.0
+      bucket_bounds: 4194304.0
+      bucket_bounds: 16777216.0
+      bucket_bounds: 67108864.0
+      bucket_bounds: 268435456.0
+      bucket_bounds: 1073741824.0
+      bucket_bounds: 4294967296.0
+    }
+    tag_keys: "method"
+  }
+
+  view_descriptor {
+    name: "rpc client response_bytes"
+    description: "Response bytes"
+    measurement_descriptor_name: "/rpc/client/response_bytes"
+    distribution_aggregation: {
+      bucket_bounds: 0.0
+      bucket_bounds: 1024.0
+      bucket_bounds: 2048.0
+      bucket_bounds: 4096.0
+      bucket_bounds: 16384.0
+      bucket_bounds: 65536.0
+      bucket_bounds: 262144.0
+      bucket_bounds: 1048576.0
+      bucket_bounds: 4194304.0
+      bucket_bounds: 16777216.0
+      bucket_bounds: 67108864.0
+      bucket_bounds: 268435456.0
+      bucket_bounds: 1073741824.0
+      bucket_bounds: 4294967296.0
+    }
+    tag_keys: "method"
+  }
+
+  view_descriptor {
+    name: "rpc client uncompressed_request_bytes"
+    description: "Uncompressed Request bytes"
+    measurement_descriptor_name: "/rpc/client/uncompressed_request_bytes"
+    distribution_aggregation: {
+      bucket_bounds: 0.0
+      bucket_bounds: 1024.0
+      bucket_bounds: 2048.0
+      bucket_bounds: 4096.0
+      bucket_bounds: 16384.0
+      bucket_bounds: 65536.0
+      bucket_bounds: 262144.0
+      bucket_bounds: 1048576.0
+      bucket_bounds: 4194304.0
+      bucket_bounds: 16777216.0
+      bucket_bounds: 67108864.0
+      bucket_bounds: 268435456.0
+      bucket_bounds: 1073741824.0
+      bucket_bounds: 4294967296.0
+    }
+    tag_keys: "method"
+  }
+
+  view_descriptor {
+    name: "rpc client uncompressed_response_bytes"
+    description: "Uncompressed Response bytes"
+    measurement_descriptor_name: "/rpc/client/uncompressed_response_bytes"
+    distribution_aggregation: {
+      bucket_bounds: 0.0
+      bucket_bounds: 1024.0
+      bucket_bounds: 2048.0
+      bucket_bounds: 4096.0
+      bucket_bounds: 16384.0
+      bucket_bounds: 65536.0
+      bucket_bounds: 262144.0
+      bucket_bounds: 1048576.0
+      bucket_bounds: 4194304.0
+      bucket_bounds: 16777216.0
+      bucket_bounds: 67108864.0
+      bucket_bounds: 268435456.0
+      bucket_bounds: 1073741824.0
+      bucket_bounds: 4294967296.0
+    }
+    tag_keys: "method"
+  }
+
+  # Census defined rpc server ViewDescriptors.
+  view_descriptor {
+    name: "rpc server error_count"
+    description: "RPC Errors"
+    measurement_descriptor_name: "/rpc/server/error_count"
+    distribution_aggregation: {
+    }
+    tag_keys: "OpStatus"
+    tag_keys: "method"
+  }
+
+  view_descriptor {
+    name: "rpc server roundtrip_latency"
+    description: "Latency in msecs"
+    measurement_descriptor_name: "/rpc/server/roundtrip_latency"
+    distribution_aggregation: {
+      bucket_bounds: 0.0
+      bucket_bounds: 1.0
+      bucket_bounds: 2.0
+      bucket_bounds: 3.0
+      bucket_bounds: 4.0
+      bucket_bounds: 5.0
+      bucket_bounds: 6.0
+      bucket_bounds: 8.0
+      bucket_bounds: 10.0
+      bucket_bounds: 13.0
+      bucket_bounds: 16.0
+      bucket_bounds: 20.0
+      bucket_bounds: 25.0
+      bucket_bounds: 30.0
+      bucket_bounds: 40.0
+      bucket_bounds: 50.0
+      bucket_bounds: 65.0
+      bucket_bounds: 80.0
+      bucket_bounds: 100.0
+      bucket_bounds: 130.0
+      bucket_bounds: 160.0
+      bucket_bounds: 200.0
+      bucket_bounds: 250.0
+      bucket_bounds: 300.0
+      bucket_bounds: 400.0
+      bucket_bounds: 500.0
+      bucket_bounds: 650.0
+      bucket_bounds: 800.0
+      bucket_bounds: 1000.0
+      bucket_bounds: 2000.0
+      bucket_bounds: 5000.0
+      bucket_bounds: 10000.0
+      bucket_bounds: 20000.0
+      bucket_bounds: 50000.0
+      bucket_bounds: 100000.0
+    }
+    tag_keys: "method"
+  }
+
+  view_descriptor {
+    name: "rpc server server_elapsed_time"
+    description: "Server elapsed time in msecs"
+    measurement_descriptor_name: "/rpc/server/server_elapsed_time"
+    distribution_aggregation: {
+      bucket_bounds: 0.0
+      bucket_bounds: 1.0
+      bucket_bounds: 2.0
+      bucket_bounds: 3.0
+      bucket_bounds: 4.0
+      bucket_bounds: 5.0
+      bucket_bounds: 6.0
+      bucket_bounds: 8.0
+      bucket_bounds: 10.0
+      bucket_bounds: 13.0
+      bucket_bounds: 16.0
+      bucket_bounds: 20.0
+      bucket_bounds: 25.0
+      bucket_bounds: 30.0
+      bucket_bounds: 40.0
+      bucket_bounds: 50.0
+      bucket_bounds: 65.0
+      bucket_bounds: 80.0
+      bucket_bounds: 100.0
+      bucket_bounds: 130.0
+      bucket_bounds: 160.0
+      bucket_bounds: 200.0
+      bucket_bounds: 250.0
+      bucket_bounds: 300.0
+      bucket_bounds: 400.0
+      bucket_bounds: 500.0
+      bucket_bounds: 650.0
+      bucket_bounds: 800.0
+      bucket_bounds: 1000.0
+      bucket_bounds: 2000.0
+      bucket_bounds: 5000.0
+      bucket_bounds: 10000.0
+      bucket_bounds: 20000.0
+      bucket_bounds: 50000.0
+      bucket_bounds: 100000.0
+    }
+    tag_keys: "method"
+  }
+
+  view_descriptor {
+    name: "rpc server request_bytes"
+    description: "Request bytes"
+    measurement_descriptor_name: "/rpc/server/request_bytes"
+    distribution_aggregation: {
+      bucket_bounds: 0.0
+      bucket_bounds: 1024.0
+      bucket_bounds: 2048.0
+      bucket_bounds: 4096.0
+      bucket_bounds: 16384.0
+      bucket_bounds: 65536.0
+      bucket_bounds: 262144.0
+      bucket_bounds: 1048576.0
+      bucket_bounds: 4194304.0
+      bucket_bounds: 16777216.0
+      bucket_bounds: 67108864.0
+      bucket_bounds: 268435456.0
+      bucket_bounds: 1073741824.0
+      bucket_bounds: 4294967296.0
+    }
+    tag_keys: "method"
+  }
+
+  view_descriptor {
+    name: "rpc server response_bytes"
+    description: "Response bytes"
+    measurement_descriptor_name: "/rpc/server/response_bytes"
+    distribution_aggregation: {
+      bucket_bounds: 0.0
+      bucket_bounds: 1024.0
+      bucket_bounds: 2048.0
+      bucket_bounds: 4096.0
+      bucket_bounds: 16384.0
+      bucket_bounds: 65536.0
+      bucket_bounds: 262144.0
+      bucket_bounds: 1048576.0
+      bucket_bounds: 4194304.0
+      bucket_bounds: 16777216.0
+      bucket_bounds: 67108864.0
+      bucket_bounds: 268435456.0
+      bucket_bounds: 1073741824.0
+      bucket_bounds: 4294967296.0
+    }
+    tag_keys: "method"
+  }
+
+  view_descriptor {
+    name: "rpc server uncompressed_request_bytes"
+    description: "Uncompressed Request bytes"
+    measurement_descriptor_name: "/rpc/server/uncompressed_request_bytes"
+    distribution_aggregation: {
+      bucket_bounds: 0.0
+      bucket_bounds: 1024.0
+      bucket_bounds: 2048.0
+      bucket_bounds: 4096.0
+      bucket_bounds: 16384.0
+      bucket_bounds: 65536.0
+      bucket_bounds: 262144.0
+      bucket_bounds: 1048576.0
+      bucket_bounds: 4194304.0
+      bucket_bounds: 16777216.0
+      bucket_bounds: 67108864.0
+      bucket_bounds: 268435456.0
+      bucket_bounds: 1073741824.0
+      bucket_bounds: 4294967296.0
+    }
+    tag_keys: "method"
+  }
+
+  view_descriptor {
+    name: "rpc server uncompressed_response_bytes"
+    description: "Uncompressed Response bytes"
+    measurement_descriptor_name: "/rpc/server/uncompressed_response_bytes"
+    distribution_aggregation: {
+      bucket_bounds: 0.0
+      bucket_bounds: 1024.0
+      bucket_bounds: 2048.0
+      bucket_bounds: 4096.0
+      bucket_bounds: 16384.0
+      bucket_bounds: 65536.0
+      bucket_bounds: 262144.0
+      bucket_bounds: 1048576.0
+      bucket_bounds: 4194304.0
+      bucket_bounds: 16777216.0
+      bucket_bounds: 67108864.0
+      bucket_bounds: 268435456.0
+      bucket_bounds: 1073741824.0
+      bucket_bounds: 4294967296.0
+    }
+    tag_keys: "method"
+  }
+
+  # Census defined rpc client IntervalViewDescriptors.
+  view_descriptor {
+    name: "rpc client roundtrip_latency"
+    description: "Minute and Hour stats for latency in msecs"
+    measurement_descriptor_name: "/rpc/client/roundtrip_latency"
+    interval_aggregation: {
+      interval_sizes: {
+        seconds: 60
+        nanos: 0
+      }
+      interval_sizes: {
+        seconds: 3600
+        nanos: 0
+      }
+    }
+    tag_keys: "method"
+  }
+
+  view_descriptor {
+    name: "rpc client request_bytes"
+    description: "Minute and Hour stats for request size in bytes"
+    measurement_descriptor_name: "/rpc/client/request_bytes"
+    interval_aggregation: {
+      interval_sizes: {
+        seconds: 60
+        nanos: 0
+      }
+      interval_sizes: {
+        seconds: 3600
+        nanos: 0
+      }
+    }
+    tag_keys: "method"
+  }
+
+  view_descriptor {
+    name: "rpc client response_bytes"
+    description: "Minute and Hour stats for response size in bytes"
+    measurement_descriptor_name: "/rpc/client/response_bytes"
+    interval_aggregation: {
+      interval_sizes: {
+        seconds: 60
+        nanos: 0
+      }
+      interval_sizes: {
+        seconds: 3600
+        nanos: 0
+      }
+    }
+    tag_keys: "method"
+  }
+
+  view_descriptor {
+    name: "rpc client error_count"
+    description: "Minute and Hour stats for rpc errors"
+    measurement_descriptor_name: "/rpc/client/error_count"
+    interval_aggregation: {
+      interval_sizes: {
+        seconds: 60
+        nanos: 0
+      }
+      interval_sizes: {
+        seconds: 3600
+        nanos: 0
+      }
+    }
+    tag_keys: "method"
+  }
+
+  view_descriptor {
+    name: "rpc client uncompressed_request_bytes"
+    description: "Minute and Hour stats for uncompressed request size in bytes"
+    measurement_descriptor_name: "/rpc/client/uncompressed_request_bytes"
+    interval_aggregation: {
+      interval_sizes: {
+        seconds: 60
+        nanos: 0
+      }
+      interval_sizes: {
+        seconds: 3600
+        nanos: 0
+      }
+    }
+    tag_keys: "method"
+  }
+
+  view_descriptor {
+    name: "rpc client uncompressed_response_bytes"
+    description: "Minute and Hour stats for uncompressed response size in bytes"
+    measurement_descriptor_name: "/rpc/client/uncompressed_response_bytes"
+    interval_aggregation: {
+      interval_sizes: {
+        seconds: 60
+        nanos: 0
+      }
+      interval_sizes: {
+        seconds: 3600
+        nanos: 0
+      }
+    }
+    tag_keys: "method"
+  }
+
+  view_descriptor {
+    name: "rpc client server_elapsed_time"
+    description: "Minute and Hour stats for server elapsed time in msecs"
+    measurement_descriptor_name: "/rpc/client/server_elapsed_time"
+    interval_aggregation: {
+      interval_sizes: {
+        seconds: 60
+        nanos: 0
+      }
+      interval_sizes: {
+        seconds: 3600
+        nanos: 0
+      }
+    }
+    tag_keys: "method"
+  }
+
+  # Census defined rpc server IntervalViewDescriptors.
+  view_descriptor {
+    name: "rpc server server_latency"
+    description: "Minute and Hour stats for server latency in msecs"
+    measurement_descriptor_name: "/rpc/server/server_latency"
+    interval_aggregation: {
+      interval_sizes: {
+        seconds: 60
+        nanos: 0
+      }
+      interval_sizes: {
+        seconds: 3600
+        nanos: 0
+      }
+    }
+    tag_keys: "method"
+  }
+
+  view_descriptor {
+    name: "rpc server request_bytes"
+    description: "Minute and Hour stats for request size in bytes"
+    measurement_descriptor_name: "/rpc/server/request_bytes"
+    interval_aggregation: {
+      interval_sizes: {
+        seconds: 60
+        nanos: 0
+      }
+      interval_sizes: {
+        seconds: 3600
+        nanos: 0
+      }
+    }
+    tag_keys: "method"
+  }
+
+  view_descriptor {
+    name: "rpc server response_bytes"
+    description: "Minute and Hour stats for response size in bytes"
+    measurement_descriptor_name: "/rpc/server/response_bytes"
+    interval_aggregation: {
+      interval_sizes: {
+        seconds: 60
+        nanos: 0
+      }
+      interval_sizes: {
+        seconds: 3600
+        nanos: 0
+      }
+    }
+    tag_keys: "method"
+  }
+
+  view_descriptor {
+    name: "rpc server error_count"
+    description: "Minute and Hour stats for rpc errors"
+    measurement_descriptor_name: "/rpc/server/error_count"
+    interval_aggregation: {
+      interval_sizes: {
+        seconds: 60
+        nanos: 0
+      }
+      interval_sizes: {
+        seconds: 3600
+        nanos: 0
+      }
+    }
+    tag_keys: "method"
+  }
+
+  view_descriptor {
+    name: "rpc server uncompressed_request_bytes"
+    description: "Minute and Hour stats for uncompressed request size in bytes"
+    measurement_descriptor_name: "/rpc/server/uncompressed_request_bytes"
+    interval_aggregation: {
+      interval_sizes: {
+        seconds: 60
+        nanos: 0
+      }
+      interval_sizes: {
+        seconds: 3600
+        nanos: 0
+      }
+    }
+    tag_keys: "method"
+  }
+
+  view_descriptor {
+    name: "rpc server uncompressed_response_bytes"
+    description: "Minute and Hour stats for uncompressed response size in bytes"
+    measurement_descriptor_name: "/rpc/server/uncompressed_response_bytes"
+    interval_aggregation: {
+      interval_sizes: {
+        seconds: 60
+        nanos: 0
+      }
+      interval_sizes: {
+        seconds: 3600
+        nanos: 0
+      }
+    }
+    tag_keys: "method"
+  }
+
+  view_descriptor {
+    name: "rpc server server_elapsed_time"
+    description: "Minute and Hour stats for server elapsed time in msecs"
+    measurement_descriptor_name: "/rpc/server/server_elapsed_time"
+    interval_aggregation: {
+      interval_sizes: {
+        seconds: 60
+        nanos: 0
+      }
+      interval_sizes: {
+        seconds: 3600
+        nanos: 0
+      }
+    }
+    tag_keys: "method"
+  }
+}
