@@ -1,2 +1,4 @@
 bazel-*
 target
+.idea
+census-proto.iml
