@@ -19,6 +19,19 @@ option java_package = "com.google.instrumentation.stats.proto";
 option java_outer_classname = "ViewDescriptorConstantsProto";
 
 // Constants for defining a specific set of view descriptors.
+// This data structure is used to convert pre-defined constants from/to
+// text-format proto files.
+// - To generate a binary proto file (*.pb) from a text-format proto file
+//   (*.textpb), use:
+//     BASE="filename"  (for example, BASE="rpc_constants")
+//     cat $BASE.textpb | \
+//     protoc --encode=google.instrumentation.ViewDescriptorConstants \
+//     view_descriptor_constants.proto > $BASE.pb
+// - To convert a binary proto file back to a text-format proto file, use:
+//     BASE="filename"  (for example, BASE="rpc_constants")
+//     cat $BASE.pb | \
+//     protoc --decode=google.instrumentation.ViewDescriptorConstants \
+//     view_descriptor_constants.proto > $BASE.textpb
 message ViewDescriptorConstants {
   // A set of defined MeasurementDescriptors to be used for the ViewDescriptor.
   repeated MeasurementDescriptor measurement_descriptor = 1;
