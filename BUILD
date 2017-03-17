@@ -25,7 +25,7 @@ proto_library(
 )
 
 proto_library(
-    name = "view_descriptor_constants_proto",
+    name = "stats_view_descriptor_constants_proto",
     srcs = ["stats/view_descriptor_constants.proto"],
     deps = [":stats_census_proto"],
 )
@@ -42,5 +42,8 @@ java_proto_library(
 
 java_proto_library(
     name = "view_descriptor_constants-proto-java",
-    deps = ["view_descriptor_constants_proto"],
+    deps = [
+        "stats_context_proto",
+        "stats_view_descriptor_constants_proto",
+    ],
 )

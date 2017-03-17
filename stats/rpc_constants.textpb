@@ -7,7 +7,7 @@
 
 # Census defined RPC client MeasurementDescriptors.
 measurement_descriptor {
-  name: "/rpc/client/error_count"
+  name: "grpc.io/client/error_count"
   description: "Count of client RPCs that received an error (unsuccessful) response"
   unit: {
     numerators: SCALAR
@@ -15,7 +15,7 @@ measurement_descriptor {
 }
 
 measurement_descriptor {
-  name: "/rpc/client/request_bytes"
+  name: "grpc.io/client/request_bytes"
   description: "Request bytes of client RPCs"
   unit: {
     numerators: BYTES
@@ -23,7 +23,7 @@ measurement_descriptor {
 }
 
 measurement_descriptor {
-  name: "/rpc/client/response_bytes"
+  name: "grpc.io/client/response_bytes"
   description: "Response bytes of client RPCs"
   unit: {
     numerators: BYTES
@@ -31,7 +31,7 @@ measurement_descriptor {
 }
 
 measurement_descriptor {
-  name: "/rpc/client/roundtrip_latency"
+  name: "grpc.io/client/roundtrip_latency"
   description: "RPC roundtrip latency in milliseconds on client RPC side"
   unit: {
     power10: -3
@@ -40,7 +40,7 @@ measurement_descriptor {
 }
 
 measurement_descriptor {
-  name: "/rpc/client/server_elapsed_time"
+  name: "grpc.io/client/server_elapsed_time"
   description: "Server elapsed time in milliseconds on client RPC side"
   unit: {
     power10: -3
@@ -49,7 +49,7 @@ measurement_descriptor {
 }
 
 measurement_descriptor {
-  name: "/rpc/client/uncompressed_request_bytes"
+  name: "grpc.io/client/uncompressed_request_bytes"
   description: "Uncompressed Request bytes of client RPCs"
   unit: {
     numerators: BYTES
@@ -57,7 +57,7 @@ measurement_descriptor {
 }
 
 measurement_descriptor {
-  name: "/rpc/client/uncompressed_response_bytes"
+  name: "grpc.io/client/uncompressed_response_bytes"
   description: "Uncompressed Response bytes of client RPCs"
   unit: {
     numerators: BYTES
@@ -66,7 +66,7 @@ measurement_descriptor {
 
 # Census defined RPC server MeasurementDescriptors.
 measurement_descriptor {
-  name: "/rpc/server/error_count"
+  name: "grpc.io/server/error_count"
   description: "Count of server RPCs that received an error (unsuccessful) response"
   unit: {
     numerators: BYTES
@@ -74,7 +74,7 @@ measurement_descriptor {
 }
 
 measurement_descriptor {
-  name: "/rpc/server/request_bytes"
+  name: "grpc.io/server/request_bytes"
   description: "Request bytes of server RPCs"
   unit: {
     numerators: BYTES
@@ -82,7 +82,7 @@ measurement_descriptor {
 }
 
 measurement_descriptor {
-  name: "/rpc/server/response_bytes"
+  name: "grpc.io/server/response_bytes"
   description: "Response bytes of server RPCs"
   unit: {
     numerators: BYTES
@@ -90,7 +90,7 @@ measurement_descriptor {
 }
 
 measurement_descriptor {
-  name: "/rpc/server/server_elapsed_time"
+  name: "grpc.io/server/server_elapsed_time"
   description: "Server elapsed time in milliseconds on server RPC side"
   unit: {
     power10: -3
@@ -99,7 +99,7 @@ measurement_descriptor {
 }
 
 measurement_descriptor {
-  name: "/rpc/server/server_latency"
+  name: "grpc.io/server/server_latency"
   description: "Latency in milliseconds on server RPC side"
   unit: {
     power10: -3
@@ -108,7 +108,7 @@ measurement_descriptor {
 }
 
 measurement_descriptor {
-  name: "/rpc/server/uncompressed_request_bytes"
+  name: "grpc.io/server/uncompressed_request_bytes"
   description: "Uncompressed Request bytes of server RPCs"
   unit: {
     numerators: BYTES
@@ -116,7 +116,7 @@ measurement_descriptor {
 }
 
 measurement_descriptor {
-  name: "/rpc/server/uncompressed_response_bytes"
+  name: "grpc.io/server/uncompressed_response_bytes"
   description: "Uncompressed Response bytes of server RPCs"
   unit: {
     numerators: BYTES
@@ -124,7 +124,7 @@ measurement_descriptor {
 }
 
 measurement_descriptor {
-  name: "/rpc/server/started_count"
+  name: "grpc.io/server/started_count"
   description: "Number of server RPCs started"
   unit: {
     numerators: SCALAR
@@ -132,7 +132,7 @@ measurement_descriptor {
 }
 
 measurement_descriptor {
-  name: "/rpc/server/finished_count"
+  name: "grpc.io/server/finished_count"
   description: "Number of server RPCs finished"
   unit: {
     numerators: SCALAR
@@ -141,9 +141,9 @@ measurement_descriptor {
 
 # Census defined RPC client ViewDescriptors.
 view_descriptor {
-  name: "rpc client error_count"
+  name: "grpc.io/client/error_count/distribution_cumulative"
   description: "Count of client RPCs that received an error (unsuccessful) response"
-  measurement_descriptor_name: "/rpc/client/error_count"
+  measurement_descriptor_name: "grpc.io/client/error_count"
   distribution_aggregation: {
   }
   tag_keys: [
@@ -154,9 +154,9 @@ view_descriptor {
 }
 
 view_descriptor {
-  name: "rpc client roundtrip_latency"
+  name: "grpc.io/client/roundtrip_latency/distribution_cumulative"
   description: "Latency in milliseconds on client RPC side"
-  measurement_descriptor_name: "/rpc/client/roundtrip_latency"
+  measurement_descriptor_name: "grpc.io/client/roundtrip_latency"
   distribution_aggregation: {
     bucket_bounds: [
       0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 8.0, 10.0, 13.0, 16.0, 20.0, 25.0, 30.0,
@@ -170,9 +170,9 @@ view_descriptor {
 }
 
 view_descriptor {
-  name: "rpc client server_elapsed_time"
+  name: "grpc.io/client/server_elapsed_time/distribution_cumulative"
   description: "Server elapsed time in milliseconds on client RPC side"
-  measurement_descriptor_name: "/rpc/client/server_elapsed_time"
+  measurement_descriptor_name: "grpc.io/client/server_elapsed_time"
   distribution_aggregation: {
     bucket_bounds: [
       0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 8.0, 10.0, 13.0, 16.0, 20.0, 25.0, 30.0,
@@ -186,9 +186,9 @@ view_descriptor {
 }
 
 view_descriptor {
-  name: "rpc client request_bytes"
+  name: "grpc.io/client/request_bytes/distribution_cumulative"
   description: "Request bytes of client RPCs"
-  measurement_descriptor_name: "/rpc/client/request_bytes"
+  measurement_descriptor_name: "grpc.io/client/request_bytes"
   distribution_aggregation: {
     bucket_bounds: [
       0.0, 1024.0, 2048.0, 4096.0, 16384.0, 65536.0, 262144.0, 1048576.0, 4194304.0,
@@ -201,9 +201,9 @@ view_descriptor {
 }
 
 view_descriptor {
-  name: "rpc client response_bytes"
+  name: "grpc.io/client/response_bytes/distribution_cumulative"
   description: "Response bytes of client RPCs"
-  measurement_descriptor_name: "/rpc/client/response_bytes"
+  measurement_descriptor_name: "grpc.io/client/response_bytes"
   distribution_aggregation: {
     bucket_bounds: [
       0.0, 1024.0, 2048.0, 4096.0, 16384.0, 65536.0, 262144.0, 1048576.0, 4194304.0,
@@ -216,9 +216,9 @@ view_descriptor {
 }
 
 view_descriptor {
-  name: "rpc client uncompressed_request_bytes"
+  name: "grpc.io/client/uncompressed_request_bytes/distribution_cumulative"
   description: "Uncompressed Request bytes of client RPCs"
-  measurement_descriptor_name: "/rpc/client/uncompressed_request_bytes"
+  measurement_descriptor_name: "grpc.io/client/uncompressed_request_bytes"
   distribution_aggregation: {
     bucket_bounds: [
       0.0, 1024.0, 2048.0, 4096.0, 16384.0, 65536.0, 262144.0, 1048576.0, 4194304.0,
@@ -231,9 +231,9 @@ view_descriptor {
 }
 
 view_descriptor {
-  name: "rpc client uncompressed_response_bytes"
+  name: "grpc.io/client/uncompressed_response_bytes/distribution_cumulative"
   description: "Uncompressed Response bytes of client RPCs"
-  measurement_descriptor_name: "/rpc/client/uncompressed_response_bytes"
+  measurement_descriptor_name: "grpc.io/client/uncompressed_response_bytes"
   distribution_aggregation: {
     bucket_bounds: [
       0.0, 1024.0, 2048.0, 4096.0, 16384.0, 65536.0, 262144.0, 1048576.0, 4194304.0,
@@ -247,9 +247,9 @@ view_descriptor {
 
 # Census defined RPC server ViewDescriptors.
 view_descriptor {
-  name: "rpc server error_count"
+  name: "grpc.io/server/error_count/distribution_cumulative"
   description: "Count of server RPCs that received an error (unsuccessful) response"
-  measurement_descriptor_name: "/rpc/server/error_count"
+  measurement_descriptor_name: "grpc.io/server/error_count"
   distribution_aggregation: {
   }
   tag_keys: [
@@ -260,9 +260,9 @@ view_descriptor {
 }
 
 view_descriptor {
-  name: "rpc server roundtrip_latency"
+  name: "grpc.io/server/roundtrip_latency/distribution_cumulative"
   description: "Latency in milliseconds on server RPC side"
-  measurement_descriptor_name: "/rpc/server/roundtrip_latency"
+  measurement_descriptor_name: "grpc.io/server/roundtrip_latency"
   distribution_aggregation: {
     bucket_bounds: [
       0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 8.0, 10.0, 13.0, 16.0, 20.0, 25.0, 30.0,
@@ -276,9 +276,9 @@ view_descriptor {
 }
 
 view_descriptor {
-  name: "rpc server server_elapsed_time"
+  name: "grpc.io/server/server_elapsed_time/distribution_cumulative"
   description: "Server elapsed time in milliseconds on server RPC side"
-  measurement_descriptor_name: "/rpc/server/server_elapsed_time"
+  measurement_descriptor_name: "grpc.io/server/server_elapsed_time"
   distribution_aggregation: {
     bucket_bounds: [
       0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 8.0, 10.0, 13.0, 16.0, 20.0, 25.0, 30.0,
@@ -292,9 +292,9 @@ view_descriptor {
 }
 
 view_descriptor {
-  name: "rpc server request_bytes"
+  name: "grpc.io/server/request_bytes/distribution_cumulative"
   description: "Request bytes of server RPCs"
-  measurement_descriptor_name: "/rpc/server/request_bytes"
+  measurement_descriptor_name: "grpc.io/server/request_bytes"
   distribution_aggregation: {
     bucket_bounds: [
       0.0, 1024.0, 2048.0, 4096.0, 16384.0, 65536.0, 262144.0, 1048576.0, 4194304.0,
@@ -307,9 +307,9 @@ view_descriptor {
 }
 
 view_descriptor {
-  name: "rpc server response_bytes"
+  name: "grpc.io/server/response_bytes/distribution_cumulative"
   description: "Response bytes of server RPCs"
-  measurement_descriptor_name: "/rpc/server/response_bytes"
+  measurement_descriptor_name: "grpc.io/server/response_bytes"
   distribution_aggregation: {
     bucket_bounds: [
       0.0, 1024.0, 2048.0, 4096.0, 16384.0, 65536.0, 262144.0, 1048576.0, 4194304.0,
@@ -322,9 +322,9 @@ view_descriptor {
 }
 
 view_descriptor {
-  name: "rpc server uncompressed_request_bytes"
+  name: "grpc.io/server/uncompressed_request_bytes/distribution_cumulative"
   description: "Uncompressed Request bytes of server RPCs"
-  measurement_descriptor_name: "/rpc/server/uncompressed_request_bytes"
+  measurement_descriptor_name: "grpc.io/server/uncompressed_request_bytes"
   distribution_aggregation: {
     bucket_bounds: [
       0.0, 1024.0, 2048.0, 4096.0, 16384.0, 65536.0, 262144.0, 1048576.0, 4194304.0,
@@ -337,9 +337,9 @@ view_descriptor {
 }
 
 view_descriptor {
-  name: "rpc server uncompressed_response_bytes"
+  name: "grpc.io/server/uncompressed_response_bytes/distribution_cumulative"
   description: "Uncompressed Response bytes of server RPCs"
-  measurement_descriptor_name: "/rpc/server/uncompressed_response_bytes"
+  measurement_descriptor_name: "grpc.io/server/uncompressed_response_bytes"
   distribution_aggregation: {
     bucket_bounds: [
       0.0, 1024.0, 2048.0, 4096.0, 16384.0, 65536.0, 262144.0, 1048576.0, 4194304.0,
@@ -353,9 +353,9 @@ view_descriptor {
 
 # Census defined RPC client IntervalViewDescriptors.
 view_descriptor {
-  name: "rpc client roundtrip_latency"
+  name: "grpc.io/client/roundtrip_latency/interval"
   description: "Minute and Hour stats for latency in milliseconds on client RPC side"
-  measurement_descriptor_name: "/rpc/client/roundtrip_latency"
+  measurement_descriptor_name: "grpc.io/client/roundtrip_latency"
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
@@ -372,9 +372,9 @@ view_descriptor {
 }
 
 view_descriptor {
-  name: "rpc client request_bytes"
+  name: "grpc.io/client/request_bytes/interval"
   description: "Minute and Hour stats for client RPC request size in bytes"
-  measurement_descriptor_name: "/rpc/client/request_bytes"
+  measurement_descriptor_name: "grpc.io/client/request_bytes"
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
@@ -391,9 +391,9 @@ view_descriptor {
 }
 
 view_descriptor {
-  name: "rpc client response_bytes"
+  name: "grpc.io/client/response_bytes/interval"
   description: "Minute and Hour stats for client RPC response size in bytes"
-  measurement_descriptor_name: "/rpc/client/response_bytes"
+  measurement_descriptor_name: "grpc.io/client/response_bytes"
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
@@ -410,9 +410,9 @@ view_descriptor {
 }
 
 view_descriptor {
-  name: "rpc client error_count"
+  name: "grpc.io/client/error_count/interval"
   description: "Minute and Hour stats for count of client RPCs that received errors"
-  measurement_descriptor_name: "/rpc/client/error_count"
+  measurement_descriptor_name: "grpc.io/client/error_count"
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
@@ -429,9 +429,9 @@ view_descriptor {
 }
 
 view_descriptor {
-  name: "rpc client uncompressed_request_bytes"
+  name: "grpc.io/client/uncompressed_request_bytes/interval"
   description: "Minute and Hour stats for client RPC uncompressed request size in bytes"
-  measurement_descriptor_name: "/rpc/client/uncompressed_request_bytes"
+  measurement_descriptor_name: "grpc.io/client/uncompressed_request_bytes"
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
@@ -448,9 +448,9 @@ view_descriptor {
 }
 
 view_descriptor {
-  name: "rpc client uncompressed_response_bytes"
+  name: "grpc.io/client/uncompressed_response_bytes/interval"
   description: "Minute and Hour stats for client RPC uncompressed response size in bytes"
-  measurement_descriptor_name: "/rpc/client/uncompressed_response_bytes"
+  measurement_descriptor_name: "grpc.io/client/uncompressed_response_bytes"
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
@@ -467,9 +467,9 @@ view_descriptor {
 }
 
 view_descriptor {
-  name: "rpc client server_elapsed_time"
+  name: "grpc.io/client/server_elapsed_time/interval"
   description: "Minute and Hour stats for server elapsed time in milliseconds on client RPC side"
-  measurement_descriptor_name: "/rpc/client/server_elapsed_time"
+  measurement_descriptor_name: "grpc.io/client/server_elapsed_time"
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
@@ -487,9 +487,9 @@ view_descriptor {
 
 # Census defined RPC server IntervalViewDescriptors.
 view_descriptor {
-  name: "rpc server server_latency"
+  name: "grpc.io/server/server_latency/interval"
   description: "Minute and Hour stats for server latency in milliseconds on server RPC side"
-  measurement_descriptor_name: "/rpc/server/server_latency"
+  measurement_descriptor_name: "grpc.io/server/server_latency"
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
@@ -506,9 +506,9 @@ view_descriptor {
 }
 
 view_descriptor {
-  name: "rpc server request_bytes"
+  name: "grpc.io/server/request_bytes/interval"
   description: "Minute and Hour stats for server RPC request size in bytes"
-  measurement_descriptor_name: "/rpc/server/request_bytes"
+  measurement_descriptor_name: "grpc.io/server/request_bytes"
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
@@ -525,9 +525,9 @@ view_descriptor {
 }
 
 view_descriptor {
-  name: "rpc server response_bytes"
+  name: "grpc.io/server/response_bytes/interval"
   description: "Minute and Hour stats for server RPC response size in bytes"
-  measurement_descriptor_name: "/rpc/server/response_bytes"
+  measurement_descriptor_name: "grpc.io/server/response_bytes"
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
@@ -544,9 +544,9 @@ view_descriptor {
 }
 
 view_descriptor {
-  name: "rpc server error_count"
+  name: "grpc.io/server/error_count/interval"
   description: "Minute and Hour stats for count of server RPCs that received errors"
-  measurement_descriptor_name: "/rpc/server/error_count"
+  measurement_descriptor_name: "grpc.io/server/error_count"
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
@@ -563,9 +563,9 @@ view_descriptor {
 }
 
 view_descriptor {
-  name: "rpc server uncompressed_request_bytes"
+  name: "grpc.io/server/uncompressed_request_bytes/interval"
   description: "Minute and Hour stats for server RPC uncompressed request size in bytes"
-  measurement_descriptor_name: "/rpc/server/uncompressed_request_bytes"
+  measurement_descriptor_name: "grpc.io/server/uncompressed_request_bytes"
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
@@ -582,9 +582,9 @@ view_descriptor {
 }
 
 view_descriptor {
-  name: "rpc server uncompressed_response_bytes"
+  name: "grpc.io/server/uncompressed_response_bytes/interval"
   description: "Minute and Hour stats for server RPC uncompressed response size in bytes"
-  measurement_descriptor_name: "/rpc/server/uncompressed_response_bytes"
+  measurement_descriptor_name: "grpc.io/server/uncompressed_response_bytes"
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
@@ -601,9 +601,9 @@ view_descriptor {
 }
 
 view_descriptor {
-  name: "rpc server server_elapsed_time"
+  name: "grpc.io/server/server_elapsed_time/interval"
   description: "Minute and Hour stats for server elapsed time in milliseconds on server RPC side"
-  measurement_descriptor_name: "/rpc/server/server_elapsed_time"
+  measurement_descriptor_name: "grpc.io/server/server_elapsed_time"
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
