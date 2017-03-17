@@ -38,6 +38,9 @@
         <configuration>
           <protocExecutable>protoc</protocExecutable>
           <protoSourceRoot>.</protoSourceRoot>
+	  <includes>
+	    <include>stats/*.proto</include>
+	  </includes>
         </configuration>
         <executions>
           <execution>
@@ -61,7 +64,7 @@
     <dependency>
       <groupId>com.google.protobuf</groupId>
       <artifactId>protobuf-java</artifactId>
-      <version>3.0.0</version>
+      <version>3.2.0</version>
     </dependency>
   </dependencies>
 </project>
