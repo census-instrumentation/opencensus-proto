@@ -13,7 +13,7 @@ syntax = "proto3";
 
 package google.instrumentation;
 
-import "census.proto";
+import "stats/census.proto";
 
 option java_package = "com.google.instrumentation.stats.proto";
 option java_outer_classname = "ViewDescriptorConstantsProto";

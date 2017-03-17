@@ -24,6 +24,12 @@ proto_library(
     srcs = ["stats/stats_context.proto"],
 )
 
+proto_library(
+    name = "view_descriptor_constants_proto",
+    srcs = ["stats/view_descriptor_constants.proto"],
+    deps = [":stats_census_proto"],
+)
+
 java_proto_library(
     name = "census-proto-java",
     deps = ["stats_census_proto"],
@@ -32,4 +38,9 @@ java_proto_library(
 java_proto_library(
     name = "stats_context-proto-java",
     deps = ["stats_context_proto"],
+)
+
+java_proto_library(
+    name = "view_descriptor_constants-proto-java",
+    deps = ["view_descriptor_constants_proto"],
 )
