@@ -1,3 +1,11 @@
+# Gradle
+.gradle
+build_gradle
+gen_gradle
+protobuf-gradle-plugin.i*
+gradle.properties
+local.properties
+
 # Bazel
 bazel-*
 
