@@ -11,6 +11,10 @@ matrix:
     jdk: oraclejdk8
     env: BUILD=BAZEL
 
+  - language: java
+    jdk: oraclejdk8
+    env: BUILD=GRADLE
+
 before_install:
   - case "$BUILD" in
       "BAZEL")
@@ -40,7 +44,19 @@ script:
         bazel build --show_result=100 ... ;;
       "MVN")
         mvn verify ;;
+      "GRADLE")
+        ./gradlew clean assemble --stacktrace ;
+        ./gradlew check --stacktrace ;;
       *)
         echo "Missing case $BUILD" ;
         exit 1 ;;
     esac
+
+before_cache:
+  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+
+cache:
+  directories:
+    - $HOME/.gradle
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
