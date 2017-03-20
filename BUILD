@@ -42,8 +42,5 @@ java_proto_library(
 
 java_proto_library(
     name = "view_descriptor_constants-proto-java",
-    deps = [
-        "stats_context_proto",
-        "stats_view_descriptor_constants_proto",
-    ],
+    deps = ["stats_view_descriptor_constants_proto"],
 )

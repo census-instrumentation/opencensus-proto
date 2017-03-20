@@ -18,7 +18,14 @@ import "stats/census.proto";
 option java_package = "com.google.instrumentation.stats.proto";
 option java_outer_classname = "ViewDescriptorConstantsProto";
 
-// Constants for defining a specific set of view descriptors.
+// Constants for defining a specific set of view descriptors, contains 2 fields:
+//  - Measurement Descriptor, which describes a data point (measurement) type.
+//  - View Descriptor, which specifies an AggregationDescriptor and a set of tag
+//    keys. View Descriptor has one of the two kinds of Aggregation types
+//    associated with the View - Interval Aggregation Descriptor or Distribution
+//    Aggregation Descriptor. Aggregations are broken down by the unique set of
+//    matching tag values for each measurement.
+
 // This data structure is used to convert pre-defined constants from/to
 // text-format proto files.
 // - To generate a binary proto file (*.pb) from a text-format proto file

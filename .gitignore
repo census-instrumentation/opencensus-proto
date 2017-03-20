@@ -1,4 +1,25 @@
+# Bazel
 bazel-*
+
+# Maven
 target
+
+# IntelliJ IDEA
 .idea
-census-proto.iml
+*.iml
+
+# Eclipse
+.classpath
+.project
+.settings
+bin
+
+# OS X
+.DS_Store
+
+# Emacs
+*~
+\#*\#
+
+# Other
+TAGS

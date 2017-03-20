@@ -1,9 +1,6 @@
-# Constants for collecting specific RPC stats, including:
-#   - Measurement Descriptor, which describes a data point (measurement) type.
-#   - View Descriptor, which specifies an AggregationDescriptor and a set of tag keys.
-#     View Descriptor has one of the two kinds of Aggregation types associated with the View,
-#     Interval Aggregation Descriptor or Distribution Aggregation Descriptor.
-#     Aggregations are broken down by the unique set of matching tag values for each measurement.
+# Constants for collecting specific RPC stats, including various measurement and view descriptors
+# for both the client RPC and server RPC.
+# The data structure for parsing this text proto is defined in view_descriptor_constants.proto.
 
 # Census defined RPC client MeasurementDescriptors.
 measurement_descriptor {
@@ -69,7 +66,7 @@ measurement_descriptor {
   name: "grpc.io/server/error_count"
   description: "Count of server RPCs that received an error (unsuccessful) response"
   unit: {
-    numerators: BYTES
+    numerators: SCALAR
   }
 }
 
@@ -139,7 +136,7 @@ measurement_descriptor {
   }
 }
 
-# Census defined RPC client ViewDescriptors.
+# Census defined RPC client distribution ViewDescriptors.
 view_descriptor {
   name: "grpc.io/client/error_count/distribution_cumulative"
   description: "Count of client RPCs that received an error (unsuccessful) response"
@@ -245,7 +242,7 @@ view_descriptor {
   ]
 }
 
-# Census defined RPC server ViewDescriptors.
+# Census defined RPC server distribution ViewDescriptors.
 view_descriptor {
   name: "grpc.io/server/error_count/distribution_cumulative"
   description: "Count of server RPCs that received an error (unsuccessful) response"
@@ -351,7 +348,7 @@ view_descriptor {
   ]
 }
 
-# Census defined RPC client IntervalViewDescriptors.
+# Census defined RPC client interval ViewDescriptors.
 view_descriptor {
   name: "grpc.io/client/roundtrip_latency/interval"
   description: "Minute and Hour stats for latency in milliseconds on client RPC side"
@@ -359,11 +356,9 @@ view_descriptor {
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
-      nanos: 0
     }
     interval_sizes: {
       seconds: 3600
-      nanos: 0
     }
   }
   tag_keys: [
@@ -378,11 +373,9 @@ view_descriptor {
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
-      nanos: 0
     }
     interval_sizes: {
       seconds: 3600
-      nanos: 0
     }
   }
   tag_keys: [
@@ -397,11 +390,9 @@ view_descriptor {
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
-      nanos: 0
     }
     interval_sizes: {
       seconds: 3600
-      nanos: 0
     }
   }
   tag_keys: [
@@ -416,11 +407,9 @@ view_descriptor {
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
-      nanos: 0
     }
     interval_sizes: {
       seconds: 3600
-      nanos: 0
     }
   }
   tag_keys: [
@@ -435,11 +424,9 @@ view_descriptor {
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
-      nanos: 0
     }
     interval_sizes: {
       seconds: 3600
-      nanos: 0
     }
   }
   tag_keys: [
@@ -454,11 +441,9 @@ view_descriptor {
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
-      nanos: 0
     }
     interval_sizes: {
       seconds: 3600
-      nanos: 0
     }
   }
   tag_keys: [
@@ -473,11 +458,9 @@ view_descriptor {
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
-      nanos: 0
     }
     interval_sizes: {
       seconds: 3600
-      nanos: 0
     }
   }
   tag_keys: [
@@ -485,7 +468,7 @@ view_descriptor {
   ]
 }
 
-# Census defined RPC server IntervalViewDescriptors.
+# Census defined RPC server interval ViewDescriptors.
 view_descriptor {
   name: "grpc.io/server/server_latency/interval"
   description: "Minute and Hour stats for server latency in milliseconds on server RPC side"
@@ -493,11 +476,9 @@ view_descriptor {
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
-      nanos: 0
     }
     interval_sizes: {
       seconds: 3600
-      nanos: 0
     }
   }
   tag_keys: [
@@ -512,11 +493,9 @@ view_descriptor {
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
-      nanos: 0
     }
     interval_sizes: {
       seconds: 3600
-      nanos: 0
     }
   }
   tag_keys: [
@@ -531,11 +510,9 @@ view_descriptor {
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
-      nanos: 0
     }
     interval_sizes: {
       seconds: 3600
-      nanos: 0
     }
   }
   tag_keys: [
@@ -550,11 +527,9 @@ view_descriptor {
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
-      nanos: 0
     }
     interval_sizes: {
       seconds: 3600
-      nanos: 0
     }
   }
   tag_keys: [
@@ -569,11 +544,9 @@ view_descriptor {
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
-      nanos: 0
     }
     interval_sizes: {
       seconds: 3600
-      nanos: 0
     }
   }
   tag_keys: [
@@ -588,11 +561,9 @@ view_descriptor {
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
-      nanos: 0
     }
     interval_sizes: {
       seconds: 3600
-      nanos: 0
     }
   }
   tag_keys: [
@@ -607,11 +578,9 @@ view_descriptor {
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
-      nanos: 0
     }
     interval_sizes: {
       seconds: 3600
-      nanos: 0
     }
   }
   tag_keys: [
