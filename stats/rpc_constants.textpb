@@ -2,7 +2,7 @@
 # for both the client RPC and server RPC.
 # The data structure for parsing this text proto is defined in view_descriptor_constants.proto.
 
-# Census defined RPC client MeasurementDescriptors.
+# Census defined RPC client MeasurementDescriptors for gRPC.
 measurement_descriptor {
   name: "grpc.io/client/error_count"
   description: "Count of client RPCs that received an error (unsuccessful) response"
@@ -61,7 +61,39 @@ measurement_descriptor {
   }
 }
 
-# Census defined RPC server MeasurementDescriptors.
+measurement_descriptor {
+  name: "grpc.io/client/started_count"
+  description: "Number of client RPCs started"
+  unit: {
+    numerators: SCALAR
+  }
+}
+
+measurement_descriptor {
+  name: "grpc.io/client/finished_count"
+  description: "Number of client RPCs finished"
+  unit: {
+    numerators: SCALAR
+  }
+}
+
+measurement_descriptor {
+  name: "grpc.io/client/request_count"
+  description: "Number of client RPC requests"
+  unit: {
+    numerators: SCALAR
+  }
+}
+
+measurement_descriptor {
+  name: "grpc.io/client/response_count"
+  description: "Number of client RPC responses"
+  unit: {
+    numerators: SCALAR
+  }
+}
+
+# Census defined RPC server MeasurementDescriptors for gRPC.
 measurement_descriptor {
   name: "grpc.io/server/error_count"
   description: "Count of server RPCs that received an error (unsuccessful) response"
@@ -136,7 +168,23 @@ measurement_descriptor {
   }
 }
 
-# Census defined RPC client distribution ViewDescriptors.
+measurement_descriptor {
+  name: "grpc.io/server/request_count"
+  description: "Number of server RPC requests"
+  unit: {
+    numerators: SCALAR
+  }
+}
+
+measurement_descriptor {
+  name: "grpc.io/server/response_count"
+  description: "Number of server RPC responses"
+  unit: {
+    numerators: SCALAR
+  }
+}
+
+# Census defined RPC client distribution ViewDescriptors for gRPC.
 view_descriptor {
   name: "grpc.io/client/error_count/distribution_cumulative"
   description: "Count of client RPCs that received an error (unsuccessful) response"
@@ -242,7 +290,29 @@ view_descriptor {
   ]
 }
 
-# Census defined RPC server distribution ViewDescriptors.
+view_descriptor {
+  name: "grpc.io/client/request_count/distribution_cumulative"
+  description: "Count of client RPC requests"
+  measurement_descriptor_name: "grpc.io/client/request_count"
+  distribution_aggregation: {
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of client RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/client/response_count/distribution_cumulative"
+  description: "Count of client RPC responses"
+  measurement_descriptor_name: "grpc.io/client/response_count"
+  distribution_aggregation: {
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of client RPC method/service
+  ]
+}
+
+# Census defined RPC server distribution ViewDescriptors for gRPC.
 view_descriptor {
   name: "grpc.io/server/error_count/distribution_cumulative"
   description: "Count of server RPCs that received an error (unsuccessful) response"
@@ -348,7 +418,29 @@ view_descriptor {
   ]
 }
 
-# Census defined RPC client interval ViewDescriptors.
+view_descriptor {
+  name: "grpc.io/server/request_count/distribution_cumulative"
+  description: "Count of server RPC requests"
+  measurement_descriptor_name: "grpc.io/server/request_count"
+  distribution_aggregation: {
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of server RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/server/response_count/distribution_cumulative"
+  description: "Count of server RPC responses"
+  measurement_descriptor_name: "grpc.io/server/response_count"
+  distribution_aggregation: {
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of server RPC method/service
+  ]
+}
+
+# Census defined RPC client interval ViewDescriptors for gRPC.
 view_descriptor {
   name: "grpc.io/client/roundtrip_latency/interval"
   description: "Minute and Hour stats for latency in milliseconds on client RPC side"
@@ -468,7 +560,41 @@ view_descriptor {
   ]
 }
 
-# Census defined RPC server interval ViewDescriptors.
+view_descriptor {
+  name: "grpc.io/client/started_count/interval"
+  description: "Minute and Hour stats on the number of RPC clients started"
+  measurement_descriptor_name: "grpc.io/client/started_count"
+  interval_aggregation: {
+    interval_sizes: {
+      seconds: 60
+    }
+    interval_sizes: {
+      seconds: 3600
+    }
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of client RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/client/finished_count/interval"
+  description: "Minute and Hour stats on the number of RPC clients finished"
+  measurement_descriptor_name: "grpc.io/client/finished_count"
+  interval_aggregation: {
+    interval_sizes: {
+      seconds: 60
+    }
+    interval_sizes: {
+      seconds: 3600
+    }
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of client RPC method/service
+  ]
+}
+
+# Census defined RPC server interval ViewDescriptors for gRPC.
 view_descriptor {
   name: "grpc.io/server/server_latency/interval"
   description: "Minute and Hour stats for server latency in milliseconds on server RPC side"
@@ -575,6 +701,23 @@ view_descriptor {
   name: "grpc.io/server/server_elapsed_time/interval"
   description: "Minute and Hour stats for server elapsed time in milliseconds on server RPC side"
   measurement_descriptor_name: "grpc.io/server/server_elapsed_time"
+  interval_aggregation: {
+    interval_sizes: {
+      seconds: 60
+    }
+    interval_sizes: {
+      seconds: 3600
+    }
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of server RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/server/finished_count/interval"
+  description: "Minute and Hour stats on the number of RPC servers finished"
+  measurement_descriptor_name: "grpc.io/server/finished_count"
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
