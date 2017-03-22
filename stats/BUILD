@@ -16,17 +16,17 @@ package(default_visibility = ["//visibility:public"])
 
 proto_library(
     name = "stats_census_proto",
-    srcs = ["stats/census.proto"],
+    srcs = ["census.proto"],
 )
 
 proto_library(
     name = "stats_context_proto",
-    srcs = ["stats/stats_context.proto"],
+    srcs = ["stats_context.proto"],
 )
 
 proto_library(
     name = "stats_view_descriptor_constants_proto",
-    srcs = ["stats/view_descriptor_constants.proto"],
+    srcs = ["view_descriptor_constants.proto"],
     deps = [":stats_census_proto"],
 )
 

@@ -41,7 +41,9 @@ install:
 script:
   - case "$BUILD" in
       "BAZEL")
-        bazel build --show_result=100 ... ;;
+        cd stats ;
+        bazel build --show_result=100 ... ;
+        cd .. ;;
       "MVN")
         mvn verify ;;
       "GRADLE")

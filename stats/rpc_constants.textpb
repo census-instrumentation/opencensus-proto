@@ -118,6 +118,8 @@ measurement_descriptor {
   }
 }
 
+# For languages other than C++, server/server_elapsed_time is equivalent to server/server_latency.
+# For C++, they are populated from different sources.
 measurement_descriptor {
   name: "grpc.io/server/server_elapsed_time"
   description: "Server elapsed time in milliseconds on server RPC side"
