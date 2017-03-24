@@ -329,9 +329,9 @@ view_descriptor {
 }
 
 view_descriptor {
-  name: "grpc.io/server/roundtrip_latency/distribution_cumulative"
+  name: "grpc.io/server/server_latency/distribution_cumulative"
   description: "Latency in milliseconds on server RPC side"
-  measurement_descriptor_name: "grpc.io/server/roundtrip_latency"
+  measurement_descriptor_name: "grpc.io/server/server_latency"
   distribution_aggregation: {
     bucket_bounds: [
       0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 8.0, 10.0, 13.0, 16.0, 20.0, 25.0, 30.0,
