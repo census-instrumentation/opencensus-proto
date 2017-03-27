@@ -120,14 +120,14 @@ measurement_descriptor {
 
 # For languages other than C++, server/server_elapsed_time is equivalent to server/server_latency.
 # For C++, they are populated from different sources.
-measurement_descriptor {
-  name: "grpc.io/server/server_elapsed_time"
-  description: "Server elapsed time in milliseconds on server RPC side"
-  unit: {
-    power10: -3
-    numerators: SECONDS
-  }
-}
+#measurement_descriptor {
+#  name: "grpc.io/server/server_elapsed_time"
+#  description: "Server elapsed time in milliseconds on server RPC side"
+#  unit: {
+#    power10: -3
+#    numerators: SECONDS
+#  }
+#}
 
 measurement_descriptor {
   name: "grpc.io/server/server_latency"
@@ -703,6 +703,23 @@ view_descriptor {
   name: "grpc.io/server/server_elapsed_time/interval"
   description: "Minute and Hour stats for server elapsed time in milliseconds on server RPC side"
   measurement_descriptor_name: "grpc.io/server/server_elapsed_time"
+  interval_aggregation: {
+    interval_sizes: {
+      seconds: 60
+    }
+    interval_sizes: {
+      seconds: 3600
+    }
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of server RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/server/started_count/interval"
+  description: "Minute and Hour stats on the number of RPC servers started"
+  measurement_descriptor_name: "grpc.io/server/started_count"
   interval_aggregation: {
     interval_sizes: {
       seconds: 60
