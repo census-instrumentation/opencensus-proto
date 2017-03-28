@@ -1,0 +1,775 @@
+# Constants for collecting specific RPC stats, including various measurement and view descriptors
+# for both the client RPC and server RPC.
+# The data structure for parsing this text proto is defined in view_descriptor_constants.proto.
+
+# Census defined RPC client MeasurementDescriptors for gRPC.
+measurement_descriptor {
+  name: "grpc.io/client/error_count"
+  description: "Count of client RPCs that received an error (unsuccessful) response"
+  unit: {
+    numerators: SCALAR
+  }
+}
+
+measurement_descriptor {
+  name: "grpc.io/client/request_bytes"
+  description: "Request bytes of client RPCs"
+  unit: {
+    numerators: BYTES
+  }
+}
+
+measurement_descriptor {
+  name: "grpc.io/client/response_bytes"
+  description: "Response bytes of client RPCs"
+  unit: {
+    numerators: BYTES
+  }
+}
+
+measurement_descriptor {
+  name: "grpc.io/client/roundtrip_latency"
+  description: "RPC roundtrip latency in milliseconds on client RPC side"
+  unit: {
+    power10: -3
+    numerators: SECONDS
+  }
+}
+
+measurement_descriptor {
+  name: "grpc.io/client/server_elapsed_time"
+  description: "Server elapsed time in milliseconds on client RPC side"
+  unit: {
+    power10: -3
+    numerators: SECONDS
+  }
+}
+
+measurement_descriptor {
+  name: "grpc.io/client/uncompressed_request_bytes"
+  description: "Uncompressed Request bytes of client RPCs"
+  unit: {
+    numerators: BYTES
+  }
+}
+
+measurement_descriptor {
+  name: "grpc.io/client/uncompressed_response_bytes"
+  description: "Uncompressed Response bytes of client RPCs"
+  unit: {
+    numerators: BYTES
+  }
+}
+
+measurement_descriptor {
+  name: "grpc.io/client/started_count"
+  description: "Number of client RPCs started"
+  unit: {
+    numerators: SCALAR
+  }
+}
+
+measurement_descriptor {
+  name: "grpc.io/client/finished_count"
+  description: "Number of client RPCs finished"
+  unit: {
+    numerators: SCALAR
+  }
+}
+
+measurement_descriptor {
+  name: "grpc.io/client/request_count"
+  description: "Number of client RPC request messages"
+  unit: {
+    numerators: SCALAR
+  }
+}
+
+measurement_descriptor {
+  name: "grpc.io/client/response_count"
+  description: "Number of client RPC response messages"
+  unit: {
+    numerators: SCALAR
+  }
+}
+
+# Census defined RPC server MeasurementDescriptors for gRPC.
+measurement_descriptor {
+  name: "grpc.io/server/error_count"
+  description: "Count of server RPCs that received an error (unsuccessful) response"
+  unit: {
+    numerators: SCALAR
+  }
+}
+
+measurement_descriptor {
+  name: "grpc.io/server/request_bytes"
+  description: "Request bytes of server RPCs"
+  unit: {
+    numerators: BYTES
+  }
+}
+
+measurement_descriptor {
+  name: "grpc.io/server/response_bytes"
+  description: "Response bytes of server RPCs"
+  unit: {
+    numerators: BYTES
+  }
+}
+
+measurement_descriptor {
+  name: "grpc.io/server/server_latency"
+  description: "Latency in milliseconds on server RPC side"
+  unit: {
+    power10: -3
+    numerators: SECONDS
+  }
+}
+
+measurement_descriptor {
+  name: "grpc.io/server/uncompressed_request_bytes"
+  description: "Uncompressed Request bytes of server RPCs"
+  unit: {
+    numerators: BYTES
+  }
+}
+
+measurement_descriptor {
+  name: "grpc.io/server/uncompressed_response_bytes"
+  description: "Uncompressed Response bytes of server RPCs"
+  unit: {
+    numerators: BYTES
+  }
+}
+
+measurement_descriptor {
+  name: "grpc.io/server/started_count"
+  description: "Number of server RPCs started"
+  unit: {
+    numerators: SCALAR
+  }
+}
+
+measurement_descriptor {
+  name: "grpc.io/server/finished_count"
+  description: "Number of server RPCs finished"
+  unit: {
+    numerators: SCALAR
+  }
+}
+
+measurement_descriptor {
+  name: "grpc.io/server/request_count"
+  description: "Number of server RPC request messages"
+  unit: {
+    numerators: SCALAR
+  }
+}
+
+measurement_descriptor {
+  name: "grpc.io/server/response_count"
+  description: "Number of server RPC response messages"
+  unit: {
+    numerators: SCALAR
+  }
+}
+
+# Census defined RPC client distribution ViewDescriptors for gRPC.
+view_descriptor {
+  name: "grpc.io/client/error_count/distribution_cumulative"
+  description: "Count of client RPCs that received an error (unsuccessful) response"
+  measurement_descriptor_name: "grpc.io/client/error_count"
+  distribution_aggregation: {
+  }
+  tag_keys: [
+    # Consider replacing tag key names with rpc_status and rpc_method
+    "OpStatus", # Tag value will reflect RPC's status of operation
+    "method" # Tag value will be the name of client RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/client/roundtrip_latency/distribution_cumulative"
+  description: "Latency in milliseconds on client RPC side"
+  measurement_descriptor_name: "grpc.io/client/roundtrip_latency"
+  distribution_aggregation: {
+    bucket_bounds: [
+      0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 8.0, 10.0, 13.0, 16.0, 20.0, 25.0, 30.0,
+      40.0, 50.0, 65.0, 80.0, 100.0, 130.0, 160.0, 200.0, 250.0, 300.0, 400.0, 500.0, 650.0,
+      800.0, 1000.0, 2000.0, 5000.0, 10000.0, 20000.0, 50000.0, 100000.0
+    ]
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of client RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/client/server_elapsed_time/distribution_cumulative"
+  description: "Server elapsed time in milliseconds on client RPC side"
+  measurement_descriptor_name: "grpc.io/client/server_elapsed_time"
+  distribution_aggregation: {
+    bucket_bounds: [
+      0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 8.0, 10.0, 13.0, 16.0, 20.0, 25.0, 30.0,
+      40.0, 50.0, 65.0, 80.0, 100.0, 130.0, 160.0, 200.0, 250.0, 300.0, 400.0, 500.0, 650.0,
+      800.0, 1000.0, 2000.0, 5000.0, 10000.0, 20000.0, 50000.0, 100000.0
+    ]
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of client RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/client/request_bytes/distribution_cumulative"
+  description: "Request bytes of client RPCs"
+  measurement_descriptor_name: "grpc.io/client/request_bytes"
+  distribution_aggregation: {
+    bucket_bounds: [
+      0.0, 1024.0, 2048.0, 4096.0, 16384.0, 65536.0, 262144.0, 1048576.0, 4194304.0,
+      16777216.0, 67108864.0, 268435456.0, 1073741824.0, 4294967296.0
+    ]
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of client RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/client/response_bytes/distribution_cumulative"
+  description: "Response bytes of client RPCs"
+  measurement_descriptor_name: "grpc.io/client/response_bytes"
+  distribution_aggregation: {
+    bucket_bounds: [
+      0.0, 1024.0, 2048.0, 4096.0, 16384.0, 65536.0, 262144.0, 1048576.0, 4194304.0,
+      16777216.0, 67108864.0, 268435456.0, 1073741824.0, 4294967296.0
+    ]
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of client RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/client/uncompressed_request_bytes/distribution_cumulative"
+  description: "Uncompressed Request bytes of client RPCs"
+  measurement_descriptor_name: "grpc.io/client/uncompressed_request_bytes"
+  distribution_aggregation: {
+    bucket_bounds: [
+      0.0, 1024.0, 2048.0, 4096.0, 16384.0, 65536.0, 262144.0, 1048576.0, 4194304.0,
+      16777216.0, 67108864.0, 268435456.0, 1073741824.0, 4294967296.0
+    ]
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of client RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/client/uncompressed_response_bytes/distribution_cumulative"
+  description: "Uncompressed Response bytes of client RPCs"
+  measurement_descriptor_name: "grpc.io/client/uncompressed_response_bytes"
+  distribution_aggregation: {
+    bucket_bounds: [
+      0.0, 1024.0, 2048.0, 4096.0, 16384.0, 65536.0, 262144.0, 1048576.0, 4194304.0,
+      16777216.0, 67108864.0, 268435456.0, 1073741824.0, 4294967296.0
+    ]
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of client RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/client/request_count/distribution_cumulative"
+  description: "Count of request messages per client RPC"
+  measurement_descriptor_name: "grpc.io/client/request_count"
+  distribution_aggregation: {
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of client RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/client/response_count/distribution_cumulative"
+  description: "Count of response messages per client RPC"
+  measurement_descriptor_name: "grpc.io/client/response_count"
+  distribution_aggregation: {
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of client RPC method/service
+  ]
+}
+
+# Census defined RPC server distribution ViewDescriptors for gRPC.
+view_descriptor {
+  name: "grpc.io/server/error_count/distribution_cumulative"
+  description: "Count of server RPCs that received an error (unsuccessful) response"
+  measurement_descriptor_name: "grpc.io/server/error_count"
+  distribution_aggregation: {
+  }
+  tag_keys: [
+    # Consider replacing tag key names with rpc_status and rpc_method
+    "OpStatus", # Tag value will reflect RPC's status of operation
+    "method" # Tag value will be the name of server RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/server/server_latency/distribution_cumulative"
+  description: "Latency in milliseconds on server RPC side"
+  measurement_descriptor_name: "grpc.io/server/server_latency"
+  distribution_aggregation: {
+    bucket_bounds: [
+      0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 8.0, 10.0, 13.0, 16.0, 20.0, 25.0, 30.0,
+      40.0, 50.0, 65.0, 80.0, 100.0, 130.0, 160.0, 200.0, 250.0, 300.0, 400.0, 500.0, 650.0,
+      800.0, 1000.0, 2000.0, 5000.0, 10000.0, 20000.0, 50000.0, 100000.0
+    ]
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of server RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/server/request_bytes/distribution_cumulative"
+  description: "Request bytes of server RPCs"
+  measurement_descriptor_name: "grpc.io/server/request_bytes"
+  distribution_aggregation: {
+    bucket_bounds: [
+      0.0, 1024.0, 2048.0, 4096.0, 16384.0, 65536.0, 262144.0, 1048576.0, 4194304.0,
+      16777216.0, 67108864.0, 268435456.0, 1073741824.0, 4294967296.0
+    ]
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of server RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/server/response_bytes/distribution_cumulative"
+  description: "Response bytes of server RPCs"
+  measurement_descriptor_name: "grpc.io/server/response_bytes"
+  distribution_aggregation: {
+    bucket_bounds: [
+      0.0, 1024.0, 2048.0, 4096.0, 16384.0, 65536.0, 262144.0, 1048576.0, 4194304.0,
+      16777216.0, 67108864.0, 268435456.0, 1073741824.0, 4294967296.0
+    ]
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of server RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/server/uncompressed_request_bytes/distribution_cumulative"
+  description: "Uncompressed Request bytes of server RPCs"
+  measurement_descriptor_name: "grpc.io/server/uncompressed_request_bytes"
+  distribution_aggregation: {
+    bucket_bounds: [
+      0.0, 1024.0, 2048.0, 4096.0, 16384.0, 65536.0, 262144.0, 1048576.0, 4194304.0,
+      16777216.0, 67108864.0, 268435456.0, 1073741824.0, 4294967296.0
+    ]
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of server RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/server/uncompressed_response_bytes/distribution_cumulative"
+  description: "Uncompressed Response bytes of server RPCs"
+  measurement_descriptor_name: "grpc.io/server/uncompressed_response_bytes"
+  distribution_aggregation: {
+    bucket_bounds: [
+      0.0, 1024.0, 2048.0, 4096.0, 16384.0, 65536.0, 262144.0, 1048576.0, 4194304.0,
+      16777216.0, 67108864.0, 268435456.0, 1073741824.0, 4294967296.0
+    ]
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of server RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/server/request_count/distribution_cumulative"
+  description: "Count of request messages per server RPC"
+  measurement_descriptor_name: "grpc.io/server/request_count"
+  distribution_aggregation: {
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of server RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/server/response_count/distribution_cumulative"
+  description: "Count of response messages per server RPC"
+  measurement_descriptor_name: "grpc.io/server/response_count"
+  distribution_aggregation: {
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of server RPC method/service
+  ]
+}
+
+# Census defined RPC client interval ViewDescriptors for gRPC.
+view_descriptor {
+  name: "grpc.io/client/roundtrip_latency/interval"
+  description: "Minute and Hour stats for latency in milliseconds on client RPC side"
+  measurement_descriptor_name: "grpc.io/client/roundtrip_latency"
+  interval_aggregation: {
+    interval_sizes: {
+      seconds: 60
+    }
+    interval_sizes: {
+      seconds: 3600
+    }
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of client RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/client/request_bytes/interval"
+  description: "Minute and Hour stats for client RPC request size in bytes"
+  measurement_descriptor_name: "grpc.io/client/request_bytes"
+  interval_aggregation: {
+    interval_sizes: {
+      seconds: 60
+    }
+    interval_sizes: {
+      seconds: 3600
+    }
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of client RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/client/response_bytes/interval"
+  description: "Minute and Hour stats for client RPC response size in bytes"
+  measurement_descriptor_name: "grpc.io/client/response_bytes"
+  interval_aggregation: {
+    interval_sizes: {
+      seconds: 60
+    }
+    interval_sizes: {
+      seconds: 3600
+    }
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of client RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/client/error_count/interval"
+  description: "Minute and Hour stats for count of client RPCs that received errors"
+  measurement_descriptor_name: "grpc.io/client/error_count"
+  interval_aggregation: {
+    interval_sizes: {
+      seconds: 60
+    }
+    interval_sizes: {
+      seconds: 3600
+    }
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of client RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/client/uncompressed_request_bytes/interval"
+  description: "Minute and Hour stats for client RPC uncompressed request size in bytes"
+  measurement_descriptor_name: "grpc.io/client/uncompressed_request_bytes"
+  interval_aggregation: {
+    interval_sizes: {
+      seconds: 60
+    }
+    interval_sizes: {
+      seconds: 3600
+    }
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of client RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/client/uncompressed_response_bytes/interval"
+  description: "Minute and Hour stats for client RPC uncompressed response size in bytes"
+  measurement_descriptor_name: "grpc.io/client/uncompressed_response_bytes"
+  interval_aggregation: {
+    interval_sizes: {
+      seconds: 60
+    }
+    interval_sizes: {
+      seconds: 3600
+    }
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of client RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/client/server_elapsed_time/interval"
+  description: "Minute and Hour stats for server elapsed time in milliseconds on client RPC side"
+  measurement_descriptor_name: "grpc.io/client/server_elapsed_time"
+  interval_aggregation: {
+    interval_sizes: {
+      seconds: 60
+    }
+    interval_sizes: {
+      seconds: 3600
+    }
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of client RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/client/started_count/interval"
+  description: "Minute and Hour stats on the number of client RPCs started"
+  measurement_descriptor_name: "grpc.io/client/started_count"
+  interval_aggregation: {
+    interval_sizes: {
+      seconds: 60
+    }
+    interval_sizes: {
+      seconds: 3600
+    }
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of client RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/client/finished_count/interval"
+  description: "Minute and Hour stats on the number of client RPCs finished"
+  measurement_descriptor_name: "grpc.io/client/finished_count"
+  interval_aggregation: {
+    interval_sizes: {
+      seconds: 60
+    }
+    interval_sizes: {
+      seconds: 3600
+    }
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of client RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/client/request_count/interval"
+  description: "Minute and Hour stats on the count of request messages per client RPC"
+  measurement_descriptor_name: "grpc.io/client/request_count"
+  interval_aggregation: {
+    interval_sizes: {
+      seconds: 60
+    }
+    interval_sizes: {
+      seconds: 3600
+    }
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of client RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/client/response_count/interval"
+  description: "Minute and Hour stats on the count of response messages per client RPC"
+  measurement_descriptor_name: "grpc.io/client/response_count"
+  interval_aggregation: {
+    interval_sizes: {
+      seconds: 60
+    }
+    interval_sizes: {
+      seconds: 3600
+    }
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of client RPC method/service
+  ]
+}
+
+# Census defined RPC server interval ViewDescriptors for gRPC.
+view_descriptor {
+  name: "grpc.io/server/server_latency/interval"
+  description: "Minute and Hour stats for server latency in milliseconds on server RPC side"
+  measurement_descriptor_name: "grpc.io/server/server_latency"
+  interval_aggregation: {
+    interval_sizes: {
+      seconds: 60
+    }
+    interval_sizes: {
+      seconds: 3600
+    }
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of server RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/server/request_bytes/interval"
+  description: "Minute and Hour stats for server RPC request size in bytes"
+  measurement_descriptor_name: "grpc.io/server/request_bytes"
+  interval_aggregation: {
+    interval_sizes: {
+      seconds: 60
+    }
+    interval_sizes: {
+      seconds: 3600
+    }
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of server RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/server/response_bytes/interval"
+  description: "Minute and Hour stats for server RPC response size in bytes"
+  measurement_descriptor_name: "grpc.io/server/response_bytes"
+  interval_aggregation: {
+    interval_sizes: {
+      seconds: 60
+    }
+    interval_sizes: {
+      seconds: 3600
+    }
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of server RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/server/error_count/interval"
+  description: "Minute and Hour stats for count of server RPCs that received errors"
+  measurement_descriptor_name: "grpc.io/server/error_count"
+  interval_aggregation: {
+    interval_sizes: {
+      seconds: 60
+    }
+    interval_sizes: {
+      seconds: 3600
+    }
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of server RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/server/uncompressed_request_bytes/interval"
+  description: "Minute and Hour stats for server RPC uncompressed request size in bytes"
+  measurement_descriptor_name: "grpc.io/server/uncompressed_request_bytes"
+  interval_aggregation: {
+    interval_sizes: {
+      seconds: 60
+    }
+    interval_sizes: {
+      seconds: 3600
+    }
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of server RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/server/uncompressed_response_bytes/interval"
+  description: "Minute and Hour stats for server RPC uncompressed response size in bytes"
+  measurement_descriptor_name: "grpc.io/server/uncompressed_response_bytes"
+  interval_aggregation: {
+    interval_sizes: {
+      seconds: 60
+    }
+    interval_sizes: {
+      seconds: 3600
+    }
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of server RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/server/started_count/interval"
+  description: "Minute and Hour stats on the number of RPC servers started"
+  measurement_descriptor_name: "grpc.io/server/started_count"
+  interval_aggregation: {
+    interval_sizes: {
+      seconds: 60
+    }
+    interval_sizes: {
+      seconds: 3600
+    }
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of server RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/server/finished_count/interval"
+  description: "Minute and Hour stats on the number of RPC servers finished"
+  measurement_descriptor_name: "grpc.io/server/finished_count"
+  interval_aggregation: {
+    interval_sizes: {
+      seconds: 60
+    }
+    interval_sizes: {
+      seconds: 3600
+    }
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of server RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/server/request_count/interval"
+  description: "Minute and Hour stats on the count of request messages per server RPC"
+  measurement_descriptor_name: "grpc.io/server/request_count"
+  interval_aggregation: {
+    interval_sizes: {
+      seconds: 60
+    }
+    interval_sizes: {
+      seconds: 3600
+    }
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of server RPC method/service
+  ]
+}
+
+view_descriptor {
+  name: "grpc.io/server/response_count/interval"
+  description: "Minute and Hour stats on the count of response messages per server RPC"
+  measurement_descriptor_name: "grpc.io/server/response_count"
+  interval_aggregation: {
+    interval_sizes: {
+      seconds: 60
+    }
+    interval_sizes: {
+      seconds: 3600
+    }
+  }
+  tag_keys: [
+    "method" # Tag value will be the name of server RPC method/service
+  ]
+}

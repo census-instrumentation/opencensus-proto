@@ -38,9 +38,9 @@
         <version>0.5.0</version>
         <configuration>
           <protocExecutable>protoc</protocExecutable>
-          <protoSourceRoot>.</protoSourceRoot>
+          <protoSourceRoot>./stats</protoSourceRoot>
 	  <includes>
-	    <include>stats/*.proto</include>
+	    <include>*.proto</include>
 	  </includes>
         </configuration>
         <executions>
