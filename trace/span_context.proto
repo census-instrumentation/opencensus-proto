@@ -1,0 +1,39 @@
+// Copyright 2016, Google Inc.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//     http://www.apache.org/licenses/LICENSE-2.0
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package google.instrumentation.trace.proto;
+
+option java_package = "com.google.instrumentation.trace.proto";
+option java_outer_classname = "SpanContextProto";
+
+// Contains SpanContext information that is propagated with RPC's.
+//
+// To propagate to a remote process, the SpanContext is serialized and sent as
+// part of the communication between the processes. The client process generates
+// the SpanContext and sends it to the server. The server process then
+// deserializes the SpanContext and creates a child span.
+message SpanContext {
+  // Trace ID's uniquely identify traces. They are a 128-bit value.
+  // High 64 bits of trace ID.
+  fixed64 trace_id_hi = 1;
+
+  // Low 64 bits of trace ID.
+  fixed64 trace_id_lo = 2;
+
+  // The span id on sending client.
+  fixed64 span_id = 3;
+
+  // Trace options. The lowest bit is used to determine if the current trace is
+  // sampled or not.
+  fixed32 trace_options = 4;
+};

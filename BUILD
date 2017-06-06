@@ -33,3 +33,8 @@ java_proto_library(
     name = "stats_context-proto-java",
     deps = ["stats_context_proto"],
 )
+
+java_proto_library(
+    "span_context-proto-java",
+    "trace/span_context.proto",
+)
