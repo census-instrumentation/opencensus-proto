@@ -187,8 +187,10 @@ message DistributionAggregation {
   repeated int64 bucket_counts = 5;
 
   // Tags associated with this DistributionAggregation. These will be filled
-  // in based on the View specification.
-  repeated Tag tags = 6;
+  // in based on the View specification. The tag value at index n corresponds
+  // to the tag key at index n in the associated ViewDescriptor. They must be
+  // printable ASCII.
+  repeated string tag_values = 6;
 }
 
 message DistributionAggregationDescriptor {
@@ -220,20 +222,21 @@ message DistributionAggregationDescriptor {
 message IntervalAggregation {
   // Summary statistic over a single time interval.
   message Interval {
-    // The interval duration. Must be positive.
-    Duration interval_size = 1;
     // Approximate number of measurements recorded in this interval.
-    double count = 2;
+    double count = 1;
     // The cumulative sum of measurements in this interval.
-    double sum = 3;
+    double sum = 2;
   }
 
-  // Full set of intervals for this aggregation.
+  // Full set of intervals for this aggregation, corresponding to the
+  // interval_sizes in the associated IntervalAggregationDescriptor.
   repeated Interval intervals = 1;
 
   // Tags associated with this IntervalAggregation. These will be filled in
-  // based on the View specification.
-  repeated Tag tags = 2;
+  // based on the View specification. The tag value at index n corresponds
+  // to the tag key at index n in the associated ViewDescriptor. They must be
+  // printable ASCII.
+  repeated string tag_values = 2;
 }
 
 // An IntervalAggreationDescriptor specifies time intervals for an
@@ -249,15 +252,8 @@ message IntervalAggregationDescriptor {
   int32 n_sub_intervals = 1;
 
   // The size of each interval, as a time duration. Must have at least one
-  // element.
+  // element. Each element must be positive.
   repeated Duration interval_sizes = 2;
-}
-
-// A Tag: key-value pair.
-// Both strings must be printable ASCII.
-message Tag {
-  string key = 1;
-  string value = 2;
 }
 
 // A ViewDescriptor specifies an AggregationDescriptor and a set of tag
@@ -280,7 +276,8 @@ message ViewDescriptor {
   }
 
   // Tag keys to match with a given measurement. If no keys are specified,
-  // then all stats are recorded. Keys must be unique.
+  // then all stats are recorded. Keys must be unique. They must be printable
+  // ASCII.
   repeated string tag_keys = 6;
 }
 
