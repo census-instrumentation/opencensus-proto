@@ -1,6 +1,6 @@
 # Gradle
 .gradle
-build_gradle
+build
 gen_gradle
 protobuf-gradle-plugin.i*
 gradle.properties

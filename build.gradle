@@ -1,9 +1,4 @@
-description = 'Instrumentation Proto'
-
-// TODO(bdrutu): Default build directory is build but on MacOs with a case-insensitive
-// File System would conflict with Bazel BUILD file.  Remove this and update the
-// .gitignore entry once Bazel is removed.
-buildDir = 'build_gradle'
+description = 'Opencensus Proto'
 
 apply plugin: 'idea'
 apply plugin: 'java'
@@ -32,13 +27,13 @@ sourceSets {
 }
 
 dependencies {
-    compile 'com.google.protobuf:protobuf-java:3.2.0'
+    compile 'com.google.protobuf:protobuf-java:3.4.0'
 }
 
 protobuf {
     protoc {
         // The artifact spec for the Protobuf Compiler
-        artifact = 'com.google.protobuf:protoc:3.2.0'
+        artifact = 'com.google.protobuf:protoc:3.4.0'
     }
 
     generatedFilesBaseDir = "$projectDir/gen_gradle/src"

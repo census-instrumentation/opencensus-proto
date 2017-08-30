@@ -3,24 +3,16 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.google.census</groupId>
-  <artifactId>census-proto</artifactId>
+  <groupId>io.opencensus</groupId>
+  <artifactId>opencensus-proto</artifactId>
   <version>0.1.0-SNAPSHOT</version>
 
-  <name>Census Proto</name>
+  <name>OpenCensus Proto</name>
 
   <description>
-    Census provides a framework to define and collect stats against metrics and
-    to break those stats down across user-defined dimensions.
+    OpenCensus - A stats collection and distributed tracing framework
   </description>
-  <url>https://github.com/google/instrumentation-proto</url>
-
-  <parent>
-    <groupId>com.google</groupId>
-    <artifactId>google</artifactId>
-    <version>5</version>
-    <relativePath></relativePath>
-  </parent>
+  <url>https://github.com/census-instrumentation/opencensus-proto</url>
 
   <licenses>
     <license>
@@ -39,9 +31,9 @@
         <configuration>
           <protocExecutable>protoc</protocExecutable>
           <protoSourceRoot>.</protoSourceRoot>
-	  <includes>
-	    <include>stats/*.proto</include>
-	  </includes>
+	        <includes>
+	          <include>stats/*.proto</include>
+	        </includes>
         </configuration>
         <executions>
           <execution>
@@ -65,7 +57,7 @@
     <dependency>
       <groupId>com.google.protobuf</groupId>
       <artifactId>protobuf-java</artifactId>
-      <version>3.2.0</version>
+      <version>3.4.0</version>
     </dependency>
   </dependencies>
 </project>
