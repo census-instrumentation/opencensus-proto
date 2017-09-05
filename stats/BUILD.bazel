@@ -1,4 +1,4 @@
-# Copyright 2016-17, OpenCensus Authors
+# Copyright 2017, OpenCensus Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,12 +14,7 @@
 
 package(default_visibility = ["//visibility:public"])
 
-java_proto_library(
-    name = "stats_proto-java",
-    deps = ["//stats:stats_proto"],
-)
-
-java_proto_library(
-    name = "span_proto-java",
-    deps = ["//trace:span_proto"],
+proto_library(
+    name = "stats_proto",
+    srcs = ["census.proto"],
 )
