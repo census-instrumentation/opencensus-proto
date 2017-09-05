@@ -19,17 +19,7 @@ proto_library(
     srcs = ["stats/census.proto"],
 )
 
-proto_library(
-    name = "stats_context_proto",
-    srcs = ["stats/stats_context.proto"],
-)
-
 java_proto_library(
     name = "census-proto-java",
     deps = ["stats_census_proto"],
-)
-
-java_proto_library(
-    name = "stats_context-proto-java",
-    deps = ["stats_context_proto"],
 )
