@@ -31,10 +31,10 @@
         <configuration>
           <protocExecutable>protoc</protocExecutable>
           <protoSourceRoot>.</protoSourceRoot>
-	        <includes>
+	  <includes>
             <include>stats/*.proto</include>
             <include>trace/*.proto</include>
-	        </includes>
+	  </includes>
         </configuration>
         <executions>
           <execution>
