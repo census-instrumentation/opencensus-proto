@@ -22,6 +22,7 @@ sourceSets {
         proto {
             // In addition to the default 'src/main/proto'
             srcDir 'stats'
+            srcDir 'trace'
         }
     }
 }

@@ -12,27 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+workspace(name = "opencensus_proto")
+
 # proto_library rules implicitly depend on @com_google_protobuf//:protoc,
 # which is the proto-compiler.
 # This statement defines the @com_google_protobuf repo.
 http_archive(
     name = "com_google_protobuf",
-    sha256 = "ff771a662fb6bd4d3cc209bcccedef3e93980a49f71df1e987f6afa3bcdcba3a",
-    strip_prefix = "protobuf-b4b0e304be5a68de3d0ee1af9b286f958750f5e4",
-    urls = ["https://github.com/google/protobuf/archive/b4b0e304be5a68de3d0ee1af9b286f958750f5e4.zip"],
+    sha256 = "db3f5880be46c3809eef108c218765d49f1329d3fd89db3a5939e2ba5b132a08",
+    strip_prefix = "protobuf-699c0eb9cf6573f3a00b4db61f60aff92dc3dd7a",
+    urls = ["https://github.com/google/protobuf/archive/699c0eb9cf6573f3a00b4db61f60aff92dc3dd7a.zip"],
 )
 
 # java_proto_library rules implicitly depend on @com_google_protobuf_java//:java_toolchain,
 # which is the Java proto runtime (base classes and common utilities).
 http_archive(
     name = "com_google_protobuf_java",
-    sha256 = "ff771a662fb6bd4d3cc209bcccedef3e93980a49f71df1e987f6afa3bcdcba3a",
-    strip_prefix = "protobuf-b4b0e304be5a68de3d0ee1af9b286f958750f5e4",
-    urls = ["https://github.com/google/protobuf/archive/b4b0e304be5a68de3d0ee1af9b286f958750f5e4.zip"],
-)
-
-git_repository(
-    name = "io_bazel",
-    remote = "https://github.com/bazelbuild/bazel",
-    tag = "0.4.5",
+    sha256 = "db3f5880be46c3809eef108c218765d49f1329d3fd89db3a5939e2ba5b132a08",
+    strip_prefix = "protobuf-699c0eb9cf6573f3a00b4db61f60aff92dc3dd7a",
+    urls = ["https://github.com/google/protobuf/archive/699c0eb9cf6573f3a00b4db61f60aff92dc3dd7a.zip"],
 )
