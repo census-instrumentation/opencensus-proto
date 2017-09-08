@@ -15,11 +15,16 @@
 package(default_visibility = ["//visibility:public"])
 
 proto_library(
-    name = "span_proto",
-    srcs = ["span.proto"],
+    name = "trace_proto",
+    srcs = ["trace.proto"],
     deps = [
         "@com_google_protobuf//:any_proto",
         "@com_google_protobuf//:timestamp_proto",
         "@com_google_protobuf//:wrappers_proto",
     ],
+)
+
+java_proto_library(
+    name = "trace_proto-java",
+    deps = [":trace_proto"],
 )
