@@ -14,10 +14,14 @@
 
 syntax = "proto3";
 
-package google.instrumentation;
+package opencensus.proto.stats;
 
-option java_package = "com.google.instrumentation.stats.proto";
-option java_outer_classname = "CensusProto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+
+option java_multiple_files = true;
+option java_package = "io.opencensus.proto.stats";
+option java_outer_classname = "StatsProto";
 
 // All the census protos.
 //
@@ -40,40 +44,6 @@ option java_outer_classname = "CensusProto";
 // ViewDescriptor. The output (all measurements broken down by tag values into
 // specific Aggregations) is called a View.
 
-
-// The following two types are copied from
-// google/protobuf/{duration,timestamp}.proto. Ideally, we would be able to
-// import them, but this causes compilation issues on C-based systems
-// (e.g. https://koti.kapsi.fi/jpa/nanopb/), which cannot process the C++
-// headers generated from the standard protobuf distribution. See the relevant
-// proto files for full documentation of these types.
-
-message Duration {
-  // Signed seconds of the span of time. Must be from -315,576,000,000
-  // to +315,576,000,000 inclusive.
-  int64 seconds = 1;
-
-  // Signed fractions of a second at nanosecond resolution of the span
-  // of time. Durations less than one second are represented with a 0
-  // `seconds` field and a positive or negative `nanos` field. For durations
-  // of one second or more, a non-zero value for the `nanos` field must be
-  // of the same sign as the `seconds` field. Must be from -999,999,999
-  // to +999,999,999 inclusive.
-  int32 nanos = 2;
-}
-
-message Timestamp {
-  // Represents seconds of UTC time since Unix epoch
-  // 1970-01-01T00:00:00Z. Must be from from 0001-01-01T00:00:00Z to
-  // 9999-12-31T23:59:59Z inclusive.
-  int64 seconds = 1;
-
-  // Non-negative fractions of a second at nanosecond resolution. Negative
-  // second values with fractions must still have non-negative nanos values
-  // that count forward in time. Must be from 0 to 999,999,999
-  // inclusive.
-  int32 nanos = 2;
-}
 
 // MeasurementDescriptor describes a data point (measurement) type.
 message MeasurementDescriptor {
@@ -224,7 +194,7 @@ message IntervalAggregation {
   // Summary statistic over a single time interval.
   message Interval {
     // The interval duration. Must be positive.
-    Duration interval_size = 1;
+    google.protobuf.Duration interval_size = 1;
     // Approximate number of measurements recorded in this interval.
     double count = 2;
     // The cumulative sum of measurements in this interval.
@@ -253,7 +223,7 @@ message IntervalAggregationDescriptor {
 
   // The size of each interval, as a time duration. Must have at least one
   // element.
-  repeated Duration interval_sizes = 2;
+  repeated google.protobuf.Duration interval_sizes = 2;
 }
 
 // A Tag: key-value pair.
@@ -295,8 +265,8 @@ message DistributionView {
   repeated DistributionAggregation aggregations = 1;
 
   // Start and end timestamps over which aggregations was accumulated.
-  Timestamp start = 2;
-  Timestamp end = 3;
+  google.protobuf.Timestamp start = 2;
+  google.protobuf.Timestamp end = 3;
 }
 
 // IntervalView contains all aggregations for a view specified using a
