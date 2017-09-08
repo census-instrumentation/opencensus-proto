@@ -14,14 +14,14 @@
 
 syntax = "proto3";
 
-package io.opencensus.trace.proto;
+package opencensus.proto.trace;
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 import "google/protobuf/any.proto";
 
 option java_multiple_files = true;
-option java_package = "io.opencensus.trace.proto";
+option java_package = "io.opencensus.proto.trace";
 option java_outer_classname = "TraceProto";
 
 // A span represents a single operation within a trace. Spans can be
@@ -213,7 +213,7 @@ message Span {
   Links links = 10;
 
   // An optional final status for this span.
-  io.opencensus.trace.proto.Status status = 11;
+  Status status = 11;
 
   // A highly recommended but not required flag that identifies when a trace
   // crosses a process boundary. True when the parent_span belongs to the
