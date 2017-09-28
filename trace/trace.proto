@@ -105,38 +105,31 @@ message Span {
       Attributes attributes = 2;
     }
 
-    // An event describing an RPC message sent or received on the network.
-    message NetworkEvent {
-      // For sent messages, this is the time at which the first bit was sent.
-      // For received messages, this is the time at which the last bit was
-      // received.
-      google.protobuf.Timestamp time = 1;
-
-      // Indicates whether the network message was sent or received.
+    // An event describing a message sent/received between Spans.
+    message MessageEvent {
+      // Indicates whether the message was sent or received.
       enum Type {
         // Unknown event type.
         TYPE_UNSPECIFIED = 0;
-        // Indicates a sent RPC message.
+        // Indicates a sent message.
         SENT = 1;
-        // Indicates a received RPC message.
-        RECV = 2;
+        // Indicates a received message.
+        RECEIVED = 2;
       }
 
-      // Type of NetworkEvent. Indicates whether the RPC message was sent or
+      // Type of MessageEvent. Indicates whether the message was sent or
       // received.
-      Type type = 2;
+      Type type = 1;
 
-      // An identifier for the message, which must be unique in this span and
-      // the same between RECV and SENT (this allows to identify a message
-      // between the sender and receiver). For example, this could be a
-      // sequence id.
-      uint64 message_id = 3;
+      // An identifier for the message, which must be unique in this span.
+      uint64 id = 2;
 
       // The number of uncompressed bytes sent or received.
-      uint64 uncompressed_message_size = 4;
+      uint64 uncompressed_size = 3;
 
-      // The number of compressed bytes sent or received.
-      uint64 compressed_message_size = 5;
+      // The number of compressed bytes sent or received. If missing assumed to
+      // be the same size as uncompressed.
+      uint64 compressed_size = 4;
     }
 
     // A `TimeEvent` can contain either an `Annotation` object or a
@@ -146,7 +139,7 @@ message Span {
       Annotation annotation = 2;
 
       // An event describing an RPC message sent/received on the network.
-      NetworkEvent network_event = 3;
+      MessageEvent network_event = 3;
     }
   }
 
@@ -163,7 +156,7 @@ message Span {
 
     // The number of dropped network events in all the included time events.
     // If the value is 0, then no network events were dropped.
-    int32 dropped_network_events_count = 3;
+    int32 dropped_message_events_count = 3;
   }
 
   // The included time events.
