@@ -91,7 +91,7 @@ message Span {
   // Stack trace captured at the start of the span.
   StackTrace stack_trace = 8;
 
-  // A time-stamped annotation or network event in the Span.
+  // A time-stamped annotation or message event in the Span.
   message TimeEvent {
     // The timestamp indicating the time the event occurred.
     google.protobuf.Timestamp time = 1;
@@ -133,19 +133,19 @@ message Span {
     }
 
     // A `TimeEvent` can contain either an `Annotation` object or a
-    // `NetworkEvent` object, but not both.
+    // `MessageEvent` object, but not both.
     oneof value {
       // Text annotation with a set of attributes.
       Annotation annotation = 2;
 
-      // An event describing an RPC message sent/received on the network.
-      MessageEvent network_event = 3;
+      // An event describing a message sent/received between Spans.
+      MessageEvent message_event = 3;
     }
   }
 
   // A collection of `TimeEvent`s. A `TimeEvent` is a time-stamped annotation
   // on the span, consisting of either user-supplied key:value pairs, or
-  // details of an RPC message sent/received on the network.
+  // details of a message sent/received between Spans.
   message TimeEvents {
     // A collection of `TimeEvent`s.
     repeated TimeEvent time_event = 1;
@@ -154,8 +154,8 @@ message Span {
     // If the value is 0, then no annotations were dropped.
     int32 dropped_annotations_count = 2;
 
-    // The number of dropped network events in all the included time events.
-    // If the value is 0, then no network events were dropped.
+    // The number of dropped message events in all the included time events.
+    // If the value is 0, then no message events were dropped.
     int32 dropped_message_events_count = 3;
   }
 
