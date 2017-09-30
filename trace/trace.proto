@@ -121,7 +121,10 @@ message Span {
       // received.
       Type type = 1;
 
-      // An identifier for the message, which must be unique in this span.
+      // An identifier for the MessageEvent's message that can be used to match
+      // SENT and RECEIVED MessageEvents. For example, this field could
+      // represent a sequence id for a streaming RPC. It is recommended to be
+      // unique within a Span.
       uint64 id = 2;
 
       // The number of uncompressed bytes sent or received.
