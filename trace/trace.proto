@@ -18,7 +18,6 @@ package opencensus.proto.trace;
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
-import "google/protobuf/any.proto";
 
 option java_multiple_files = true;
 option java_package = "io.opencensus.proto.trace";
@@ -45,8 +44,8 @@ message Span {
   bytes span_id = 2;
 
   // The `SPAN_ID` of this span's parent span. If this is a root span, then this
-  // field must be empty.
-  string parent_span_id = 3;
+  // field must be empty. (-- The ID is an 8-byte array. --)
+  bytes parent_span_id = 3;
 
   // A description of the span's operation.
   //
@@ -223,22 +222,13 @@ message Span {
 
 // The `Status` type defines a logical error model that is suitable for different
 // programming environments, including REST APIs and RPC APIs. It is used by
-// [gRPC](https://github.com/grpc). The error model is designed to be:
-//
-// - Simple to use and understand for most users
-// - Flexible enough to meet unexpected needs
+// [gRPC](https://github.com/grpc).
 message Status {
-  // The status code, which should be an enum value of [google.rpc.Code][google.rpc.Code].
+  // The status code.
   int32 code = 1;
 
-  // A developer-facing error message, which should be in English. Any
-  // user-facing error message should be localized and sent in the
-  // [google.rpc.Status.details][google.rpc.Status.details] field, or localized by the client.
+  // A developer-facing error message, which should be in English.
   string message = 2;
-
-  // A list of messages that carry the error details.  There is a common set of
-  // message types for APIs to use.
-  repeated google.protobuf.Any details = 3;
 }
 
 // The allowed types for [VALUE] in a `[KEY]:[VALUE]` attribute.
