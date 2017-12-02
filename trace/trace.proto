@@ -31,27 +31,27 @@ option java_outer_classname = "TraceProto";
 // gaps or overlaps between spans in a trace.
 // TODO(bdrutu): Add an example.
 message Span {
-  // Is a unique identifier for a trace. All spans from the same trace share
-  // the same `TRACE_ID`. (-- The ID is an 16-byte array. --)
+  // A unique identifier for a trace. All spans from the same trace share
+  // the same `trace_id`. The ID is a 16-byte array.
   //
   // This field is required.
   bytes trace_id = 1;
 
-  // Is a unique identifier for a span within a trace, assigned when the span
-  // is created. (-- The ID is an 8-byte array. --)
+  // A unique identifier for a span within a trace, assigned when the span
+  // is created. The ID is an 8-byte array.
   //
   // This field is required.
   bytes span_id = 2;
 
-  // The `SPAN_ID` of this span's parent span. If this is a root span, then this
-  // field must be empty. (-- The ID is an 8-byte array. --)
+  // The `span_id` of this span's parent span. If this is a root span, then this
+  // field must be empty. The ID is an 8-byte array.
   bytes parent_span_id = 3;
 
   // A description of the span's operation.
   //
   // For example, the name can be a qualified method name or a file name
   // and a line number where the operation is called. A best practice is to use
-  // the same display name within an application and at the same call point.
+  // the same display name at the same call point in an application.
   // This makes it easier to correlate spans in different traces.
   //
   // This field is required.
@@ -67,7 +67,7 @@ message Span {
   // is the time when the server application handler stops running.
   google.protobuf.Timestamp end_time = 6;
 
-  // A set of attributes, each in the format `[KEY]:[VALUE]`.
+  // A set of attributes, each with a key and a value.
   message Attributes {
     // The set of attributes. The value can be a string, an integer, or the
     // Boolean values `true` and `false`. For example:
@@ -80,22 +80,22 @@ message Span {
 
     // The number of attributes that were discarded. Attributes can be discarded
     // because their keys are too long or because there are too many attributes.
-    // If this value is 0 then all attributes are valid.
+    // If this value is 0, then no attributes were dropped.
     int32 dropped_attributes_count = 2;
   }
 
   // A set of attributes on the span.
   Attributes attributes = 7;
 
-  // Stack trace captured at the start of the span.
+  // A stack trace captured at the start of the span.
   StackTrace stack_trace = 8;
 
   // A time-stamped annotation or message event in the Span.
   message TimeEvent {
-    // The timestamp indicating the time the event occurred.
+    // The time the event occurred.
     google.protobuf.Timestamp time = 1;
 
-    // Text annotation with a set of attributes.
+    // A text annotation with a set of attributes.
     message Annotation {
       // A user-supplied message describing the event.
       TruncatableString description = 1;
@@ -116,20 +116,20 @@ message Span {
         RECEIVED = 2;
       }
 
-      // Type of MessageEvent. Indicates whether the message was sent or
+      // The type of MessageEvent. Indicates whether the message was sent or
       // received.
       Type type = 1;
 
       // An identifier for the MessageEvent's message that can be used to match
       // SENT and RECEIVED MessageEvents. For example, this field could
-      // represent a sequence id for a streaming RPC. It is recommended to be
+      // represent a sequence ID for a streaming RPC. It is recommended to be
       // unique within a Span.
       uint64 id = 2;
 
       // The number of uncompressed bytes sent or received.
       uint64 uncompressed_size = 3;
 
-      // The number of compressed bytes sent or received. If missing assumed to
+      // The number of compressed bytes sent or received. If zero, assumed to
       // be the same size as uncompressed.
       uint64 compressed_size = 4;
     }
@@ -137,7 +137,7 @@ message Span {
     // A `TimeEvent` can contain either an `Annotation` object or a
     // `MessageEvent` object, but not both.
     oneof value {
-      // Text annotation with a set of attributes.
+      // A text annotation with a set of attributes.
       Annotation annotation = 2;
 
       // An event describing a message sent/received between Spans.
@@ -146,7 +146,7 @@ message Span {
   }
 
   // A collection of `TimeEvent`s. A `TimeEvent` is a time-stamped annotation
-  // on the span, consisting of either user-supplied key:value pairs, or
+  // on the span, consisting of either user-supplied key-value pairs, or
   // details of a message sent/received between Spans.
   message TimeEvents {
     // A collection of `TimeEvent`s.
@@ -169,16 +169,19 @@ message Span {
   // where a single batch handler processes multiple requests from different
   // traces or when the handler receives a request from a different project.
   message Link {
-    // `TRACE_ID` a unique identifier for a trace.
+    // A unique identifier for a trace.
+    // TODO: change to bytes.
     string trace_id = 1;
 
-    // `SPAN_ID` a unique identifier for a span within a trace,
+    // A unique identifier for a span within a trace,
+    // TODO: change to bytes.
     string span_id = 2;
 
     // The relationship of the current span relative to the linked span: child,
     // parent, or unspecified.
     enum Type {
-      // The relationship of the two spans is unknown.
+      // The relationship of the two spans is unknown, or known but other
+      // than parent-child.
       TYPE_UNSPECIFIED = 0;
       // The linked span is a child of the current span.
       CHILD_LINKED_SPAN = 1;
@@ -216,13 +219,15 @@ message Span {
   google.protobuf.BoolValue same_process_as_parent_span = 12;
 
   // An optional number of child spans that were generated while this span
-  // was active. If set, allows implementation to detect missing child spans.
+  // was active. If set, allows an implementation to detect missing child spans.
   google.protobuf.UInt32Value child_span_count = 13;
 }
 
 // The `Status` type defines a logical error model that is suitable for different
-// programming environments, including REST APIs and RPC APIs. It is used by
-// [gRPC](https://github.com/grpc).
+// programming environments, including REST APIs and RPC APIs. This proto's fields
+// are a subset of those of
+// [google.rpc.Status](https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto),
+// which is used by [gRPC](https://github.com/grpc).
 message Status {
   // The status code.
   int32 code = 1;
@@ -231,7 +236,7 @@ message Status {
   string message = 2;
 }
 
-// The allowed types for [VALUE] in a `[KEY]:[VALUE]` attribute.
+// The value of an Attribute.
 message AttributeValue {
   // The type of the value.
   oneof value {
@@ -246,14 +251,14 @@ message AttributeValue {
 
 // The call stack which originated this span.
 message StackTrace {
-  // Represents a single stack frame in a stack trace.
+  // A single stack frame in a stack trace.
   message StackFrame {
     // The fully-qualified name that uniquely identifies the function or
     // method that is active in this frame.
     TruncatableString function_name = 1;
     // An un-mangled function name, if `function_name` is
     // [mangled](http://www.avabodh.com/cxxin/namemangling.html). The name can
-    // be fully-qualified.
+    // be fully qualified.
     TruncatableString original_function_name = 2;
     // The name of the source file where the function call appears.
     TruncatableString file_name = 3;
@@ -285,16 +290,20 @@ message StackTrace {
   // stack traces within a single trace.
   //
   // Often multiple spans will have identical stack traces.
-  // The first occurrence of a stack trace should contain both the
-  // `stackFrame` content and a value in `stackTraceHashId`.
+  // The first occurrence of a stack trace should contain both
+  // `stack_frames` and a value in `stack_trace_hash_id`.
   //
   // Subsequent spans within the same request can refer
-  // to that stack trace by only setting `stackTraceHashId`.
+  // to that stack trace by setting only `stack_trace_hash_id`.
+  //
+  // TODO: describe how to deal with the case where stack_trace_hash_id is
+  // zero because it was not set.
   uint64 stack_trace_hash_id = 2;
 }
 
-// Binary module.
+// A description of a binary module.
 message Module {
+  // TODO: document the meaning of this field.
   // For example: main binary, kernel modules, and dynamic libraries
   // such as libc.so, sharedlib.so.
   TruncatableString module = 1;
@@ -304,14 +313,14 @@ message Module {
   TruncatableString build_id = 2;
 }
 
-// Represents a string that might be shortened to a specified length.
+// A string that might be shortened to a specified length.
 message TruncatableString {
-  // The shortened string. For example, if the original string was 500
-  // bytes long and the limit of the string was 128 bytes, then this
-  // value contains the first 128 bytes of the 500-byte string. Note that
-  // truncation always happens on the character boundary, to ensure that
-  // truncated string is still valid UTF8. In case of multi-byte characters,
-  // size of truncated string can be less than truncation limit.
+  // The shortened string. For example, if the original string was 500 bytes long and
+  // the limit of the string was 128 bytes, then this value contains the first 128
+  // bytes of the 500-byte string. Note that truncation always happens on a
+  // character boundary, to ensure that a truncated string is still valid UTF-8.
+  // Because it may contain multi-byte characters, the size of the truncated string
+  // may be less than the truncation limit.
   string value = 1;
 
   // The number of bytes removed from the original string. If this
