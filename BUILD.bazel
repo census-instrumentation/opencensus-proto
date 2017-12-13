@@ -11,24 +11,3 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-package(default_visibility = ["//visibility:public"])
-
-proto_library(
-    name = "stats_proto",
-    srcs = ["stats.proto"],
-    deps = [
-        "@com_google_protobuf//:duration_proto",
-        "@com_google_protobuf//:timestamp_proto",
-    ],
-)
-
-cc_proto_library(
-    name = "stats_proto_cc",
-    deps = [":stats_proto"],
-)
-
-java_proto_library(
-    name = "stats_proto_java",
-    deps = [":stats_proto"],
-)

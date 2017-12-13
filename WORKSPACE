@@ -19,16 +19,23 @@ workspace(name = "opencensus_proto")
 # This statement defines the @com_google_protobuf repo.
 http_archive(
     name = "com_google_protobuf",
-    sha256 = "db3f5880be46c3809eef108c218765d49f1329d3fd89db3a5939e2ba5b132a08",
-    strip_prefix = "protobuf-699c0eb9cf6573f3a00b4db61f60aff92dc3dd7a",
-    urls = ["https://github.com/google/protobuf/archive/699c0eb9cf6573f3a00b4db61f60aff92dc3dd7a.zip"],
+    sha256 = "0cc6607e2daa675101e9b7398a436f09167dffb8ca0489b0307ff7260498c13c",
+    strip_prefix = "protobuf-3.5.0",
+    urls = ["https://github.com/google/protobuf/archive/v3.5.0.tar.gz"],
+)
+
+http_archive(
+    name = "com_google_protobuf_cc",
+    sha256 = "0cc6607e2daa675101e9b7398a436f09167dffb8ca0489b0307ff7260498c13c",
+    strip_prefix = "protobuf-3.5.0",
+    urls = ["https://github.com/google/protobuf/archive/v3.5.0.tar.gz"],
 )
 
 # java_proto_library rules implicitly depend on @com_google_protobuf_java//:java_toolchain,
 # which is the Java proto runtime (base classes and common utilities).
 http_archive(
     name = "com_google_protobuf_java",
-    sha256 = "db3f5880be46c3809eef108c218765d49f1329d3fd89db3a5939e2ba5b132a08",
-    strip_prefix = "protobuf-699c0eb9cf6573f3a00b4db61f60aff92dc3dd7a",
-    urls = ["https://github.com/google/protobuf/archive/699c0eb9cf6573f3a00b4db61f60aff92dc3dd7a.zip"],
+    sha256 = "0cc6607e2daa675101e9b7398a436f09167dffb8ca0489b0307ff7260498c13c",
+    strip_prefix = "protobuf-3.5.0",
+    urls = ["https://github.com/google/protobuf/archive/v3.5.0.tar.gz"],
 )
