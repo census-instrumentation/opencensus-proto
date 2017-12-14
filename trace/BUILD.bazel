@@ -24,7 +24,12 @@ proto_library(
     ],
 )
 
+cc_proto_library(
+    name = "trace_proto_cc",
+    deps = [":trace_proto"],
+)
+
 java_proto_library(
-    name = "trace_proto-java",
+    name = "trace_proto_java",
     deps = [":trace_proto"],
 )
