@@ -51,10 +51,10 @@
           <pluginId>grpc-java</pluginId>
           <pluginArtifact>io.grpc:protoc-gen-grpc-java:${grpc.version}:exe:${os.detected.classifier}</pluginArtifact>
           <protoSourceRoot>.</protoSourceRoot>
-	  <includes>
-            <include>stats/*.proto</include>
-            <include>trace/*.proto</include>
-	  </includes>
+	        <includes>
+            <include>opencensus/proto/stats/*.proto</include>
+            <include>opencensus/proto/trace/*.proto</include>
+	        </includes>
         </configuration>
         <executions>
           <execution>
