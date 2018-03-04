@@ -81,13 +81,10 @@ message View {
     // Indicates that data collected and aggregated with this Aggregation will represent the last
     // recorded value. This is useful to support Gauges.
     LastValueAggregation last_value_aggregation = 7;
-    // Indicates that data collected and aggregated with this Aggregation will calculate the
-    // maximum value recorded.
-    MaxAggregation max_aggregation = 8;
     // Indicates that the desired Aggregation is a histogram distribution. A distribution
     // Aggregation may contain a histogram of the values in the population. User should define the
     // bucket boundaries for that histogram (see DistributionAggregation).
-    DistributionAggregation distribution_aggregation = 9;
+    DistributionAggregation distribution_aggregation = 8;
   }
 }
 
@@ -96,8 +93,6 @@ message CountAggregation {}
 message SumAggregation {}
 
 message LastValueAggregation {}
-
-message MaxAggregation {}
 
 message DistributionAggregation {
   // A Distribution may optionally contain a histogram of the values in the
