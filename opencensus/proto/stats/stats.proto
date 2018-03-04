@@ -35,10 +35,10 @@ message Measure {
   // unique within the library.
   string name = 1;
 
-  // A string describes the measure, e.g. "RPC latency in seconds".
+  // Describes the measure, e.g. "RPC latency in seconds".
   string description = 2;
 
-  // A string describing the unit used for the Measure. Follows the format described by
+  // Describes the unit used for the Measure. Follows the format described by
   // http://unitsofmeasure.org/ucum.html.
   string unit = 3;
 
@@ -60,7 +60,7 @@ message View {
   // within the library.
   string name = 1;
 
-  // A free format descriptive string, e.g. "RPC latency distribution"
+  // Describes the view, e.g. "RPC latency distribution"
   string description = 2;
 
   // The Measure to which this view is applied.
