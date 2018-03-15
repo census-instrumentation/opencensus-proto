@@ -1,0 +1,209 @@
+// Copyright 2016-18, OpenCensus Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package opencensus.proto.metrics;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "metricsproto";
+option java_multiple_files = true;
+option java_package = "io.opencensus.proto.metrics";
+option java_outer_classname = "MetricsProto";
+
+// A collection of MetricPoint's.
+message MetricPointSet {
+  // Each MetricPoint has one or more timeseries for a single metric.
+  repeated MetricPoint metric_points = 1;
+}
+
+// Defines a MetricPoint which has one or more timeseries for a single metric.
+message MetricPoint {
+  // The description of the metric.
+  MetricDescriptor desctriptor = 1;
+
+  // One or more timeseries for a single metric, where each timeseries has
+  // one or more points.
+  repeated TimeSeries timeseries = 2;
+}
+
+// Defines a metric type and its schema.
+message MetricDescriptor {
+  // The metric type, including its DNS name prefix. It must be unique.
+  string name = 1;
+
+  // A detailed description of the metric, which can be used in documentation.
+  string description = 2;
+
+  // The unit in which the metric value is reported. Follows the format
+  // described by http://unitsofmeasure.org/ucum.html.
+  string unit = 3;
+
+  // The kind of metric. It describes how the data is reported.
+  enum Type {
+    // Do not use this default value.
+    UNSPECIFIED = 0;
+
+    // An instantaneous measurement of a value.
+    GAUGE = 1;
+
+    // A value accumulated over a time interval. Cumulative measurements in a
+    // time series should have the same start time and increasing end times,
+    // until an event resets the cumulative value to zero and sets a new
+    // start time for the following points.
+    CUMULATIVE = 2;
+  }
+  Type type = 4;
+
+  // TODO: Consider to add LabelInfo{key, description} if needed.
+}
+
+// A collection of data points that describes the time-varying values
+// of a metric.
+message TimeSeries {
+  // The set of label values that uniquely identify this metric. Apply to all
+  // points.
+  repeated Label label = 1;
+
+  // The data points of this timeseries.
+  repeated Point points = 2;
+}
+
+message Label {
+  // The label name.
+  string name = 1;
+
+  // The label value.
+  string value = 2;
+}
+
+// One of the possible data points. The type of the point MUST match with the
+// type from the MetricDescriptor.
+message Point {
+  oneof point {
+    GaugePoint gauge_point = 1;
+    CumulativePoint points = 2;
+  }
+}
+
+// An instantaneous measurement of a value.
+message GaugePoint {
+  // The moment when this gauge point was recorded.
+  google.protobuf.Timestamp timestamp = 1; // required
+
+  // The actual point value.
+  oneof value {
+    // A 64-bit integer.
+    int64 int64_value = 2;
+
+    // A 64-bit double-precision floating-point number.
+    double double_value = 3;
+
+    // TODO: Add support for Summary type.
+  }
+}
+
+// Measurements accumulated over a time interval.
+message CumulativePoint {
+  // This must be the same until an event resets the cumulative value to zero
+  // and sets a new start for the following points.
+  google.protobuf.Timestamp start_time = 1; // required
+
+  // The end timestamp of the accumulated measurement.
+  google.protobuf.Timestamp end_time = 2; // required
+
+  // The actual point value.
+  oneof value {
+    // A 64-bit integer.
+    int64 int64_value = 3;
+
+    // A 64-bit double-precision floating-point number.
+    double double_value = 4;
+
+    // A distribution value.
+    DistributionValue distribution_value = 5;
+  }
+}
+
+// Distribution contains summary statistics for a population of values. It
+// optionally contains a histogram representing the distribution of those
+// values across a set of buckets.
+message DistributionValue {
+  // The number of values in the population. Must be non-negative. This value
+  // must equal the sum of the values in bucket_counts if a histogram is
+  // provided.
+  int64 count = 1;
+
+  // The arithmetic mean of the values in the population. If count is zero
+  // then this field must be zero.
+  double mean = 2;
+
+  // The sum of squared deviations from the mean of the values in the
+  // population. For values x_i this is:
+  //
+  //     Sum[i=1..n]((x_i - mean)^2)
+  //
+  // Knuth, "The Art of Computer Programming", Vol. 2, page 323, 3rd edition
+  // describes Welford's method for accumulating this sum in one pass.
+  //
+  // If count is zero then this field must be zero.
+  double sum_of_squared_deviation = 3;
+
+  // The range of the population values.
+  message Range {
+    // The minimum of the population values.
+    double min = 1;
+
+    // The maximum of the population values.
+    double max = 2;
+  }
+
+  // If specified, contains the range of the population values. The field
+  // must not be present if the count is zero.
+  Range range = 4;
+
+  // A Distribution may optionally contain a histogram of the values in the
+  // population. The bucket boundaries for that histogram are described by
+  // bucket_bounds. This defines size(bucket_bounds) + 1 (= N)
+  // buckets. The boundaries for bucket index i are:
+  //
+  // (-infinity, bucket_bounds[i]) for i == 0
+  // [bucket_bounds[i-1], bucket_bounds[i]) for 0 < i < N-2
+  // [bucket_bounds[i-1], +infinity) for i == N-1
+  //
+  // i.e. an underflow bucket (number 0), zero or more finite buckets (1
+  // through N - 2, and an overflow bucket (N - 1), with inclusive lower
+  // bounds and exclusive upper bounds.
+  //
+  // If bucket_bounds has no elements (zero size), then there is no
+  // histogram associated with the Distribution. If bucket_bounds has only
+  // one element, there are no finite buckets, and that single element is the
+  // common boundary of the overflow and underflow buckets. The values must
+  // be monotonically increasing.
+  repeated double bucket_bounds = 5;
+
+  message Bucket {
+    // The number of values in each bucket of the histogram, as described in
+    // bucket_bounds.
+    int64 count = 1;
+
+    // TODO: Add support for exemplars.
+  }
+
+  // If the distribution does not have a histogram, then omit this field.
+  // If there is a histogram, then the sum of the values in the Bucket counts
+  // must equal the value in the count field of the distribution.
+  repeated Bucket buckets = 6;
+}
