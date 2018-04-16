@@ -1,4 +1,4 @@
-// Copyright 2016-18, OpenCensus Authors
+// Copyright 2018, OpenCensus Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 syntax = "proto3";
 
-package opencensus.proto.metrics;
+package opencensus.proto.stats.metrics;
 
 import "google/protobuf/timestamp.proto";
 
@@ -41,6 +41,7 @@ message MetricPoint {
 
 // Defines a metric type and its schema.
 message MetricDescriptor {
+  // TODO: Add restrictions for characters that can be used.
   // The metric type, including its DNS name prefix. It must be unique.
   string name = 1;
 
@@ -82,6 +83,7 @@ message TimeSeries {
 }
 
 message Label {
+  // TODO: Add restrictions for characters that can be used.
   // The label name.
   string name = 1;
 
@@ -94,7 +96,7 @@ message Label {
 message Point {
   oneof point {
     GaugePoint gauge_point = 1;
-    CumulativePoint points = 2;
+    CumulativePoint cumulative_point = 2;
   }
 }
 
