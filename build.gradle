@@ -8,12 +8,16 @@ repositories {
     maven { url "https://plugins.gradle.org/m2/" }
 }
 
+protobufVersion = '3.5.1'
+protocVersion = '3.5.1'
+protobufGraglePluginVersion = '0.8.5'
+
 buildscript {
     repositories {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.3'
+        classpath "com.google.protobuf:protobuf-gradle-plugin:${protobufGraglePluginVersion}"
     }
 }
 
@@ -28,13 +32,13 @@ sourceSets {
 }
 
 dependencies {
-    compile 'com.google.protobuf:protobuf-java:3.5.0'
+    compile "com.google.protobuf:protobuf-java:${protobufVersion}"
 }
 
 protobuf {
     protoc {
         // The artifact spec for the Protobuf Compiler
-        artifact = 'com.google.protobuf:protoc:3.5.0'
+        artifact = "com.google.protobuf:protoc:${protocVersion}"
     }
 
     generatedFilesBaseDir = "$projectDir/gen_gradle/src"
