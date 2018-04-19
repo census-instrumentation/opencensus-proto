@@ -23,16 +23,16 @@ option java_multiple_files = true;
 option java_package = "io.opencensus.proto.metrics";
 option java_outer_classname = "MetricsProto";
 
-// A collection of MetricPoint's.
-message MetricPointSet {
-  // Each MetricPoint has one or more timeseries for a single metric.
-  repeated MetricPoint metric_points = 1;
+// A collection of Metrics.
+message MetricSet {
+  // Each Metric has one or more timeseries.
+  repeated Metric metrics = 1;
 }
 
-// Defines a MetricPoint which has one or more timeseries for a single metric.
-message MetricPoint {
+// Defines a Metric which has one or more timeseries.
+message Metric {
   // The description of the metric.
-  MetricDescriptor desctriptor = 1;
+  MetricDescriptor metric_descriptor = 1;
 
   // One or more timeseries for a single metric, where each timeseries has
   // one or more points.
@@ -74,30 +74,16 @@ message MetricDescriptor {
 // A collection of data points that describes the time-varying values
 // of a metric.
 message TimeSeries {
-  // The set of label values that uniquely identify this metric. Apply to all
+  // TODO: Add restrictions for characters that can be used for keys and values.
+  // The set of label values that uniquely identify this timeseries. Apply to all
   // points.
-  repeated Label label = 1;
+  map<string, string> label = 1;
 
-  // The data points of this timeseries.
-  repeated Point points = 2;
-}
-
-message Label {
-  // TODO: Add restrictions for characters that can be used.
-  // The label name.
-  string name = 1;
-
-  // The label value.
-  string value = 2;
-}
-
-// One of the possible data points. The type of the point MUST match with the
-// type from the MetricDescriptor.
-message Point {
-  oneof point {
-    GaugePoint gauge_point = 1;
-    CumulativePoint cumulative_point = 2;
-  }
+  // The data points of this timeseries. Point type MUST match the MetricDescriptor.type, so for
+  // a CUMULATIVE type only cumulative_points are present and for a GAUGE type only gauge_points
+  // are present.
+  repeated GaugePoint gauge_points = 2;
+  repeated CumulativePoint cumulative_points = 3;
 }
 
 // An instantaneous measurement of a value.
