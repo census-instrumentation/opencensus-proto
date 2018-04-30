@@ -53,6 +53,7 @@
           <protoSourceRoot>.</protoSourceRoot>
 	        <includes>
             <include>opencensus/proto/stats/*.proto</include>
+            <include>opencensus/proto/stats/metrics/*.proto</include>
             <include>opencensus/proto/trace/*.proto</include>
 	        </includes>
         </configuration>
