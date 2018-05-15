@@ -17,6 +17,7 @@ syntax = "proto3";
 package opencensus.proto.stats.metrics;
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
 
 option go_package = "metricsproto";
 option java_multiple_files = true;
@@ -82,7 +83,7 @@ message TimeSeries {
   // The set of label values that uniquely identify this timeseries. Apply to all
   // points. The order of label values must match that of label keys in the
   // metric descriptor.
-  repeated string label_values = 1;
+  repeated google.protobuf.StringValue label_values = 1;
 
   // The data points of this timeseries. Point type MUST match the MetricDescriptor.type, so for
   // a CUMULATIVE type only cumulative_points are present and for a GAUGE type only gauge_points
