@@ -70,8 +70,7 @@ message MetricDescriptor {
   Type type = 4;
 
   // TODO: Consider to add LabelInfo{key, description} if needed.
-  // The label keys associated with the metric descriptor. Label keys must be
-  // unique and in sorted order.
+  // The label keys associated with the metric descriptor.
   repeated string label_keys = 5;
 }
 
