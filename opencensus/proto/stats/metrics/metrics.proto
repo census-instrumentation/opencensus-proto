@@ -79,7 +79,6 @@ message MetricDescriptor {
 // of a metric.
 message TimeSeries {
   // TODO: Add restrictions for characters that can be used for keys and values.
-  // TODO: Wrap values to distinguish between empty-string and not-set.
   // The set of label values that uniquely identify this timeseries. Apply to all
   // points. The order of label values must match that of label keys in the
   // metric descriptor.
