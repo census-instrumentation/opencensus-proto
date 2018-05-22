@@ -12,6 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// This package describes the Metrics data model. It is currently experimental
+// but may eventually become the wire format for metrics. Please see
+// https://github.com/census-instrumentation/opencensus-specs/blob/master/stats/Metrics.md
+// for more details.
+
 syntax = "proto3";
 
 package opencensus.proto.stats.metrics;
@@ -23,7 +28,7 @@ option java_multiple_files = true;
 option java_package = "io.opencensus.proto.metrics";
 option java_outer_classname = "MetricsProto";
 
-// A collection of Metrics.
+// A collection of Metrics, used for batching.
 message MetricSet {
   // Each Metric has one or more timeseries.
   repeated Metric metrics = 1;
@@ -31,7 +36,10 @@ message MetricSet {
 
 // Defines a Metric which has one or more timeseries.
 message Metric {
-  // The description of the metric.
+  // The definition of the Metric. For now, we send the full MetricDescriptor
+  // every time in order to keep the protocol stateless, but this is one of the
+  // places where we can make future changes to make the protocol more
+  // efficient.
   MetricDescriptor metric_descriptor = 1;
 
   // One or more timeseries for a single metric, where each timeseries has
@@ -41,7 +49,6 @@ message Metric {
 
 // Defines a metric type and its schema.
 message MetricDescriptor {
-  // TODO: Add restrictions for characters that can be used.
   // The metric type, including its DNS name prefix. It must be unique.
   string name = 1;
 
@@ -103,7 +110,10 @@ message GaugePoint {
     // A 64-bit double-precision floating-point number.
     double double_value = 3;
 
-    // TODO: Add support for Summary type.
+    // TODO: Add support for Summary type. This is an aggregation that produces
+    // percentiles directly.
+    //
+    // See also: https://prometheus.io/docs/concepts/metric_types/#summary
   }
 }
 
