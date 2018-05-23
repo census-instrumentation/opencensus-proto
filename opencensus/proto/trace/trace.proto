@@ -17,6 +17,7 @@ syntax = "proto3";
 package opencensus.proto.trace;
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
 
 option java_multiple_files = true;
@@ -35,6 +36,7 @@ option go_package = "traceproto";
 // The next id is 15.
 // TODO(bdrutu): Add an example.
 message Span {
+  reserved 6 /*end_time*/;
   // A unique identifier for a trace. All spans from the same trace share
   // the same `trace_id`. The ID is a 16-byte array.
   //
@@ -86,10 +88,11 @@ message Span {
   // is the time when the server's application handler starts running.
   google.protobuf.Timestamp start_time = 5;
 
-  // The end time of the span. On the client side, this is the time kept by
-  // the local machine where the span execution ends. On the server side, this
-  // is the time when the server application handler stops running.
-  google.protobuf.Timestamp end_time = 6;
+  // The duration of the span. On the client side, this is the time kept by
+  // the local machine from start_time until the span execution ends. On the server
+  // side, this is the duration between the start_time and when the server
+  // application handler stops running.
+  google.protobuf.Duration duration = 14;
 
   // A set of attributes, each with a key and a value.
   message Attributes {
@@ -270,6 +273,8 @@ message AttributeValue {
     int64 int_value = 2;
     // A Boolean value represented by `true` or `false`.
     bool bool_value = 3;
+    // A 64-bit floating pooint value.
+    double float_value = 4;
   }
 }
 
