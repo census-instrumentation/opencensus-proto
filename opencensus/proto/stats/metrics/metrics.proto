@@ -83,18 +83,24 @@ message MetricDescriptor {
 // A collection of data points that describes the time-varying values
 // of a metric.
 message TimeSeries {
-  // TODO: Wrap values to distinguish between empty-string and unset.
   // TODO: Add restrictions for characters that can be used for keys and values.
   // The set of label values that uniquely identify this timeseries. Apply to all
   // points. The order of label values must match that of label keys in the
   // metric descriptor.
-  repeated string label_values = 1;
+  repeated LabelValue label_values = 1;
 
   // The data points of this timeseries. Point type MUST match the MetricDescriptor.type, so for
   // a CUMULATIVE type only cumulative_points are present and for a GAUGE type only gauge_points
   // are present.
   repeated GaugePoint gauge_points = 2;
   repeated CumulativePoint cumulative_points = 3;
+}
+
+message LabelValue {
+  // The value for the label.
+  string value = 1;
+  // If false the value field is ignored and considered not set.
+  bool has_value = 2;
 }
 
 // An instantaneous measurement of a value.
