@@ -39,3 +39,33 @@ http_archive(
     strip_prefix = "protobuf-3.5.1",
     urls = ["https://github.com/google/protobuf/archive/v3.5.1.tar.gz"],
 )
+
+http_archive(
+    name = "io_bazel_rules_go",
+    url = "https://github.com/bazelbuild/rules_go/releases/download/0.12.0/rules_go-0.12.0.tar.gz",
+    sha256 = "c1f52b8789218bb1542ed362c4f7de7052abcf254d865d96fb7ba6d44bc15ee3",
+)
+
+http_archive(
+    name = "bazel_gazelle",
+    url = "https://github.com/bazelbuild/bazel-gazelle/releases/download/0.12.0/bazel-gazelle-0.12.0.tar.gz",
+    sha256 = "ddedc7aaeb61f2654d7d7d4fd7940052ea992ccdb031b8f9797ed143ac7e8d43",
+)
+
+load("@io_bazel_rules_go//go:def.bzl",
+    "go_download_sdk",
+    "go_register_toolchains",
+    "go_rules_dependencies",
+)
+
+go_rules_dependencies()
+
+go_download_sdk(
+    name = "go_sdk",
+    sdks = {
+        "darwin_amd64": ("go1.10beta1.darwin-amd64.tar.gz", "8c2a4743359f4b14bcfaf27f12567e3cbfafc809ed5825a2238c0ba45db3a8b4"),
+        "linux_amd64":  ("go1.10beta1.linux-amd64.tar.gz", "ec7a10b5bf147a8e06cf64e27384ff3c6d065c74ebd8fdd31f572714f74a1055"),
+    },
+)
+
+go_register_toolchains()
