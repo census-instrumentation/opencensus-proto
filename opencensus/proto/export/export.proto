@@ -22,7 +22,8 @@ option go_package = "github.com/census-instrumentation/opencensus-proto/gen-go/e
 
 package export;
 
-import "opencensus/proto/trace/trace.proto";
+import "trace/trace.proto";
+import "stats/metrics/metrics.proto";
 
 service ExportService {
   rpc Export (ExportRequest) returns (ExportResponse) {}
@@ -30,6 +31,8 @@ service ExportService {
 
 message ExportRequest {
   repeated opencensus.proto.trace.Span spans = 1;
+
+  opencensus.proto.stats.metrics.MetricSet metric_set = 2;
 }
 
 message ExportResponse {
