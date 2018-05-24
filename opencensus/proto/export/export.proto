@@ -18,7 +18,7 @@ option java_multiple_files = true;
 option java_package = "io.opencensus.export";
 option java_outer_classname = "ExportProto";
 
-option go_package = "exportproto";
+option go_package = "github.com/census-instrumentation/opencensus-proto/gen-go/exportproto";
 
 package export;
 
