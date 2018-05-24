@@ -14,8 +14,6 @@
 
 package(default_visibility = ["//visibility:public"])
 
-load("@io_bazel_rules_go//go:def.bzl", "go_rules_dependencies", "go_register_toolchains")
-
 proto_library(
     name = "export_proto",
     srcs = ["export.proto"],

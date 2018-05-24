@@ -32,3 +32,12 @@ java_proto_library(
     name = "trace_proto_java",
     deps = [":trace_proto"],
 )
+
+load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
+
+go_proto_library(
+    name = "trace_proto_go",
+    importpath = "github.com/census-instrumentation/opencensus-proto/gen-go/traceproto",
+    proto = ":trace_proto",
+    visibility = ["//visibility:public"],
+)
