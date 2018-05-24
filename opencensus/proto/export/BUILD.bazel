@@ -21,19 +21,7 @@ load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
 proto_library(
     name = "exportproto_proto",
     srcs = ["export.proto"],
-    deps = ["//opencensus/proto/trace:trace_proto"],
-)
-
-cc_proto_library(
-    name = "export_proto_cc",
-    with_grpc = True,
-    deps = [":exportproto_proto"],
-)
-
-java_proto_library(
-    name = "export_proto_java",
-    with_grpc = True,
-    deps = [":exportproto_proto"],
+    deps = ["//opencensus/proto/trace:traceproto_proto"],
 )
 
 go_library(
@@ -47,7 +35,6 @@ go_proto_library(
     compilers = ["@io_bazel_rules_go//proto:go_grpc"],
     importpath = "github.com/census-instrumentation/opencensus-proto/gen-go/exportproto",
     proto = ":exportproto_proto",
-    with_grpc = True,
     visibility = ["//visibility:public"],
     deps = ["//opencensus/proto/trace:trace_proto_go"],
 )
