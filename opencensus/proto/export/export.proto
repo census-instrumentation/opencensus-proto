@@ -11,9 +11,29 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
 
-// Package statsproto contains generated Protobuf code for OpenCensus stats.
-package statsproto
+syntax = "proto3";
 
-//go:generate protoc -I ../../opencensus/proto/stats --go_out=. stats.proto
+option java_multiple_files = true;
+option java_package = "io.opencensus.export";
+option java_outer_classname = "ExportProto";
+
+option go_package = "github.com/census-instrumentation/opencensus-proto/gen-go/exportproto";
+
+package export;
+
+import "trace/trace.proto";
+import "stats/metrics/metrics.proto";
+
+service ExportService {
+  rpc Export (ExportRequest) returns (ExportResponse) {}
+}
+
+message ExportRequest {
+  repeated opencensus.proto.trace.Span spans = 1;
+
+  opencensus.proto.stats.metrics.MetricSet metric_set = 2;
+}
+
+message ExportResponse {
+}
