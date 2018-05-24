@@ -1,3 +1,5 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
 # Copyright 2017, OpenCensus Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +16,10 @@
 
 package(default_visibility = ["//visibility:public"])
 
+load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
+
 proto_library(
-    name = "trace_proto",
+    name = "traceproto_proto",
     srcs = ["trace.proto"],
     deps = [
         "@com_google_protobuf//:timestamp_proto",
@@ -25,19 +29,23 @@ proto_library(
 
 cc_proto_library(
     name = "trace_proto_cc",
-    deps = [":trace_proto"],
+    deps = [":traceproto_proto"],
 )
 
 java_proto_library(
     name = "trace_proto_java",
-    deps = [":trace_proto"],
+    deps = [":traceproto_proto"],
 )
-
-load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
 
 go_proto_library(
     name = "trace_proto_go",
     importpath = "github.com/census-instrumentation/opencensus-proto/gen-go/traceproto",
-    proto = ":trace_proto",
+    proto = ":traceproto_proto",
     visibility = ["//visibility:public"],
+)
+
+go_library(
+    name = "go_default_library",
+    embed = [":trace_proto_go"],
+    importpath = "github.com/census-instrumentation/opencensus-proto/gen-go/traceproto",
 )
