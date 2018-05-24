@@ -25,7 +25,7 @@ package export;
 import "trace/trace.proto";
 import "stats/metrics/metrics.proto";
 
-service ExportService {
+service Export {
   rpc Export (ExportRequest) returns (ExportResponse) {}
 }
 
