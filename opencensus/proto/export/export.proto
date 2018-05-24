@@ -32,7 +32,7 @@ service ExportService {
 message ExportRequest {
   repeated opencensus.proto.trace.Span spans = 1;
 
-  opencensus.proto.stats.metrics.MetricSet metric_set = 2;
+  repeated opencensus.proto.stats.metrics.Metric metrics = 2;
 }
 
 message ExportResponse {
