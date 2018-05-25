@@ -22,8 +22,8 @@ option go_package = "github.com/census-instrumentation/opencensus-proto/gen-go/e
 
 package export;
 
-import "trace/trace.proto";
-import "stats/metrics/metrics.proto";
+import "opencensus/proto/trace/trace.proto";
+import "opencensus/proto/stats/metrics/metrics.proto";
 
 service Export {
   rpc Export (ExportRequest) returns (ExportResponse) {}

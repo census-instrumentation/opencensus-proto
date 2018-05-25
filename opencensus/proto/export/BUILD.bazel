@@ -18,8 +18,8 @@ proto_library(
     name = "export_proto",
     srcs = ["export.proto"],
     deps = [
-        "@com_google_protobuf//:duration_proto",
-        "@com_google_protobuf//:timestamp_proto",
+        "//opencensus/proto/trace:trace_proto",
+        "//opencensus/proto/stats/metrics:metrics_proto"
     ],
 )
 
