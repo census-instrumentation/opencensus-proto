@@ -14,16 +14,16 @@
 
 syntax = "proto3";
 
+package opencensus.proto.export;
+
+import "opencensus/proto/trace/trace.proto";
+import "opencensus/proto/stats/metrics/metrics.proto";
+
 option java_multiple_files = true;
 option java_package = "io.opencensus.export";
 option java_outer_classname = "ExportProto";
 
 option go_package = "github.com/census-instrumentation/opencensus-proto/gen-go/exportproto";
-
-package export;
-
-import "opencensus/proto/trace/trace.proto";
-import "opencensus/proto/stats/metrics/metrics.proto";
 
 service Export {
   rpc Export (ExportRequest) returns (ExportResponse) {}
