@@ -25,15 +25,21 @@ option java_outer_classname = "ExporterProto";
 
 option go_package = "github.com/census-instrumentation/opencensus-proto/gen-go/exporterproto";
 
-service Export {
-  rpc Export (ExportRequest) returns (ExportResponse) {}
-}
-
-message ExportRequest {
+message ExportSpanRequest {
   repeated opencensus.proto.trace.Span spans = 1;
-
-  repeated opencensus.proto.stats.metrics.Metric metrics = 2;
 }
 
-message ExportResponse {
+message ExportSpanResponse {
+}
+
+message ExportMetricsRequest {
+  repeated opencensus.proto.stats.metrics.Metric metrics = 1;
+}
+
+message ExportMetricsResponse {
+}
+
+service Export {
+  rpc ExportSpan (stream ExportSpanRequest) returns (stream ExportSpanResponse) {}
+  rpc ExportMetrics (stream ExportMetricsRequest) returns (stream ExportMetricsResponse) {}
 }
