@@ -3,6 +3,11 @@
 # Run this if opencensus-proto is checked in the GOPATH.
 # go get -d github.com/census-instrumentation/opencensus-proto
 # to check in the repo to the GOAPTH.
+#
+# To generate:
+#
+# cd $(go env GOPATH)/census-instrumentation/opencensus-proto
+# ./mkgogen.sh
 
 OUTDIR="$(go env GOPATH)/src"
 
