@@ -14,6 +14,9 @@
 
 syntax = "proto3";
 
+// NOTE: This proto is experimental and is subject to change at this point.
+// Please do not use it at the moment.
+
 package opencensus.proto.exporter;
 
 import "opencensus/proto/trace/trace.proto";
