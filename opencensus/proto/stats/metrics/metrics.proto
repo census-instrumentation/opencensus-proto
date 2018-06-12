@@ -232,11 +232,30 @@ message DistributionValue {
     // The observation (sampling) time of the above value.
     google.protobuf.Timestamp timestamp = 2;
 
-    // The trace id associated with the example value.
-    bytes trace_id = 3;
+    // The context of a span to be attached to Exemplar.
+    message SpanContext {
 
-    // The span id associated with the example value.
-    bytes span_id = 4;
+      // The resource name of the span.
+      string span_name = 1;
+    }
+
+    // A set of (label, value) pairs which were dropped during aggregation,
+    // attached to Exemplar.
+    message DroppedLabels {
+
+      // A set of (label, value) pairs.
+      map<string, string> label = 1;
+    }
+
+    // Contextual information about the example value.
+    oneof attachment {
+
+      // A span context attachment.
+      SpanContext span_context = 3;
+
+      // A dropped labels attachment.
+      DroppedLabels dropped_labels = 4;
+    }
   }
 
   // If the distribution does not have a histogram, then omit this field.
