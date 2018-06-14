@@ -64,7 +64,7 @@ message MetricDescriptor {
   //
   // A gauge is an instantaneous measurement of a value.
   //
-  // A cumulative measurements is a value accumulated over a time interval. In
+  // A cumulative measurement is a value accumulated over a time interval. In
   // a time series, cumulative measurements should have the same start time and
   // increasing end times, until an event resets the cumulative value to zero
   // and sets a new start time for the following points.
