@@ -235,8 +235,13 @@ message DistributionValue {
     // The context of a span to be attached to Exemplar.
     message SpanContext {
 
-      // The resource name of the span.
-      string span_name = 1;
+      // A unique identifier for a trace showing this exemplar.
+      // It is a 32-character hexadecimal encoding of a 16-byte array.
+      bytes trace_id = 1;
+
+      // A unique identifier for a span showing this exemplar.
+      // It is a 16-character hexadecimal encoding of an 8-byte array.
+      bytes span_id = 2;
     }
 
     // A set of (label, value) pairs which were dropped during aggregation,
