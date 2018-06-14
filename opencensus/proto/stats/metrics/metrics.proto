@@ -222,6 +222,9 @@ message DistributionValue {
   // one element, there are no finite buckets, and that single element is the
   // common boundary of the overflow and underflow buckets. The values must
   // be monotonically increasing.
+  //
+  // Don't change bucket boundaries within a timeseries if your backend
+  // doesn't support this.
   repeated double bucket_bounds = 5;
 
   message Bucket {
