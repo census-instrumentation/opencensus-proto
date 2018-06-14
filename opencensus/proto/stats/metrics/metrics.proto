@@ -94,9 +94,8 @@ message LabelKey {
 // A collection of data points that describes the time-varying values
 // of a gauge metric.
 message GaugeTimeSeries {
-  // TODO: Add restrictions for characters that can be used for keys and values.
-  // The set of label values that uniquely identify this timeseries. Apply to all
-  // points. The order of label values must match that of label keys in the
+  // The set of label values that uniquely identify this timeseries. Applies to
+  // all points. The order of label values must match that of label keys in the
   // metric descriptor.
   repeated LabelValue label_values = 1;
 
@@ -110,9 +109,8 @@ message CumulativeTimeSeries {
   // The time that the cumulative value was reset to zero.
   google.protobuf.Timestamp start_time = 1; // required
 
-  // TODO: Add restrictions for characters that can be used for keys and values.
-  // The set of label values that uniquely identify this timeseries. Apply to all
-  // points. The order of label values must match that of label keys in the
+  // The set of label values that uniquely identify this timeseries. Applies to
+  // all points. The order of label values must match that of label keys in the
   // metric descriptor.
   repeated LabelValue label_values = 2;
 
