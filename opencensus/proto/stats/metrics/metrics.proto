@@ -227,7 +227,7 @@ message DistributionValue {
   // particular value added to a Distribution bucket.
   message Exemplar {
     // Value of the exemplar point.
-    int64 value = 1;
+    double value = 1;
 
     // The observation (sampling) time of the above value.
     google.protobuf.Timestamp timestamp = 2;
