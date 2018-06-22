@@ -21,6 +21,7 @@ syntax = "proto3";
 
 package opencensus.proto.stats.metrics;
 
+import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
 
 option go_package = "github.com/census-instrumentation/opencensus-proto/gen-go/statsproto/metricsproto";
@@ -232,35 +233,8 @@ message DistributionValue {
     // The observation (sampling) time of the above value.
     google.protobuf.Timestamp timestamp = 2;
 
-    // The context of a span to be attached to Exemplar.
-    message SpanContext {
-
-      // A unique identifier for a trace showing this exemplar.
-      // It is a 16-byte array.
-      bytes trace_id = 1;
-
-      // A unique identifier for a span showing this exemplar.
-      // It is an 8-byte array.
-      bytes span_id = 2;
-    }
-
-    // A set of (label, value) pairs which were dropped during aggregation,
-    // attached to Exemplar.
-    message DroppedLabels {
-
-      // A set of (label, value) pairs.
-      map<string, string> label = 1;
-    }
-
     // Contextual information about the example value.
-    oneof attachment {
-
-      // A span context attachment.
-      SpanContext span_context = 3;
-
-      // A dropped labels attachment.
-      DroppedLabels dropped_labels = 4;
-    }
+    repeated google.protobuf.Any attachments = 3;
   }
 
   // If the distribution does not have a histogram, then omit this field.
