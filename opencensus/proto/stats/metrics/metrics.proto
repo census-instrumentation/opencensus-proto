@@ -226,7 +226,8 @@ message DistributionValue {
   // Distribution values. They are metadata that gives information about a
   // particular value added to a Distribution bucket.
   message Exemplar {
-    // Value of the exemplar point.
+    // Value of the exemplar point. It determines which bucket the exemplar
+    // belongs to.
     double value = 1;
 
     // The observation (sampling) time of the above value.
