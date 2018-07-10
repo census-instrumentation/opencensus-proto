@@ -29,12 +29,6 @@ option java_multiple_files = true;
 option java_package = "io.opencensus.proto.metrics";
 option java_outer_classname = "MetricsProto";
 
-// A collection of Metrics, used for batching.
-message MetricSet {
-  // Each Metric has one or more timeseries.
-  repeated Metric metrics = 1;
-}
-
 // Defines a Metric which has one or more timeseries.
 message Metric {
   // The definition of the Metric. For now, we send the full MetricDescriptor
