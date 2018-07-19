@@ -12,6 +12,6 @@
 OUTDIR="$(go env GOPATH)/src"
 
 protoc --go_out=plugins=grpc:$OUTDIR opencensus/proto/stats/stats.proto \
-    && protoc --go_out=plugins=grpc:$OUTDIR opencensus/proto/stats/metrics/metrics.proto \
+    && protoc --go_out=plugins=grpc:$OUTDIR opencensus/proto/metrics/metrics.proto \
     && protoc --go_out=plugins=grpc:$OUTDIR opencensus/proto/trace/trace.proto \
     && protoc -I=. --go_out=plugins=grpc:$OUTDIR opencensus/proto/exporter/exporter.proto
