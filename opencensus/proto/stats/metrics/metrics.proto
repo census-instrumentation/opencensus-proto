@@ -180,19 +180,6 @@ message DistributionValue {
   // If count is zero then this field must be zero.
   double sum_of_squared_deviation = 3;
 
-  // The range of the population values.
-  message Range {
-    // The minimum of the population values.
-    double min = 1;
-
-    // The maximum of the population values.
-    double max = 2;
-  }
-
-  // If specified, contains the range of the population values. The field
-  // must not be present if the count is zero.
-  Range range = 4;
-
   // A Distribution may optionally contain a histogram of the values in the
   // population. The bucket boundaries for that histogram are described by
   // bucket_bounds. This defines size(bucket_bounds) + 1 (= N)
@@ -214,7 +201,7 @@ message DistributionValue {
   //
   // Don't change bucket boundaries within a timeseries if your backend
   // doesn't support this.
-  repeated double bucket_bounds = 5;
+  repeated double bucket_bounds = 4;
 
   message Bucket {
     // The number of values in each bucket of the histogram, as described in
@@ -225,7 +212,7 @@ message DistributionValue {
   // If the distribution does not have a histogram, then omit this field.
   // If there is a histogram, then the sum of the values in the Bucket counts
   // must equal the value in the count field of the distribution.
-  repeated Bucket buckets = 6;
+  repeated Bucket buckets = 5;
 
   // Exemplars are example points that may be used to annotate aggregated
   // Distribution values. They are metadata that gives information about a
@@ -243,5 +230,5 @@ message DistributionValue {
   }
 
   // If the distribution does not have a histogram, then omit this field.
-  repeated Exemplar exemplars = 7;
+  repeated Exemplar exemplars = 6;
 }
