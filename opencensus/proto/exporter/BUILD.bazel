@@ -19,7 +19,7 @@ proto_library(
     srcs = ["exporter.proto"],
     deps = [
         "//opencensus/proto/trace:trace_proto",
-        "//opencensus/proto/stats/metrics:metrics_proto"
+        "//opencensus/proto/metrics:metrics_proto"
     ],
 )
 
