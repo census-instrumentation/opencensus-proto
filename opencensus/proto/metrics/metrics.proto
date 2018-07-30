@@ -207,6 +207,9 @@ message DistributionValue {
     // The number of values in each bucket of the histogram, as described in
     // bucket_bounds.
     int64 count = 1;
+
+    // If the distribution does not have a histogram, then omit this field.
+    Exemplar exemplars = 2;
   }
 
   // If the distribution does not have a histogram, then omit this field.
@@ -228,7 +231,4 @@ message DistributionValue {
     // Contextual information about the example value.
     map<string, string> attachments = 3;
   }
-
-  // If the distribution does not have a histogram, then omit this field.
-  repeated Exemplar exemplars = 6;
 }
