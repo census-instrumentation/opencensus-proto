@@ -209,7 +209,7 @@ message DistributionValue {
     int64 count = 1;
 
     // If the distribution does not have a histogram, then omit this field.
-    Exemplar exemplars = 2;
+    Exemplar exemplar = 2;
   }
 
   // If the distribution does not have a histogram, then omit this field.
