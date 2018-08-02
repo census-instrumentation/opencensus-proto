@@ -119,9 +119,10 @@ message LabelValue {
 
 // A timestamped measurement.
 message Point {
-  // Available only for cumulative metrics. The time when the cumulative value
+  // Must be present for cumulative metrics. The time when the cumulative value
   // was reset to zero. The cumulative value is over the time interval
-  // [start_timestamp, timestamp].
+  // [start_timestamp, timestamp]. If not specified, the backend can use the
+  // previous recorded value.
   google.protobuf.Timestamp start_timestamp = 1;
 
   // The moment when this point was recorded. If not specified, the timestamp
