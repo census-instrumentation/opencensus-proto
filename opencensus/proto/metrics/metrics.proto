@@ -38,10 +38,8 @@ message Metric {
   MetricDescriptor metric_descriptor = 1;
 
   // One or more timeseries for a single metric, where each timeseries has
-  // one or more points. The type of the timeseries must match
-  // metric_descriptor.type, so only one of the two should be populated.
-  repeated GaugeTimeSeries gauge_timeseries = 2;
-  repeated CumulativeTimeSeries cumulative_timeseries = 3;
+  // one or more points.
+  repeated TimeSeries timeseries = 2;
 }
 
 // Defines a metric type and its schema.
@@ -99,29 +97,21 @@ message LabelKey {
 }
 
 // A collection of data points that describes the time-varying values
-// of a gauge metric.
-message GaugeTimeSeries {
-  // The set of label values that uniquely identify this timeseries. Applies to
-  // all points. The order of label values must match that of label keys in the
-  // metric descriptor.
-  repeated LabelValue label_values = 1;
-
-  // The data points of this timeseries. Point type MUST match the MetricDescriptor.type.
-  repeated Point points = 2;
-}
-
-// A collection of data points that describes the time-varying values
-// of a cumulative metric.
-message CumulativeTimeSeries {
-  // The time that the cumulative value was reset to zero.
-  google.protobuf.Timestamp start_time = 1; // required
+// of a metric.
+message TimeSeries {
+  // Must be present for cumulative metrics. The time when the cumulative value
+  // was reset to zero. The cumulative value is over the time interval
+  // [start_timestamp, timestamp]. If not specified, the backend can use the
+  // previous recorded value.
+  google.protobuf.Timestamp start_timestamp = 1;
 
   // The set of label values that uniquely identify this timeseries. Applies to
   // all points. The order of label values must match that of label keys in the
   // metric descriptor.
   repeated LabelValue label_values = 2;
 
-  // The data points of this timeseries. Point type MUST match the MetricDescriptor.type.
+  // The data points of this timeseries. Point.value type MUST match the
+  // MetricDescriptor.type.
   repeated Point points = 3;
 }
 
@@ -135,8 +125,9 @@ message LabelValue {
 
 // A timestamped measurement.
 message Point {
-  // The moment when this point was recorded.
-  google.protobuf.Timestamp timestamp = 1; // required
+  // The moment when this point was recorded. If not specified, the timestamp
+  // will be decided by the backend.
+  google.protobuf.Timestamp timestamp = 1;
 
   // The actual point value.
   oneof value {
