@@ -78,8 +78,8 @@ message MetricDescriptor {
     // Floating point cumulative measurement.
     CUMULATIVE_DOUBLE = 4;
 
-    // Distribution cumulative measurement.
-    CUMULATIVE_DISTRIBUTION = 5;
+    // Histogram cumulative measurement.
+    CUMULATIVE_HISTOGRAM = 5;
   }
   Type type = 4;
 
@@ -137,8 +137,8 @@ message Point {
     // A 64-bit double-precision floating-point number.
     double double_value = 3;
 
-    // A distribution value.
-    DistributionValue distribution_value = 4;
+    // A histogram value.
+    HistogramValue histogram_value = 4;
 
     // TODO: Add support for Summary type. This is an aggregation that produces
     // percentiles directly.
@@ -147,13 +147,10 @@ message Point {
   }
 }
 
-// Distribution contains summary statistics for a population of values. It
-// optionally contains a histogram representing the distribution of those
-// values across a set of buckets.
-message DistributionValue {
+// Histogram contains summary statistics for a population of values.
+message HistogramValue {
   // The number of values in the population. Must be non-negative. This value
-  // must equal the sum of the values in bucket_counts if a histogram is
-  // provided.
+  // must equal the sum of the values in "Bucket.count".
   int64 count = 1;
 
   // The arithmetic mean of the values in the population. If count is zero
@@ -171,10 +168,9 @@ message DistributionValue {
   // If count is zero then this field must be zero.
   double sum_of_squared_deviation = 3;
 
-  // A Distribution may optionally contain a histogram of the values in the
-  // population. The bucket boundaries for that histogram are described by
-  // bucket_bounds. This defines size(bucket_bounds) + 1 (= N)
-  // buckets. The boundaries for bucket index i are:
+  // The bucket boundaries for the histogram are described by bucket_bounds.
+  // This defines size(bucket_bounds) + 1 (= N) buckets. The boundaries for
+  // bucket index i are:
   //
   // (-infinity, bucket_bounds[i]) for i == 0
   // [bucket_bounds[i-1], bucket_bounds[i]) for 0 < i < N-2
@@ -184,13 +180,11 @@ message DistributionValue {
   // through N - 2, and an overflow bucket (N - 1), with inclusive lower
   // bounds and exclusive upper bounds.
   //
-  // If bucket_bounds has no elements (zero size), then there is no
-  // histogram associated with the Distribution. If bucket_bounds has only
-  // one element, there are no finite buckets, and that single element is the
-  // common boundary of the overflow and underflow buckets. The values must
-  // be monotonically increasing.
+  // If bucket_bounds has only one element, there are no finite buckets, and
+  // that single element is the common boundary of the overflow and underflow
+  // buckets. The values must be monotonically increasing.
   //
-  // Don't change bucket boundaries within a timeseries if your backend
+  // Don't change bucket boundaries within a TimeSeries if your backend
   // doesn't support this.
   repeated double bucket_bounds = 4;
 
@@ -199,18 +193,17 @@ message DistributionValue {
     // bucket_bounds.
     int64 count = 1;
 
-    // If the distribution does not have a histogram, then omit this field.
+    // Example points that may be used to annotate aggregated Histogram values.
     Exemplar exemplar = 2;
   }
 
-  // If the distribution does not have a histogram, then omit this field.
-  // If there is a histogram, then the sum of the values in the Bucket counts
-  // must equal the value in the count field of the distribution.
+  // The sum of the values in the Bucket counts must equal the value in the
+  // count field of the histogram.
   repeated Bucket buckets = 5;
 
   // Exemplars are example points that may be used to annotate aggregated
-  // Distribution values. They are metadata that gives information about a
-  // particular value added to a Distribution bucket.
+  // Histogram values. They are metadata that gives information about a
+  // particular value added to a Histogram bucket.
   message Exemplar {
     // Value of the exemplar point. It determines which bucket the exemplar
     // belongs to.
