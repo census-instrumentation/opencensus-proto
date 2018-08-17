@@ -180,6 +180,10 @@ message HistogramValue {
   // through N - 2, and an overflow bucket (N - 1), with inclusive lower
   // bounds and exclusive upper bounds.
   //
+  // If bucket_bounds has no elements (zero size), then there are no buckets
+  // associated with the Histogram (only the summary fields will be sent count
+  // and mean).
+  //
   // If bucket_bounds has only one element, there are no finite buckets, and
   // that single element is the common boundary of the overflow and underflow
   // buckets. The values must be monotonically increasing.
