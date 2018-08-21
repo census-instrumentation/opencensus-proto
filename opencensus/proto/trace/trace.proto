@@ -32,7 +32,7 @@ option go_package = "github.com/census-instrumentation/opencensus-proto/gen-go/t
 // or none at all. Spans do not need to be contiguous - there may be
 // gaps or overlaps between spans in a trace.
 //
-// The next id is 15.
+// The next id is 16.
 // TODO(bdrutu): Add an example.
 message Span {
   // A unique identifier for a trace. All spans from the same trace share
@@ -46,6 +46,23 @@ message Span {
   //
   // This field is required.
   bytes span_id = 2;
+
+  // The `tracestate` field conveys information about request position in multiple distributed
+  // tracing graphs.
+  //
+  // There can be a maximum of 32 members in the map.
+  //
+  // The key must begin with a lowercase letter, and can only contain lowercase letters 'a'-'z',
+  // digits '0'-'9', underscores '_', dashes '-', asterisks '*', and forward slashes '/'. For
+  // multi-tenant vendors scenarios '@' sign can be used to prefix vendor name. The maximum length
+  // for the key is 256 characters.
+  //
+  // The value is opaque string up to 256 characters printable ASCII RFC0020 characters (i.e., the
+  // range 0x20 to 0x7E) except ',' and '='. Note that this also excludes tabs, newlines, carriage
+  // returns, etc.
+  //
+  // See the https://github.com/w3c/distributed-tracing for more details about this field.
+  map<string, string> tracestate = 15;
 
   // The `span_id` of this span's parent span. If this is a root span, then this
   // field must be empty. The ID is an 8-byte array.
