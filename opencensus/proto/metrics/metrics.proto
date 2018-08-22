@@ -81,7 +81,8 @@ message MetricDescriptor {
     // resets then the start_time should also be reset.
     COUNTER_DOUBLE = 4;
 
-    // Distribution cumulative measurement.
+    // Distribution cumulative measurement. The count can only go up, if resets
+    // then the start_time should also be reset.
     CUMULATIVE_DISTRIBUTION = 5;
   }
   Type type = 4;
