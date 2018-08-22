@@ -75,11 +75,11 @@ message MetricDescriptor {
 
     // Integer cumulative measurement. The value can only go up, if resets then
     // the start_time should also be reset.
-    COUNTER_INT64 = 3;
+    CUMULATIVE_INT64 = 3;
 
     // Floating point cumulative measurement. The value can only go up, if
     // resets then the start_time should also be reset.
-    COUNTER_DOUBLE = 4;
+    CUMULATIVE_DOUBLE = 4;
 
     // Distribution cumulative measurement. The count can only go up, if resets
     // then the start_time should also be reset.
