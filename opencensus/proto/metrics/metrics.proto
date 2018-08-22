@@ -59,24 +59,27 @@ message MetricDescriptor {
   // A gauge is an instantaneous measurement of a value.
   //
   // A cumulative measurement is a value accumulated over a time interval. In
-  // a time series, cumulative measurements should have the same start time and
-  // increasing end times, until an event resets the cumulative value to zero
-  // and sets a new start time for the following points.
+  // a time series, cumulative measurements should have the same start time,
+  // increasing values and increasing end times, until an event resets the
+  // cumulative value to zero and sets a new start time for the following
+  // points.
   enum Type {
     // Do not use this default value.
     UNSPECIFIED = 0;
 
-    // Integer gauge.
+    // Integer gauge. The value can go both up and down.
     GAUGE_INT64 = 1;
 
-    // Floating point gauge.
+    // Floating point gauge. The value can go both up and down.
     GAUGE_DOUBLE = 2;
 
-    // Integer cumulative measurement.
-    CUMULATIVE_INT64 = 3;
+    // Integer cumulative measurement. The value can only go up, if resets then
+    // the start_time should also be reset.
+    COUNTER_INT64 = 3;
 
-    // Floating point cumulative measurement.
-    CUMULATIVE_DOUBLE = 4;
+    // Floating point cumulative measurement. The value can only go up, if
+    // resets then the start_time should also be reset.
+    COUNTER_DOUBLE = 4;
 
     // Distribution cumulative measurement.
     CUMULATIVE_DISTRIBUTION = 5;
