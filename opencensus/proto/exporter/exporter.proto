@@ -19,6 +19,7 @@ syntax = "proto3";
 
 package opencensus.proto.exporter;
 
+import "google/api/annotations.proto";
 import "opencensus/proto/trace/trace.proto";
 import "opencensus/proto/metrics/metrics.proto";
 
@@ -32,17 +33,30 @@ message ExportSpanRequest {
   repeated opencensus.proto.trace.Span spans = 1;
 }
 
-message ExportSpanResponse {
-}
+message ExportSpanResponse {}
 
 message ExportMetricsRequest {
   repeated opencensus.proto.metrics.Metric metrics = 1;
 }
 
-message ExportMetricsResponse {
-}
+message ExportMetricsResponse {}
+
+// The google.api.http options below are used to generate a gateway for calling
+// the exporter as an HTTP/JSON API. See github.com/grpc-ecosystem/grpc-gateway
 
 service Export {
-  rpc ExportSpan (stream ExportSpanRequest) returns (stream ExportSpanResponse) {}
-  rpc ExportMetrics (stream ExportMetricsRequest) returns (stream ExportMetricsResponse) {}
+  rpc ExportSpan(stream ExportSpanRequest) returns (stream ExportSpanResponse) {
+    option (google.api.http) = {
+      post: "/v1/export/spans"
+      body: "*"
+    };
+  }
+
+  rpc ExportMetrics(stream ExportMetricsRequest)
+      returns (stream ExportMetricsResponse) {
+    option (google.api.http) = {
+      post: "/v1/export/metrics"
+      body: "*"
+    };
+  }
 }
