@@ -1,0 +1,14 @@
+# These is an API configuration to generate an HTTP/JSON -> gRPC gateway for the
+# OpenCensus exporter service using github.com/grpc-ecosystem/grpc-gateway.
+
+type: google.api.Service
+config_version: 3
+
+http:
+ rules:
+ - selector: opencensus.proto.exporter.Export.ExportSpan
+   post: /v1/export/spans
+   body: "*"
+ - selector: opencensus.proto.exporter.Export.ExportMetrics
+   post: /v1/export/metrics
+   body: "*"
