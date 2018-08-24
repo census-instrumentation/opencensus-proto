@@ -31,15 +31,22 @@ option java_outer_classname = "MetricsProto";
 
 // Defines a Metric which has one or more timeseries.
 message Metric {
-  // The definition of the Metric. For now, we send the full MetricDescriptor
-  // every time in order to keep the protocol stateless, but this is one of the
-  // places where we can make future changes to make the protocol more
-  // efficient.
-  MetricDescriptor metric_descriptor = 1;
+  // The descriptor of the Metric. This is an optimization for network wire
+  // size, from data-model perspective a Metric contains always a
+  // MetricDescriptor.
+  oneof descriptor {
+    // In case of a stream reporting request can be sent only the first time
+    // a metric is reported to save network traffic.
+    MetricDescriptor metric_descriptor = 1;
+
+    // In case of a stream reporting request this can be sent for metrics that
+    // already sent the MetricDescriptor once.
+    string name = 2;
+  }
 
   // One or more timeseries for a single metric, where each timeseries has
   // one or more points.
-  repeated TimeSeries timeseries = 2;
+  repeated TimeSeries timeseries = 3;
 }
 
 // Defines a metric type and its schema.
