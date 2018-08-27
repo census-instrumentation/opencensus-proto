@@ -29,11 +29,9 @@ message TraceConfig {
   oneof sampler {
     ProbabilitySampler probability_sampler = 1;
 
-    AlwaysSampler always_sampler = 2;
+    ConstantSampler constant_sampler = 2;
 
-    NeverSampler never_sampler = 3;
-
-    RateLimitingSampler rate_limiting_sampler = 4;
+    RateLimitingSampler rate_limiting_sampler = 3;
   }
 
   // TODO(songya): add more fields.
@@ -47,12 +45,12 @@ message ProbabilitySampler {
   double samplingProbability = 1;
 }
 
-// Sampler that always makes a "yes" decision on span sampling.
-message AlwaysSampler {
-}
+// Sampler that makes a constant decision (either always "yes" or always "no")
+// on span sampling.
+message ConstantSampler {
 
-// Sampler that always makes a "no" decision on span sampling.
-message NeverSampler {
+  // Whether spans should be always sampled, or never sampled.
+  bool decision = 1;
 }
 
 // Sampler that tries to sample with a rate per time window.
