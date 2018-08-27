@@ -37,13 +37,14 @@ message Node {
   // Information on the OpenCensus Library who initiates the stream.
   LibraryInfo library_info = 2;
 
-  // Additional attributes.
-  map<string, string> attributes = 3;
-
   // Additional informantion on service.
-  ServiceInfo service_info = 4;
+  ServiceInfo service_info = 3;
 
-  // TODO(songya): Add more identifiers in the future as needed, like cloud identifiers.
+  // Additional attributes.
+  map<string, string> attributes = 4;
+
+  // TODO(songya): Add more identifiers in the future as needed, like cloud
+  // identifiers.
 }
 
 // Identifier that uniquely identifies a process within a VM/container.
@@ -66,7 +67,7 @@ message ProcessIdentifier {
 message LibraryInfo {
 
   enum Language {
-    UNKNOWN = 0;
+    LANGUAGE_UNSPECIFIED = 0;
     CPP = 1;
     C_SHARP = 2;
     ERLANG = 3;
