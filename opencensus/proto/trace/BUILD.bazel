@@ -16,14 +16,16 @@ package(default_visibility = ["//visibility:public"])
 
 proto_library(
     name = "trace_proto",
-    srcs = [
-        "trace.proto",
-        "trace_config.proto"
-    ],
+    srcs = ["trace.proto"],
     deps = [
         "@com_google_protobuf//:timestamp_proto",
         "@com_google_protobuf//:wrappers_proto",
     ],
+)
+
+proto_library(
+    name = "trace_config_proto",
+    srcs = ["trace_config.proto"],
 )
 
 cc_proto_library(
@@ -31,7 +33,17 @@ cc_proto_library(
     deps = [":trace_proto"],
 )
 
+cc_proto_library(
+    name = "trace_config_proto_cc",
+    deps = [":trace_config_proto"],
+)
+
 java_proto_library(
     name = "trace_proto_java",
     deps = [":trace_proto"],
+)
+
+java_proto_library(
+    name = "trace_config_proto_java",
+    deps = [":trace_config_proto"],
 )
