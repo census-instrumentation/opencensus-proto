@@ -65,16 +65,16 @@ message ProcessIdentifier {
 message LibraryInfo {
 
   enum Language {
-    CPP = 0;
-    C_SHARP = 1;
-    ERLANG = 2;
-    GO_LANG = 3;
-    JAVA = 4;
-    NODE_JS = 5;
-    PHP = 6;
-    PYTHON = 7;
-    RUBY = 8;
-    UNKNOWN = 9;
+    UNKNOWN = 0;
+    CPP = 1;
+    C_SHARP = 2;
+    ERLANG = 3;
+    GO_LANG = 4;
+    JAVA = 5;
+    NODE_JS = 6;
+    PHP = 7;
+    PYTHON = 8;
+    RUBY = 9;
   }
 
   // Language of OpenCensus Library.
