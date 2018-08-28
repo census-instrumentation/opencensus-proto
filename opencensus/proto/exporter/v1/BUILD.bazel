@@ -15,9 +15,20 @@
 package(default_visibility = ["//visibility:public"])
 
 proto_library(
-    name = "common_proto",
-    srcs = ["common/v1/common.proto"],
+    name = "exporter_proto",
+    srcs = ["exporter.proto"],
     deps = [
-        "@com_google_protobuf//:timestamp_proto",
+        "//opencensus/proto/trace/v1:trace_proto",
+        "//opencensus/proto/metrics/v1:metrics_proto"
     ],
+)
+
+cc_proto_library(
+    name = "exporter_proto_cc",
+    deps = [":exporter_proto"],
+)
+
+java_proto_library(
+    name = "exporter_proto_java",
+    deps = [":exporter_proto"],
 )

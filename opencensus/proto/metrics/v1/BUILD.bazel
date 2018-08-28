@@ -1,4 +1,4 @@
-# Copyright 2017, OpenCensus Authors
+# Copyright 2018, OpenCensus Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,35 +15,19 @@
 package(default_visibility = ["//visibility:public"])
 
 proto_library(
-    name = "trace_proto",
-    srcs = ["v1/trace.proto"],
+    name = "metrics_proto",
+    srcs = ["metrics.proto"],
     deps = [
         "@com_google_protobuf//:timestamp_proto",
-        "@com_google_protobuf//:wrappers_proto",
     ],
 )
 
-proto_library(
-    name = "trace_config_proto",
-    srcs = ["v1/trace_config.proto"],
-)
-
 cc_proto_library(
-    name = "trace_proto_cc",
-    deps = [":trace_proto"],
-)
-
-cc_proto_library(
-    name = "trace_config_proto_cc",
-    deps = [":trace_config_proto"],
+    name = "metrics_proto_cc",
+    deps = [":metrics_proto"],
 )
 
 java_proto_library(
-    name = "trace_proto_java",
-    deps = [":trace_proto"],
-)
-
-java_proto_library(
-    name = "trace_config_proto_java",
-    deps = [":trace_config_proto"],
+    name = "metrics_proto_java",
+    deps = [":metrics_proto"],
 )
