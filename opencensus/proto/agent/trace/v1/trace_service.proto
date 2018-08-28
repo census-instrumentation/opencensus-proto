@@ -20,14 +20,14 @@ syntax = "proto3";
 package opencensus.proto.agent.trace.v1;
 
 import "opencensus/proto/agent/common/v1/common.proto";
-import "opencensus/proto/trace/trace.proto";
-import "opencensus/proto/trace/trace_config.proto";
+import "opencensus/proto/trace/v1/trace.proto";
+import "opencensus/proto/trace/v1/trace_config.proto";
 
 option java_multiple_files = true;
 option java_package = "io.opencensus.proto.agent.trace.v1";
 option java_outer_classname = "TraceServiceProto";
 
-option go_package = "github.com/census-instrumentation/opencensus-proto/gen-go/agentproto/traceserviceproto/v1";
+option go_package = "github.com/census-instrumentation/opencensus-proto/gen-go/agent/trace/v1";
 
 service TraceService {
 
@@ -48,12 +48,12 @@ message ConfigTraceServiceRequest {
   opencensus.proto.agent.common.v1.Node node = 1;
 
   // Current configuration.
-  opencensus.proto.trace.TraceConfig config = 2;
+  opencensus.proto.trace.v1.TraceConfig config = 2;
 }
 
 message ConfigTraceServiceResponse {
   // Requested updated configuration.
-  opencensus.proto.trace.TraceConfig config = 2;
+  opencensus.proto.trace.v1.TraceConfig config = 2;
 }
 
 message ExportTraceServiceRequest {
@@ -61,7 +61,7 @@ message ExportTraceServiceRequest {
   // This is required only in the first message on the stream.
   opencensus.proto.agent.common.v1.Node node = 1;
 
-  repeated opencensus.proto.trace.Span spans = 2;
+  repeated opencensus.proto.trace.v1.Span spans = 2;
 }
 
 message ExportTraceServiceResponse {
