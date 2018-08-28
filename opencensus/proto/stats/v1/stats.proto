@@ -14,14 +14,14 @@
 
 syntax = "proto3";
 
-package opencensus.proto.stats;
+package opencensus.proto.stats.v1;
 
 import "google/protobuf/timestamp.proto";
 
-option go_package = "github.com/census-instrumentation/opencensus-proto/gen-go/statsproto";
+option go_package = "github.com/census-instrumentation/opencensus-proto/gen-go/stats/v1";
 
 option java_multiple_files = true;
-option java_package = "io.opencensus.proto.stats";
+option java_package = "io.opencensus.proto.stats.v1";
 option java_outer_classname = "StatsProto";
 
 // TODO(bdrutu): Consider if this should be moved to a "tags" directory to match the API structure.
