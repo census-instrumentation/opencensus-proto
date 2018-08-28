@@ -25,7 +25,7 @@ option java_multiple_files = true;
 option java_package = "io.opencensus.proto.agent.common.v1";
 option java_outer_classname = "CommonProto";
 
-option go_package = "github.com/census-instrumentation/opencensus-proto/gen-go/agentproto/commonproto/v1";
+option go_package = "github.com/census-instrumentation/opencensus-proto/gen-go/agent/common/v1";
 
 // Identifier metadata of the Node that connects to OpenCensus Agent.
 // In the future we plan to extend the identifier proto definition to support

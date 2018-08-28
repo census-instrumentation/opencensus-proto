@@ -14,13 +14,13 @@
 
 syntax = "proto3";
 
-package opencensus.proto.trace;
+package opencensus.proto.trace.v1;
 
 option java_multiple_files = true;
-option java_package = "io.opencensus.proto.trace";
+option java_package = "io.opencensus.proto.trace.v1";
 option java_outer_classname = "TraceConfigProto";
 
-option go_package = "github.com/census-instrumentation/opencensus-proto/gen-go/traceconfigproto";
+option go_package = "github.com/census-instrumentation/opencensus-proto/gen-go/trace/v1";
 
 // Global configuration of the trace service.
 message TraceConfig {

@@ -17,26 +17,26 @@ syntax = "proto3";
 // NOTE: This proto is experimental and is subject to change at this point.
 // Please do not use it at the moment.
 
-package opencensus.proto.exporter;
+package opencensus.proto.exporter.v1;
 
-import "opencensus/proto/trace/trace.proto";
-import "opencensus/proto/metrics/metrics.proto";
+import "opencensus/proto/trace/v1/trace.proto";
+import "opencensus/proto/metrics/v1/metrics.proto";
 
 option java_multiple_files = true;
-option java_package = "io.opencensus.proto.exporter";
+option java_package = "io.opencensus.proto.exporter.v1";
 option java_outer_classname = "ExporterProto";
 
-option go_package = "github.com/census-instrumentation/opencensus-proto/gen-go/exporterproto";
+option go_package = "github.com/census-instrumentation/opencensus-proto/gen-go/exporter/v1";
 
 message ExportSpanRequest {
-  repeated opencensus.proto.trace.Span spans = 1;
+  repeated opencensus.proto.trace.v1.Span spans = 1;
 }
 
 message ExportSpanResponse {
 }
 
 message ExportMetricsRequest {
-  repeated opencensus.proto.metrics.Metric metrics = 1;
+  repeated opencensus.proto.metrics.v1.Metric metrics = 1;
 }
 
 message ExportMetricsResponse {

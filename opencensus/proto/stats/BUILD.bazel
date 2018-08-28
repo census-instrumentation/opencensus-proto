@@ -16,7 +16,7 @@ package(default_visibility = ["//visibility:public"])
 
 proto_library(
     name = "stats_proto",
-    srcs = ["stats.proto"],
+    srcs = ["v1/stats.proto"],
     deps = [
         "@com_google_protobuf//:duration_proto",
         "@com_google_protobuf//:timestamp_proto",

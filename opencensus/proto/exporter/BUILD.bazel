@@ -16,7 +16,7 @@ package(default_visibility = ["//visibility:public"])
 
 proto_library(
     name = "exporter_proto",
-    srcs = ["exporter.proto"],
+    srcs = ["v1/exporter.proto"],
     deps = [
         "//opencensus/proto/trace:trace_proto",
         "//opencensus/proto/metrics:metrics_proto"
