@@ -65,7 +65,7 @@ message Span {
   // It is a list of TraceStateEntry with a maximum of 32 members in the list.
   //
   // See the https://github.com/w3c/distributed-tracing for more details about this field.
-  repeated TraceStateEntry trace_state = 15;
+  repeated TraceStateEntry trace_state_entries = 15;
 
   // The `span_id` of this span's parent span. If this is a root span, then this
   // field must be empty. The ID is an 8-byte array.
