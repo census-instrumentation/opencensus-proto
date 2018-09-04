@@ -30,14 +30,13 @@ option java_outer_classname = "TraceServiceProto";
 option go_package = "github.com/census-instrumentation/opencensus-proto/gen-go/agent/trace/v1";
 
 service TraceService {
+  // After initialization, this RPC must be kept alive for the
+  // entire life of the application. The agent pushes configs
+  // down to applications via a stream of requests.
+  rpc Config(stream ConfigTraceServiceResponse) returns (stream ConfigTraceServiceRequest) {}
 
-  // After the initialization this RPC must be kept alive for the
-  // entire life of the application. Agent pushes configs to the
-  // application via a stream of responses.
-  rpc Config(stream ConfigTraceServiceRequest) returns (stream ConfigTraceServiceResponse) {}
-
-  // Allow to export Spans.
-  // For performance reason, it is recommended to keep this RPC
+  // Allows applications to send spans to the agent.
+  // For performance reasons, it is recommended to keep this RPC
   // alive for the entire life of the application.
   rpc Export(stream ExportTraceServiceRequest) returns (stream ExportTraceServiceResponse) {}
 }
