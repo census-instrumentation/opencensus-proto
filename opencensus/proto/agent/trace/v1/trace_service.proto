@@ -33,7 +33,7 @@ service TraceService {
 
   // After the initialization this RPC must be kept alive for the
   // entire life of the application. Agent pushes configs to the
-  // application via a stream of responses.
+  // application via a stream of requests.
   rpc Config(stream ConfigTraceServiceRequest) returns (stream ConfigTraceServiceResponse) {}
 
   // Allow to export Spans.
