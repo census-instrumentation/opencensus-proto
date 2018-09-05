@@ -4,6 +4,8 @@ This package describes the OpenCensus Agent protocol.
 
 ## Architecture Overview
 
+TODO(songya): move this section to the README under agent/service repo.
+
 On a typical VM/container, there are user applications running in some processes/pods with
 OpenCensus Library (Library). Previously, Library did all the recording, collecting, sampling and
 aggregation on spans/stats/metrics, and exported them to other persistent storage backends via the
