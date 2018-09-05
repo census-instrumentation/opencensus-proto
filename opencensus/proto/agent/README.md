@@ -27,9 +27,11 @@ in the VM/container and can be deployed independent of Library. Once Agent is de
 running, it should be able to retrieve spans/stats/metrics from Library, export them to other
 backends. We MAY also give Agent the ability to push configurations (e.g sampling probability) to
 Library. For those languages that cannot do stats aggregation in process, they should also be
-able to send raw measurements and have Agent do the aggregation. In addition, Agent can be
-extended to accept spans/stats/metrics from other tracing/monitoring libraries, such as Zipkin,
-Prometheus, etc.
+able to send raw measurements and have Agent do the aggregation.
+
+For trust people: Agent can also be extended to accept spans/stats/metrics from other
+tracing/monitoring libraries, such as Zipkin, Prometheus, etc. This is done by adding specific
+interceptors.
 
 ![agent-architecture](agent-architecture.png)
 
