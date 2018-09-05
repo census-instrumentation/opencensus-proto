@@ -32,8 +32,8 @@ option go_package = "github.com/census-instrumentation/opencensus-proto/gen-go/a
 service TraceService {
   // After initialization, this RPC must be kept alive for the
   // entire life of the application. The agent pushes configs
-  // down to applications via a stream of requests.
-  rpc Config(stream ConfigTraceServiceResponse) returns (stream ConfigTraceServiceRequest) {}
+  // down to applications via a stream.
+  rpc Config(stream RequestedUpdatedConfig) returns (stream CurrentLibraryConfig) {}
 
   // Allows applications to send spans to the agent.
   // For performance reasons, it is recommended to keep this RPC
@@ -41,7 +41,7 @@ service TraceService {
   rpc Export(stream ExportTraceServiceRequest) returns (stream ExportTraceServiceResponse) {}
 }
 
-message ConfigTraceServiceRequest {
+message CurrentLibraryConfig {
   // Identifier data effectively is a structured metadata.
   // This is required only in the first message on the stream.
   opencensus.proto.agent.common.v1.Node node = 1;
@@ -50,7 +50,7 @@ message ConfigTraceServiceRequest {
   opencensus.proto.trace.v1.TraceConfig config = 2;
 }
 
-message ConfigTraceServiceResponse {
+message RequestedUpdatedConfig {
   // Requested updated configuration.
   opencensus.proto.trace.v1.TraceConfig config = 2;
 }
