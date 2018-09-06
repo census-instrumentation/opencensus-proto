@@ -25,7 +25,7 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
-type ConfigTraceServiceRequest struct {
+type CurrentLibraryConfig struct {
 	// Identifier data effectively is a structured metadata.
 	// This is required only in the first message on the stream.
 	Node *v1.Node `protobuf:"bytes,1,opt,name=node,proto3" json:"node,omitempty"`
@@ -36,45 +36,45 @@ type ConfigTraceServiceRequest struct {
 	XXX_sizecache        int32            `json:"-"`
 }
 
-func (m *ConfigTraceServiceRequest) Reset()         { *m = ConfigTraceServiceRequest{} }
-func (m *ConfigTraceServiceRequest) String() string { return proto.CompactTextString(m) }
-func (*ConfigTraceServiceRequest) ProtoMessage()    {}
-func (*ConfigTraceServiceRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_trace_service_63b50dd6ac862852, []int{0}
+func (m *CurrentLibraryConfig) Reset()         { *m = CurrentLibraryConfig{} }
+func (m *CurrentLibraryConfig) String() string { return proto.CompactTextString(m) }
+func (*CurrentLibraryConfig) ProtoMessage()    {}
+func (*CurrentLibraryConfig) Descriptor() ([]byte, []int) {
+	return fileDescriptor_trace_service_b7083cd65a1a253c, []int{0}
 }
-func (m *ConfigTraceServiceRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ConfigTraceServiceRequest.Unmarshal(m, b)
+func (m *CurrentLibraryConfig) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CurrentLibraryConfig.Unmarshal(m, b)
 }
-func (m *ConfigTraceServiceRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ConfigTraceServiceRequest.Marshal(b, m, deterministic)
+func (m *CurrentLibraryConfig) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CurrentLibraryConfig.Marshal(b, m, deterministic)
 }
-func (dst *ConfigTraceServiceRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ConfigTraceServiceRequest.Merge(dst, src)
+func (dst *CurrentLibraryConfig) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CurrentLibraryConfig.Merge(dst, src)
 }
-func (m *ConfigTraceServiceRequest) XXX_Size() int {
-	return xxx_messageInfo_ConfigTraceServiceRequest.Size(m)
+func (m *CurrentLibraryConfig) XXX_Size() int {
+	return xxx_messageInfo_CurrentLibraryConfig.Size(m)
 }
-func (m *ConfigTraceServiceRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_ConfigTraceServiceRequest.DiscardUnknown(m)
+func (m *CurrentLibraryConfig) XXX_DiscardUnknown() {
+	xxx_messageInfo_CurrentLibraryConfig.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ConfigTraceServiceRequest proto.InternalMessageInfo
+var xxx_messageInfo_CurrentLibraryConfig proto.InternalMessageInfo
 
-func (m *ConfigTraceServiceRequest) GetNode() *v1.Node {
+func (m *CurrentLibraryConfig) GetNode() *v1.Node {
 	if m != nil {
 		return m.Node
 	}
 	return nil
 }
 
-func (m *ConfigTraceServiceRequest) GetConfig() *v11.TraceConfig {
+func (m *CurrentLibraryConfig) GetConfig() *v11.TraceConfig {
 	if m != nil {
 		return m.Config
 	}
 	return nil
 }
 
-type ConfigTraceServiceResponse struct {
+type UpdatedLibraryConfig struct {
 	// Requested updated configuration.
 	Config               *v11.TraceConfig `protobuf:"bytes,2,opt,name=config,proto3" json:"config,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}         `json:"-"`
@@ -82,31 +82,31 @@ type ConfigTraceServiceResponse struct {
 	XXX_sizecache        int32            `json:"-"`
 }
 
-func (m *ConfigTraceServiceResponse) Reset()         { *m = ConfigTraceServiceResponse{} }
-func (m *ConfigTraceServiceResponse) String() string { return proto.CompactTextString(m) }
-func (*ConfigTraceServiceResponse) ProtoMessage()    {}
-func (*ConfigTraceServiceResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_trace_service_63b50dd6ac862852, []int{1}
+func (m *UpdatedLibraryConfig) Reset()         { *m = UpdatedLibraryConfig{} }
+func (m *UpdatedLibraryConfig) String() string { return proto.CompactTextString(m) }
+func (*UpdatedLibraryConfig) ProtoMessage()    {}
+func (*UpdatedLibraryConfig) Descriptor() ([]byte, []int) {
+	return fileDescriptor_trace_service_b7083cd65a1a253c, []int{1}
 }
-func (m *ConfigTraceServiceResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_ConfigTraceServiceResponse.Unmarshal(m, b)
+func (m *UpdatedLibraryConfig) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UpdatedLibraryConfig.Unmarshal(m, b)
 }
-func (m *ConfigTraceServiceResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_ConfigTraceServiceResponse.Marshal(b, m, deterministic)
+func (m *UpdatedLibraryConfig) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UpdatedLibraryConfig.Marshal(b, m, deterministic)
 }
-func (dst *ConfigTraceServiceResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ConfigTraceServiceResponse.Merge(dst, src)
+func (dst *UpdatedLibraryConfig) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdatedLibraryConfig.Merge(dst, src)
 }
-func (m *ConfigTraceServiceResponse) XXX_Size() int {
-	return xxx_messageInfo_ConfigTraceServiceResponse.Size(m)
+func (m *UpdatedLibraryConfig) XXX_Size() int {
+	return xxx_messageInfo_UpdatedLibraryConfig.Size(m)
 }
-func (m *ConfigTraceServiceResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_ConfigTraceServiceResponse.DiscardUnknown(m)
+func (m *UpdatedLibraryConfig) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdatedLibraryConfig.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_ConfigTraceServiceResponse proto.InternalMessageInfo
+var xxx_messageInfo_UpdatedLibraryConfig proto.InternalMessageInfo
 
-func (m *ConfigTraceServiceResponse) GetConfig() *v11.TraceConfig {
+func (m *UpdatedLibraryConfig) GetConfig() *v11.TraceConfig {
 	if m != nil {
 		return m.Config
 	}
@@ -127,7 +127,7 @@ func (m *ExportTraceServiceRequest) Reset()         { *m = ExportTraceServiceReq
 func (m *ExportTraceServiceRequest) String() string { return proto.CompactTextString(m) }
 func (*ExportTraceServiceRequest) ProtoMessage()    {}
 func (*ExportTraceServiceRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_trace_service_63b50dd6ac862852, []int{2}
+	return fileDescriptor_trace_service_b7083cd65a1a253c, []int{2}
 }
 func (m *ExportTraceServiceRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ExportTraceServiceRequest.Unmarshal(m, b)
@@ -171,7 +171,7 @@ func (m *ExportTraceServiceResponse) Reset()         { *m = ExportTraceServiceRe
 func (m *ExportTraceServiceResponse) String() string { return proto.CompactTextString(m) }
 func (*ExportTraceServiceResponse) ProtoMessage()    {}
 func (*ExportTraceServiceResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_trace_service_63b50dd6ac862852, []int{3}
+	return fileDescriptor_trace_service_b7083cd65a1a253c, []int{3}
 }
 func (m *ExportTraceServiceResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ExportTraceServiceResponse.Unmarshal(m, b)
@@ -192,8 +192,8 @@ func (m *ExportTraceServiceResponse) XXX_DiscardUnknown() {
 var xxx_messageInfo_ExportTraceServiceResponse proto.InternalMessageInfo
 
 func init() {
-	proto.RegisterType((*ConfigTraceServiceRequest)(nil), "opencensus.proto.agent.trace.v1.ConfigTraceServiceRequest")
-	proto.RegisterType((*ConfigTraceServiceResponse)(nil), "opencensus.proto.agent.trace.v1.ConfigTraceServiceResponse")
+	proto.RegisterType((*CurrentLibraryConfig)(nil), "opencensus.proto.agent.trace.v1.CurrentLibraryConfig")
+	proto.RegisterType((*UpdatedLibraryConfig)(nil), "opencensus.proto.agent.trace.v1.UpdatedLibraryConfig")
 	proto.RegisterType((*ExportTraceServiceRequest)(nil), "opencensus.proto.agent.trace.v1.ExportTraceServiceRequest")
 	proto.RegisterType((*ExportTraceServiceResponse)(nil), "opencensus.proto.agent.trace.v1.ExportTraceServiceResponse")
 }
@@ -212,7 +212,7 @@ const _ = grpc.SupportPackageIsVersion4
 type TraceServiceClient interface {
 	// After initialization, this RPC must be kept alive for the
 	// entire life of the application. The agent pushes configs
-	// down to applications via a stream of requests.
+	// down to applications via a stream.
 	Config(ctx context.Context, opts ...grpc.CallOption) (TraceService_ConfigClient, error)
 	// Allows applications to send spans to the agent.
 	// For performance reasons, it is recommended to keep this RPC
@@ -238,8 +238,8 @@ func (c *traceServiceClient) Config(ctx context.Context, opts ...grpc.CallOption
 }
 
 type TraceService_ConfigClient interface {
-	Send(*ConfigTraceServiceResponse) error
-	Recv() (*ConfigTraceServiceRequest, error)
+	Send(*CurrentLibraryConfig) error
+	Recv() (*UpdatedLibraryConfig, error)
 	grpc.ClientStream
 }
 
@@ -247,12 +247,12 @@ type traceServiceConfigClient struct {
 	grpc.ClientStream
 }
 
-func (x *traceServiceConfigClient) Send(m *ConfigTraceServiceResponse) error {
+func (x *traceServiceConfigClient) Send(m *CurrentLibraryConfig) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *traceServiceConfigClient) Recv() (*ConfigTraceServiceRequest, error) {
-	m := new(ConfigTraceServiceRequest)
+func (x *traceServiceConfigClient) Recv() (*UpdatedLibraryConfig, error) {
+	m := new(UpdatedLibraryConfig)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -294,7 +294,7 @@ func (x *traceServiceExportClient) Recv() (*ExportTraceServiceResponse, error) {
 type TraceServiceServer interface {
 	// After initialization, this RPC must be kept alive for the
 	// entire life of the application. The agent pushes configs
-	// down to applications via a stream of requests.
+	// down to applications via a stream.
 	Config(TraceService_ConfigServer) error
 	// Allows applications to send spans to the agent.
 	// For performance reasons, it is recommended to keep this RPC
@@ -311,8 +311,8 @@ func _TraceService_Config_Handler(srv interface{}, stream grpc.ServerStream) err
 }
 
 type TraceService_ConfigServer interface {
-	Send(*ConfigTraceServiceRequest) error
-	Recv() (*ConfigTraceServiceResponse, error)
+	Send(*UpdatedLibraryConfig) error
+	Recv() (*CurrentLibraryConfig, error)
 	grpc.ServerStream
 }
 
@@ -320,12 +320,12 @@ type traceServiceConfigServer struct {
 	grpc.ServerStream
 }
 
-func (x *traceServiceConfigServer) Send(m *ConfigTraceServiceRequest) error {
+func (x *traceServiceConfigServer) Send(m *UpdatedLibraryConfig) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *traceServiceConfigServer) Recv() (*ConfigTraceServiceResponse, error) {
-	m := new(ConfigTraceServiceResponse)
+func (x *traceServiceConfigServer) Recv() (*CurrentLibraryConfig, error) {
+	m := new(CurrentLibraryConfig)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -380,32 +380,34 @@ var _TraceService_serviceDesc = grpc.ServiceDesc{
 }
 
 func init() {
-	proto.RegisterFile("opencensus/proto/agent/trace/v1/trace_service.proto", fileDescriptor_trace_service_63b50dd6ac862852)
+	proto.RegisterFile("opencensus/proto/agent/trace/v1/trace_service.proto", fileDescriptor_trace_service_b7083cd65a1a253c)
 }
 
-var fileDescriptor_trace_service_63b50dd6ac862852 = []byte{
-	// 368 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x54, 0xbf, 0x4f, 0xf3, 0x30,
-	0x14, 0xfc, 0xdc, 0x0f, 0x3a, 0xb8, 0x2c, 0x64, 0x6a, 0x23, 0xa4, 0x56, 0x91, 0x40, 0x1d, 0x88,
-	0x43, 0x5b, 0xb1, 0xb4, 0x12, 0x43, 0x11, 0x12, 0x13, 0xaa, 0x52, 0x26, 0x84, 0x54, 0xa5, 0xa9,
-	0x09, 0x19, 0xfa, 0x6c, 0x62, 0x27, 0x62, 0x67, 0x60, 0x63, 0x65, 0xe7, 0x2f, 0x45, 0xf1, 0x0b,
-	0x6a, 0x81, 0x86, 0x48, 0x85, 0xcd, 0xf2, 0xbb, 0xbb, 0x77, 0x77, 0xf9, 0x41, 0x07, 0x42, 0x72,
-	0x08, 0x39, 0xa8, 0x54, 0x79, 0x32, 0x11, 0x5a, 0x78, 0x41, 0xc4, 0x41, 0x7b, 0x3a, 0x09, 0x42,
-	0xee, 0x65, 0x3d, 0x3c, 0xcc, 0x14, 0x4f, 0xb2, 0x38, 0xe4, 0xcc, 0x40, 0xac, 0xf6, 0x8a, 0x84,
-	0x37, 0xcc, 0x90, 0x98, 0xc1, 0xb2, 0xac, 0x67, 0xbb, 0x25, 0xaa, 0xa1, 0x58, 0x2e, 0x05, 0xe4,
-	0xb2, 0x78, 0x42, 0xb6, 0x7d, 0xf8, 0x0d, 0xfe, 0x79, 0x7d, 0x01, 0x3b, 0xae, 0x80, 0xcd, 0x42,
-	0x01, 0x77, 0x71, 0x84, 0x68, 0xe7, 0x95, 0xd0, 0xd6, 0xb9, 0xb9, 0xb8, 0xce, 0x87, 0x53, 0x4c,
-	0xe0, 0xf3, 0x87, 0x94, 0x2b, 0x6d, 0x0d, 0xe9, 0x0e, 0x88, 0x05, 0x6f, 0x92, 0x0e, 0xe9, 0x36,
-	0xfa, 0x47, 0xac, 0x24, 0x51, 0x61, 0x33, 0xeb, 0xb1, 0x2b, 0xb1, 0xe0, 0xbe, 0xe1, 0x58, 0x67,
-	0xb4, 0x8e, 0x9b, 0x9a, 0xb5, 0x32, 0xf6, 0x47, 0x13, 0xcc, 0xec, 0x46, 0x1b, 0x7e, 0xc1, 0x72,
-	0x6e, 0xa9, 0xbd, 0xc9, 0x98, 0x92, 0x02, 0xd4, 0xef, 0xd5, 0x5f, 0x08, 0x6d, 0x5d, 0x3c, 0x4a,
-	0x91, 0xe8, 0xbf, 0xce, 0x7d, 0x4a, 0x77, 0x95, 0x0c, 0x40, 0x35, 0x6b, 0x9d, 0xff, 0xdd, 0x46,
-	0xbf, 0xfd, 0x83, 0xb1, 0xa9, 0x0c, 0xc0, 0x47, 0xb4, 0x73, 0x40, 0xed, 0x4d, 0x7e, 0x30, 0x6e,
-	0xff, 0xad, 0x46, 0xf7, 0xd6, 0x07, 0xd6, 0x33, 0xa1, 0x75, 0x8c, 0x64, 0x8d, 0x58, 0xc5, 0x8b,
-	0xc6, 0xca, 0x7b, 0xb4, 0x87, 0x5b, 0x91, 0x4d, 0x4b, 0xce, 0xbf, 0x2e, 0x39, 0x21, 0xc6, 0x09,
-	0x3a, 0xb7, 0xaa, 0xc5, 0x4a, 0x2b, 0xb7, 0x47, 0x5b, 0x71, 0x31, 0x05, 0x3a, 0x19, 0x3f, 0x11,
-	0xea, 0xc4, 0xa2, 0x4a, 0x67, 0xbc, 0xbf, 0x2e, 0x31, 0xc9, 0x11, 0x13, 0x72, 0x73, 0x19, 0xc5,
-	0xfa, 0x3e, 0x9d, 0xe7, 0x8f, 0xd4, 0x43, 0xb2, 0x1b, 0x83, 0xd2, 0x49, 0xba, 0xe4, 0xa0, 0x03,
-	0x1d, 0x0b, 0xf0, 0x56, 0xba, 0x2e, 0x7e, 0x57, 0x11, 0x07, 0x37, 0xfa, 0xfa, 0x2b, 0x98, 0xd7,
-	0xcd, 0x70, 0xf0, 0x1e, 0x00, 0x00, 0xff, 0xff, 0x6e, 0x42, 0xda, 0xd0, 0x34, 0x04, 0x00, 0x00,
+var fileDescriptor_trace_service_b7083cd65a1a253c = []byte{
+	// 389 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x53, 0xb1, 0x4e, 0xe3, 0x40,
+	0x10, 0xbd, 0xcd, 0xdd, 0xb9, 0xd8, 0x5c, 0x73, 0x56, 0x8a, 0x60, 0x21, 0x25, 0xb2, 0x04, 0x4a,
+	0x81, 0xd7, 0x24, 0x51, 0x9a, 0x20, 0x51, 0x24, 0x42, 0xa2, 0x40, 0x28, 0x72, 0x80, 0x82, 0x26,
+	0x72, 0xec, 0xc1, 0xb8, 0xc8, 0xae, 0xd9, 0x5d, 0x5b, 0x20, 0xd1, 0x51, 0xd0, 0x51, 0x50, 0xf0,
+	0xbd, 0xc8, 0xbb, 0x46, 0x49, 0x20, 0xc6, 0x12, 0xe9, 0x46, 0x9e, 0xf7, 0xde, 0xbc, 0x7d, 0xe3,
+	0xc1, 0x7d, 0x96, 0x00, 0x0d, 0x80, 0x8a, 0x54, 0xb8, 0x09, 0x67, 0x92, 0xb9, 0x7e, 0x04, 0x54,
+	0xba, 0x92, 0xfb, 0x01, 0xb8, 0x59, 0x57, 0x17, 0x33, 0x01, 0x3c, 0x8b, 0x03, 0x20, 0x0a, 0x62,
+	0xb6, 0x96, 0x24, 0xfd, 0x85, 0x28, 0x12, 0x51, 0x58, 0x92, 0x75, 0x2d, 0xa7, 0x44, 0x35, 0x60,
+	0x8b, 0x05, 0xa3, 0xb9, 0xac, 0xae, 0x34, 0xdb, 0xda, 0xfb, 0x02, 0x5f, 0x1f, 0x5f, 0xc0, 0x0e,
+	0x2a, 0x60, 0xb3, 0x80, 0xd1, 0x9b, 0x38, 0xd2, 0x68, 0xfb, 0x15, 0xe1, 0xc6, 0x38, 0xe5, 0x1c,
+	0xa8, 0x3c, 0x8b, 0xe7, 0xdc, 0xe7, 0x0f, 0x63, 0xd5, 0x36, 0x87, 0xf8, 0x0f, 0x65, 0x21, 0x34,
+	0x51, 0x1b, 0x75, 0xea, 0xbd, 0x7d, 0x52, 0xf2, 0x98, 0xc2, 0x61, 0xd6, 0x25, 0xe7, 0x2c, 0x04,
+	0x4f, 0x71, 0xcc, 0x63, 0x6c, 0xe8, 0x21, 0xcd, 0x5a, 0x19, 0xfb, 0x23, 0x04, 0x72, 0x91, 0x17,
+	0x7a, 0xa6, 0x57, 0xb0, 0xec, 0x2b, 0xdc, 0xb8, 0x4c, 0x42, 0x5f, 0x42, 0xb8, 0xee, 0x69, 0x5b,
+	0xdd, 0x17, 0x84, 0x77, 0x4e, 0xee, 0x13, 0xc6, 0xa5, 0xea, 0x4e, 0xf5, 0xba, 0x3c, 0xb8, 0x4b,
+	0x41, 0xc8, 0xad, 0x5e, 0x3c, 0xc0, 0x7f, 0x45, 0xe2, 0x53, 0xd1, 0xac, 0xb5, 0x7f, 0x77, 0xea,
+	0xbd, 0xd6, 0x37, 0xc6, 0xa6, 0x89, 0x4f, 0x3d, 0x8d, 0xb6, 0x77, 0xb1, 0xb5, 0xc9, 0x8f, 0x48,
+	0x18, 0x15, 0xd0, 0x7b, 0xab, 0xe1, 0x7f, 0xab, 0x0d, 0xf3, 0x11, 0x1b, 0x45, 0x12, 0x03, 0x52,
+	0xf1, 0x73, 0x91, 0x4d, 0x4b, 0xb5, 0xaa, 0x69, 0x9b, 0x72, 0xb7, 0x7f, 0x75, 0xd0, 0x21, 0x32,
+	0x9f, 0x11, 0x36, 0xb4, 0x5b, 0x73, 0x58, 0xa9, 0x53, 0x1a, 0xb3, 0x75, 0xf4, 0x23, 0xae, 0x8e,
+	0x44, 0x3b, 0x19, 0x3d, 0x21, 0x6c, 0xc7, 0xac, 0x4a, 0x67, 0xf4, 0x7f, 0x55, 0x62, 0x92, 0x23,
+	0x26, 0xe8, 0xfa, 0x34, 0x8a, 0xe5, 0x6d, 0x3a, 0xcf, 0xd7, 0xe8, 0x6a, 0xb2, 0x13, 0x53, 0x21,
+	0x79, 0xba, 0x00, 0x2a, 0x7d, 0x19, 0x33, 0xea, 0x2e, 0x75, 0x1d, 0x7d, 0x40, 0x11, 0x50, 0x27,
+	0xfa, 0x7c, 0xf3, 0x73, 0x43, 0x35, 0xfb, 0xef, 0x01, 0x00, 0x00, 0xff, 0xff, 0x74, 0xf9, 0xaa,
+	0xd2, 0x1d, 0x04, 0x00, 0x00,
 }
