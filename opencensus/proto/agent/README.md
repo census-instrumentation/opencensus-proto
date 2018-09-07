@@ -38,9 +38,12 @@ other backends. There should be 3 separate agent exporters for tracing/stats/met
 respectively. Agent exporters will be responsible for sending spans/stats/metrics and (possibly)
 receiving configuration updates from Agent.
 
+## Communication
+
 Communication between Library and Agent should user a bi-directional gRPC stream. Library should
 initiate the connection, since there’s only one dedicated port for Agent, while there could be
 multiple processes with Library running.
+By default, Agent is available on port 55678.
 
 ## Protocol Workflow
 
