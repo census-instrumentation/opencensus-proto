@@ -83,7 +83,10 @@ message LibraryInfo {
   Language language = 1;
 
   // Version of Agent exporter of Library.
-  string version = 2;
+  string exporter_version = 2;
+
+  // Version of OpenCensus Library.
+  string core_library_version = 3;
 }
 
 // Additional service information.
