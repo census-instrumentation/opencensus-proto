@@ -29,8 +29,8 @@ backends. We MAY also give Agent the ability to push configurations (e.g samplin
 Library. For those languages that cannot do stats aggregation in process, they should also be
 able to send raw measurements and have Agent do the aggregation.
 
-For trust people: Agent can also be extended to accept spans/stats/metrics from other
-tracing/monitoring libraries, such as Zipkin, Prometheus, etc. This is done by adding specific
+For developers/maintainers of other libraries: Agent can also be extended to accept spans/stats/metrics from 
+other tracing/monitoring libraries, such as Zipkin, Prometheus, etc. This is done by adding specific 
 interceptors.
 
 ![agent-architecture](agent-architecture.png)
