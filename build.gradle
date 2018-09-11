@@ -3,13 +3,31 @@ description = 'Opencensus Proto'
 apply plugin: 'idea'
 apply plugin: 'java'
 apply plugin: 'com.google.protobuf'
+apply plugin: 'maven'
+apply plugin: "signing"
+
+group = "io.opencensus"
+version = "0.0.1-SNAPSHOT" // CURRENT_OPENCENSUS_VERSION
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
 
 repositories {
     maven { url "https://plugins.gradle.org/m2/" }
 }
 
+jar.manifest {
+    attributes('Implementation-Title': name,
+            'Implementation-Version': version,
+            'Built-By': System.getProperty('user.name'),
+            'Built-JDK': System.getProperty('java.version'),
+            'Source-Compatibility': sourceCompatibility,
+            'Target-Compatibility': targetCompatibility)
+}
+
 def protobufVersion = '3.5.1'
 def protocVersion = '3.5.1'
+def grpcVersion = "1.15.0" // CURRENT_GRPC_VERSION
 
 buildscript {
     repositories {
@@ -23,19 +41,32 @@ buildscript {
 sourceSets {
     main {
         proto {
-            srcDir "src"
+            srcDir 'src'
         }
     }
 }
 
 dependencies {
-    compile "com.google.protobuf:protobuf-java:${protobufVersion}"
+    compile "com.google.protobuf:protobuf-java:${protobufVersion}",
+            "io.grpc:grpc-protobuf:${grpcVersion}",
+            "io.grpc:grpc-stub:${grpcVersion}"
 }
 
 protobuf {
     protoc {
         // The artifact spec for the Protobuf Compiler
         artifact = "com.google.protobuf:protoc:${protocVersion}"
+    }
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}"
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {}
+        }
+        ofSourceSet('main')
     }
 
     generatedFilesBaseDir = "$projectDir/gen_gradle/src"
@@ -59,3 +90,58 @@ idea {
         // If you have additional sourceSets and/or codegen plugins, add all of them
     }
 }
+
+signing {
+    required false
+    sign configurations.archives
+}
+
+uploadArchives {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+                def configureAuth = {
+                    if (rootProject.hasProperty('ossrhUsername') && rootProject.hasProperty('ossrhPassword')) {
+                        authentication(userName:rootProject.ossrhUsername, password: rootProject.ossrhPassword)
+                    }
+                }
+
+                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/", configureAuth)
+
+                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/", configureAuth)
+
+                pom.project {
+                    name "OpenCensus"
+                    packaging 'jar'
+                    description project.description
+                    url 'https://github.com/census-instrumentation/opencensus-proto'
+
+                    scm {
+                        connection 'scm:svn:https://github.com/census-instrumentation/opencensus-proto'
+                        developerConnection 'scm:git:git@github.com/census-instrumentation/opencensus-proto'
+                        url 'https://github.com/census-instrumentation/opencensus-proto'
+                    }
+
+                    licenses {
+                        license {
+                            name 'The Apache License, Version 2.0'
+                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+
+                    developers {
+                        developer {
+                            id 'io.opencensus'
+                            name 'OpenCensus Contributors'
+                            email 'census-developers@googlegroups.com'
+                            url 'opencensus.io'
+                            // https://issues.gradle.org/browse/GRADLE-2719
+                            organization = 'OpenCensus Authors'
+                            organizationUrl 'https://www.opencensus.io'
+                        }
+                    }
+                }
+            }
+        }
+    }
