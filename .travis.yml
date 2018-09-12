@@ -41,6 +41,7 @@ install:
 script:
   - case "$BUILD" in
       "BAZEL")
+        cd src;
         bazel build --show_result=100 ... ;;
       "MVN")
         mvn verify ;;
