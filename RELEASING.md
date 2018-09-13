@@ -8,14 +8,7 @@ We re-generate gen-go files and deploy jars to Maven Central under the following
 
 Other systems may also work, but we haven't verified them.
 
-## Prerequisites
-
-If you haven't done already, please follow the instructions
-[here](https://github.com/census-instrumentation/opencensus-java/blob/master/RELEASING.md#prerequisites)
-to set up the OSSRH (OSS Repository Hosting) account and signing keys. This is required for releasing
-to Maven Central.
-
-## Re-generate the gen-go files
+## Release Go files
 
 To generate the Go files from protos, you'll need to install protoc and protoc-gen-go plugin first.
 Follow the instructions [here](http://google.github.io/proto-lens/installing-protoc.html) and
@@ -34,8 +27,8 @@ Go through PR review and merge the changes to GitHub.
 
 ## Tagging the Release
 
-Our release branches follow the naming convention of `v<major>.<minor>.x`, while the tags include the 
-patch version `v<major>.<minor>.<patch>`. For example, the same branch `v0.4.x` would be used to create 
+Our release branches follow the naming convention of `v<major>.<minor>.x`, while the tags include the
+patch version `v<major>.<minor>.<patch>`. For example, the same branch `v0.4.x` would be used to create
 all `v0.4` tags (e.g. `v0.4.0`, `v0.4.1`).
 
 In this section upstream repository refers to the main opencensus-proto github
@@ -82,7 +75,7 @@ token](https://help.github.com/articles/creating-a-personal-access-token-for-the
     ```bash
     $ git checkout -b bump-version master
     # Change version to next minor (and keep -SNAPSHOT)
-    $ sed -i 's/[0-9]\+\.[0-9]\+\.[0-9]\+\(.*CURRENT_OPENCENSUS_VERSION\)/'$MAJOR.$((MINOR+1)).0'\1/' \
+    $ sed -i 's/[0-9]\+\.[0-9]\+\.[0-9]\+\(.*CURRENT_OPENCENSUS_PROTO_VERSION\)/'$MAJOR.$((MINOR+1)).0'\1/' \
       "${VERSION_FILES[@]}"
     $ ./gradlew build
     $ git commit -a -m "Start $MAJOR.$((MINOR+1)).0 development cycle"
@@ -104,7 +97,7 @@ token](https://help.github.com/articles/creating-a-personal-access-token-for-the
     ```bash
     $ git checkout -b release v$MAJOR.$MINOR.x
     # Change version to remove -SNAPSHOT
-    $ sed -i 's/-SNAPSHOT\(.*CURRENT_OPENCENSUS_VERSION\)/\1/' "${VERSION_FILES[@]}"
+    $ sed -i 's/-SNAPSHOT\(.*CURRENT_OPENCENSUS_PROTO_VERSION\)/\1/' "${VERSION_FILES[@]}"
     $ ./gradlew build
     $ git commit -a -m "Bump version to $MAJOR.$MINOR.$PATCH"
     $ git tag -a v$MAJOR.$MINOR.$PATCH -m "Version $MAJOR.$MINOR.$PATCH"
@@ -115,7 +108,7 @@ token](https://help.github.com/articles/creating-a-personal-access-token-for-the
 
     ```bash
     # Change version to next patch and add -SNAPSHOT
-    $ sed -i 's/[0-9]\+\.[0-9]\+\.[0-9]\+\(.*CURRENT_OPENCENSUS_VERSION\)/'$MAJOR.$MINOR.$((PATCH+1))-SNAPSHOT'\1/' \
+    $ sed -i 's/[0-9]\+\.[0-9]\+\.[0-9]\+\(.*CURRENT_OPENCENSUS_PROTO_VERSION\)/'$MAJOR.$MINOR.$((PATCH+1))-SNAPSHOT'\1/' \
      "${VERSION_FILES[@]}"
     $ ./gradlew build
     $ git commit -a -m "Bump version to $MAJOR.$MINOR.$((PATCH+1))-SNAPSHOT"
@@ -131,10 +124,17 @@ token](https://help.github.com/articles/creating-a-personal-access-token-for-the
     $ git push upstream v$MAJOR.$MINOR.x
     ```
 
-## Deployment
+## Release Java Jar
 
 Deployment to Maven Central (or the snapshot repo) is for all of the artifacts
 from the project.
+
+### Prerequisites
+
+If you haven't done already, please follow the instructions
+[here](https://github.com/census-instrumentation/opencensus-java/blob/master/RELEASING.md#prerequisites)
+to set up the OSSRH (OSS Repository Hosting) account and signing keys. This is required for releasing
+to Maven Central.
 
 ### Branch
 
@@ -164,7 +164,7 @@ When deploying a Release, the deployment will create [a new staging
 repository](https://oss.sonatype.org/#stagingRepositories). You'll need to look
 up the ID in the OSSRH UI (usually in the form of `opencensus-*`).
 
-## Releasing on Maven Central
+### Releasing on Maven Central
 
 Once all of the artifacts have been pushed to the staging repository, the
 repository must first be `closed`, which will trigger several sanity checks on
