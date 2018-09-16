@@ -167,9 +167,9 @@ message DistributionValue {
   // provided.
   int64 count = 1;
 
-  // The arithmetic mean of the values in the population. If count is zero
-  // then this field must be zero.
-  double mean = 2;
+  // The sum of the values in the population. If count is zero then this field
+  // must be zero.
+  double sum = 2;
 
   // The sum of squared deviations from the mean of the values in the
   // population. For values x_i this is:
