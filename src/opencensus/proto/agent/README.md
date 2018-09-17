@@ -90,12 +90,12 @@ Most functionalities of Agent are in Agent Core. Agent Core's responsibilies inc
 Agent Core must have `Node` associated, so that Agent Core can differentiate and group
 `SpanProto`s by each `Node`.
 2. Store and batch `SpanProto`s.
-3. Add additional metadata/information to `SpanProto` or `Node`. For example, in a k8s
-container, Agent Core can detect the namespace, pod id and container name, and add them
-to `Node`.
+3. Augment the `SpanProto` or `Node` sent from the interceptor.
+For example, in a Kubernetes container, Agent Core can detect the namespace, pod id
+and container name and then add them to its record of Node from interceptor
 4. For some configured period of time, Agent Core will push `SpanProto`s (grouped by
 `Node`s) to Exporters.
-5. Display the currently stored `SpanProto`s on local ZPages.
+5. Display the currently stored `SpanProto`s on local zPages.
 6. MAY accept the updated configuration from Config Receiver, and apply it to all the
 config service clients.
 7. MAY track the status of all the connections of Config streams. Depending on the
