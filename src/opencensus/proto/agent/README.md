@@ -63,6 +63,9 @@ This section describes the in-process implementation details of OC-Agent.
 
 ![agent-implementation](agent-implementation.png)
 
+Note: Red arrows represent RPCs or HTTP requests. Black arrows represent local method
+invocations.
+
 The Agent consists of three main parts:
 
 1. The interceptors of different instrumentation libraries, such as OpenCensus, Zipkin,
