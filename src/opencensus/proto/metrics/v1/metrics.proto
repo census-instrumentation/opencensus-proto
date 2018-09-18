@@ -159,7 +159,7 @@ message Point {
     // A distribution value.
     DistributionValue distribution_value = 4;
 
-    // A summary value.
+    // A summary value. This is not recommended, since cannot be aggregated.
     SummaryValue summary_value = 5;
   }
 }
@@ -243,13 +243,13 @@ message DistributionValue {
 
 // The start_timestamp only applies to the count and sum in the SummaryValue.
 message SummaryValue {
-  // The total number of recorded values from the beginning. Optional since
+  // The total number of recorded values since start_time. Optional since
   // some systems don't expose this.
-  google.protobuf.UInt64Value count = 1;
+  google.protobuf.Int64Value count = 1;
 
-  // The total sum of recorded values from the beginning. Optional since some
-  // systems don't expose this. If count is zero then this field must be zero
-  // or not set (if not supported).
+  // The total sum of recorded values since start_time. Optional since some
+  // systems don't expose this. If count is zero then this field must be zero.
+  // This field must be unset if the sum is not available.
   google.protobuf.DoubleValue sum = 2;
 
   // The values in this message can be reset at arbitrary unknown times, with
@@ -257,9 +257,9 @@ message SummaryValue {
   message Snapshot {
     // The number of values in the snapshot. Optional since some systems don't
     // expose this.
-    google.protobuf.UInt64Value count = 1;
+    google.protobuf.Int64Value count = 1;
 
-    // The sum of values in the snapshot.  Optional since some systems don't
+    // The sum of values in the snapshot. Optional since some systems don't
     // expose this. If count is zero then this field must be zero or not set
     // (if not supported).
     google.protobuf.DoubleValue sum = 2;
@@ -268,14 +268,14 @@ message SummaryValue {
 
     message Quantile {
       // Must be in the interval (0.0, 1.0]
-      required double quantile = 1;
+      double quantile = 1;
 
       // The value of the quantile.
-      required double value = 2;
+      double value = 2;
     }
   }
 
-  // Values calculated from over a sliding time window.
+  // Values calculated over an arbitrary time window.
   Snapshot snapshot = 3;
 }
 
