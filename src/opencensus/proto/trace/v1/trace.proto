@@ -255,7 +255,7 @@ message Span {
     int32 dropped_links_count = 2;
   }
 
-  // The inclued links.
+  // The included links.
   Links links = 10;
 
   // An optional final status for this span.
@@ -294,6 +294,8 @@ message AttributeValue {
     int64 int_value = 2;
     // A Boolean value represented by `true` or `false`.
     bool bool_value = 3;
+    // A double value.
+    double double_value = 4;
   }
 }
 
