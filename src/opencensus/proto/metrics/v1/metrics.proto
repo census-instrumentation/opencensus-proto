@@ -93,11 +93,11 @@ message MetricDescriptor {
     // then the start_time should also be reset.
     CUMULATIVE_DISTRIBUTION = 5;
 
-    // Old libraries implemented Histograms as a summary samples observations
+    // Some frameworks implemented Histograms as a summary of observations
     // (usually things like request durations and response sizes). While it
     // also provides a total count of observations and a sum of all observed
     // values, it calculates configurable quantiles over a sliding time window.
-    // This is not recommended, since cannot be aggregated.
+    // This is not recommended, since it cannot be aggregated.
     SUMMARY = 7;
   }
   Type type = 4;
@@ -159,7 +159,7 @@ message Point {
     // A distribution value.
     DistributionValue distribution_value = 4;
 
-    // A summary value. This is not recommended, since cannot be aggregated.
+    // A summary value. This is not recommended, since it cannot be aggregated.
     SummaryValue summary_value = 5;
   }
 }
