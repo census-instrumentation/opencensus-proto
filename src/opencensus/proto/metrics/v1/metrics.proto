@@ -22,6 +22,7 @@ syntax = "proto3";
 package opencensus.proto.metrics.v1;
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
 
 option go_package = "github.com/census-instrumentation/opencensus-proto/gen-go/metrics/v1";
 
@@ -91,6 +92,13 @@ message MetricDescriptor {
     // Distribution cumulative measurement. The count can only go up, if resets
     // then the start_time should also be reset.
     CUMULATIVE_DISTRIBUTION = 5;
+
+    // Some frameworks implemented Histograms as a summary of observations
+    // (usually things like request durations and response sizes). While it
+    // also provides a total count of observations and a sum of all observed
+    // values, it calculates configurable quantiles over a sliding time window.
+    // This is not recommended, since it cannot be aggregated.
+    SUMMARY = 7;
   }
   Type type = 4;
 
@@ -151,10 +159,8 @@ message Point {
     // A distribution value.
     DistributionValue distribution_value = 4;
 
-    // TODO: Add support for Summary type. This is an aggregation that produces
-    // percentiles directly.
-    //
-    // See also: https://prometheus.io/docs/concepts/metric_types/#summary
+    // A summary value. This is not recommended, since it cannot be aggregated.
+    SummaryValue summary_value = 5;
   }
 }
 
@@ -234,3 +240,42 @@ message DistributionValue {
     map<string, string> attachments = 3;
   }
 }
+
+// The start_timestamp only applies to the count and sum in the SummaryValue.
+message SummaryValue {
+  // The total number of recorded values since start_time. Optional since
+  // some systems don't expose this.
+  google.protobuf.Int64Value count = 1;
+
+  // The total sum of recorded values since start_time. Optional since some
+  // systems don't expose this. If count is zero then this field must be zero.
+  // This field must be unset if the sum is not available.
+  google.protobuf.DoubleValue sum = 2;
+
+  // The values in this message can be reset at arbitrary unknown times, with
+  // the requirement that all of them are reset at the same time.
+  message Snapshot {
+    // The number of values in the snapshot. Optional since some systems don't
+    // expose this.
+    google.protobuf.Int64Value count = 1;
+
+    // The sum of values in the snapshot. Optional since some systems don't
+    // expose this. If count is zero then this field must be zero or not set
+    // (if not supported).
+    google.protobuf.DoubleValue sum = 2;
+
+    repeated Quantile quantiles = 3;
+
+    message Quantile {
+      // Must be in the interval (0.0, 1.0]
+      double quantile = 1;
+
+      // The value of the quantile.
+      double value = 2;
+    }
+  }
+
+  // Values calculated over an arbitrary time window.
+  Snapshot snapshot = 3;
+}
+
