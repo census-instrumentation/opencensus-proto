@@ -81,17 +81,22 @@ message MetricDescriptor {
     // Floating point gauge. The value can go both up and down.
     GAUGE_DOUBLE = 2;
 
+    // Distribution gauge measurement. The count can go both up and down.
+    // Used in scenarios like a snapshot of time the current items in a queue
+    // have spent there.
+    GAUGE_DISTRIBUTION = 3;
+
     // Integer cumulative measurement. The value can only go up, if resets then
     // the start_time should also be reset.
-    CUMULATIVE_INT64 = 3;
+    CUMULATIVE_INT64 = 4;
 
     // Floating point cumulative measurement. The value can only go up, if
     // resets then the start_time should also be reset.
-    CUMULATIVE_DOUBLE = 4;
+    CUMULATIVE_DOUBLE = 5;
 
     // Distribution cumulative measurement. The count can only go up, if resets
     // then the start_time should also be reset.
-    CUMULATIVE_DISTRIBUTION = 5;
+    CUMULATIVE_DISTRIBUTION = 6;
 
     // Some frameworks implemented Histograms as a summary of observations
     // (usually things like request durations and response sizes). While it
