@@ -29,5 +29,8 @@ bin
 *~
 \#*\#
 
+# VS Code
+.vscode
+
 # Other
 TAGS
