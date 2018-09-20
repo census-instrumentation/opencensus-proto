@@ -29,9 +29,9 @@ backends. We MAY also give Agent the ability to push configurations (e.g samplin
 Library. For those languages that cannot do stats aggregation in process, they should also be
 able to send raw measurements and have Agent do the aggregation.
 
-For developers/maintainers of other libraries: Agent can also be extended to accept spans/stats/metrics from 
-other tracing/monitoring libraries, such as Zipkin, Prometheus, etc. This is done by adding specific 
-interceptors.
+For developers/maintainers of other libraries: Agent can also be extended to accept spans/stats/metrics from
+other tracing/monitoring libraries, such as Zipkin, Prometheus, etc. This is done by adding specific
+interceptors. See [Interceptors](#interceptors) for details.
 
 ![agent-architecture](agent-architecture.png)
 
@@ -56,6 +56,61 @@ are established.
 3. If streams were disconnected and retries failed, the Library identifier would be considered
 expired on Agent side. Library needs to start a new connection with a unique identifier
 (MAY be different than the previous one).
+
+## Implementation details of Agent Server
+
+This section describes the in-process implementation details of OC-Agent.
+
+![agent-implementation](agent-implementation.png)
+
+Note: Red arrows represent RPCs or HTTP requests. Black arrows represent local method
+invocations.
+
+The Agent consists of three main parts:
+
+1. The interceptors of different instrumentation libraries, such as OpenCensus, Zipkin,
+Istio Mixer, Prometheus client, etc. Interceptors act as the “frontend” or “gateway” of
+Agent. In addition, there MAY be one special receiver for receiving configuration updates
+from outside.
+2. The core Agent module. It acts as the “brain” or “dispatcher” of Agent.
+3. The exporters to different monitoring backends or collector services, such as
+Omnition Collector, Stackdriver Trace, Jaeger, Zipkin, etc.
+
+### Interceptors
+
+Each interceptor can be connected with multiple instrumentation libraries. The
+communication protocol between interceptors and libraries is the one we described in the
+proto files (for example trace_service.proto). When a library opens the connection with the
+corresponding interceptor, the first message it sends must have the `Node` identifier. The
+interceptor will then cache the `Node` for each library, and `Node` is not required for
+the subsequent messages from libraries.
+
+### Agent Core
+
+Most functionalities of Agent are in Agent Core. Agent Core's responsibilies include:
+
+1. Accept `SpanProto` from each interceptor. Note that the `SpanProto`s that are sent to
+Agent Core must have `Node` associated, so that Agent Core can differentiate and group
+`SpanProto`s by each `Node`.
+2. Store and batch `SpanProto`s.
+3. Augment the `SpanProto` or `Node` sent from the interceptor.
+For example, in a Kubernetes container, Agent Core can detect the namespace, pod id
+and container name and then add them to its record of Node from interceptor
+4. For some configured period of time, Agent Core will push `SpanProto`s (grouped by
+`Node`s) to Exporters.
+5. Display the currently stored `SpanProto`s on local zPages.
+6. MAY accept the updated configuration from Config Receiver, and apply it to all the
+config service clients.
+7. MAY track the status of all the connections of Config streams. Depending on the
+language and implementation of the Config service protocol, Agent Core MAY either
+store a list of active Config streams (e.g gRPC-Java), or a list of last active time for
+streams that cannot be kept alive all the time (e.g gRPC-Python).
+
+### Exporters
+
+Once in a while, Agent Core will push `SpanProto` with `Node` to each exporter. After
+receiving them, each exporter will translate `SpanProto` to the format supported by the
+backend (e.g Jaeger Thrift Span), and then push them to corresponding backend or service.
 
 ## Packages
 
