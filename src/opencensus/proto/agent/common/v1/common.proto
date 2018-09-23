@@ -35,7 +35,7 @@ message Node {
   // Identifier that uniquely identifies a process within a VM/container.
   ProcessIdentifier identifier = 1;
 
-  // Information on the OpenCensus Library who initiates the stream.
+  // Information on the OpenCensus Library that initiates the stream.
   LibraryInfo library_info = 2;
 
   // Additional information on service.
