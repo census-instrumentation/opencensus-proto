@@ -81,7 +81,8 @@ message MetricDescriptor {
     // Floating point gauge. The value can go both up and down.
     GAUGE_DOUBLE = 2;
 
-    // Distribution gauge measurement. The count can go both up and down.
+    // Distribution gauge measurement. The count and sum can go both up and
+    // down. Recorded values are always >= 0.
     // Used in scenarios like a snapshot of time the current items in a queue
     // have spent there.
     GAUGE_DISTRIBUTION = 3;
@@ -91,11 +92,12 @@ message MetricDescriptor {
     CUMULATIVE_INT64 = 4;
 
     // Floating point cumulative measurement. The value can only go up, if
-    // resets then the start_time should also be reset.
+    // resets then the start_time should also be reset. Recorded values are
+    // always >= 0.
     CUMULATIVE_DOUBLE = 5;
 
-    // Distribution cumulative measurement. The count can only go up, if resets
-    // then the start_time should also be reset.
+    // Distribution cumulative measurement. The count and sum can only go up, if
+    // resets then the start_time should also be reset.
     CUMULATIVE_DISTRIBUTION = 6;
 
     // Some frameworks implemented Histograms as a summary of observations
@@ -195,26 +197,37 @@ message DistributionValue {
 
   // A Distribution may optionally contain a histogram of the values in the
   // population. The bucket boundaries for that histogram are described by
-  // bucket_bounds. This defines size(bucket_bounds) + 1 (= N)
-  // buckets. The boundaries for bucket index i are:
+  // BucketOptions.
   //
-  // (-infinity, bucket_bounds[i]) for i == 0
-  // [bucket_bounds[i-1], bucket_bounds[i]) for 0 < i < N-2
-  // [bucket_bounds[i-1], +infinity) for i == N-1
-  //
-  // i.e. an underflow bucket (number 0), zero or more finite buckets (1
-  // through N - 2, and an overflow bucket (N - 1), with inclusive lower
-  // bounds and exclusive upper bounds.
-  //
-  // If bucket_bounds has no elements (zero size), then there is no
-  // histogram associated with the Distribution. If bucket_bounds has only
-  // one element, there are no finite buckets, and that single element is the
-  // common boundary of the overflow and underflow buckets. The values must
-  // be monotonically increasing.
-  //
-  // Don't change bucket boundaries within a timeseries if your backend
-  // doesn't support this.
-  repeated double bucket_bounds = 4;
+  // If bucket_options has no type, then there is no histogram associated with
+  // the Distribution.
+  message BucketOptions {
+    oneof type {
+      // Bucket with explicit bounds.
+      Explicit explict = 1;
+    }
+
+    // Specifies a set of buckets with arbitrary upper-bounds.
+    // This defines size(bounds) + 1 (= N) buckets. The boundaries for bucket
+    // index i are:
+    //
+    // [0, bucket_bounds[i]) for i == 0
+    // [bucket_bounds[i-1], bucket_bounds[i]) for 0 < i < N-1
+    // [bucket_bounds[i-1], +infinity) for i == N-1
+    message Explicit {
+      // The values must be monotonically increasing and > 0.
+      repeated double bounds = 1;
+    }
+
+    // TODO: If OpenMetrics decides to support (a, b] intervals we should add
+    // support for these by defining a boolean value here which decides what
+    // type of intervals to use.
+  }
+
+  // Don't change bucket boundaries within a TimeSeries if your backend doesn't
+  // support this. To save network bandwidth this field can be sent only the
+  // first time a metric is send when using a stream reporting request.
+  BucketOptions bucket_options = 4;
 
   message Bucket {
     // The number of values in each bucket of the histogram, as described in
