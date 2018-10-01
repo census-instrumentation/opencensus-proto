@@ -101,7 +101,7 @@ message MetricDescriptor {
     // Some frameworks implemented Histograms as a summary of observations
     // (usually things like request durations and response sizes). While it
     // also provides a total count of observations and a sum of all observed
-    // values, it calculates configurable quantiles over a sliding time window.
+    // values, it calculates configurable percentiles over a sliding time window.
     // This is not recommended, since it cannot be aggregated.
     SUMMARY = 7;
   }
@@ -269,15 +269,20 @@ message SummaryValue {
     // (if not supported).
     google.protobuf.DoubleValue sum = 2;
 
-    repeated Quantile quantiles = 3;
+    // Represents the value at a given percentile of a distribution.
+    message ValueAtPercentile {
+      // The percentile of a distribution. Must be in the interval
+      // (0.0, 100.0].
+      double percentile = 1;
 
-    message Quantile {
-      // Must be in the interval (0.0, 1.0]
-      double quantile = 1;
-
-      // The value of the quantile.
+      // The value at the given percentile of a distribution.
       double value = 2;
     }
+
+    // A list of values at different percentiles of the distribution calculated
+    // from the current snapshot. The percentiles must be monotonically
+    // increasing.
+    repeated ValueAtPercentile percentile_values = 3;
   }
 
   // Values calculated over an arbitrary time window.
