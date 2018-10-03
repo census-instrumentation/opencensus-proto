@@ -36,12 +36,12 @@ message Metric {
   // size, from data-model perspective a Metric contains always a
   // MetricDescriptor.
   oneof descriptor {
-    // In case of a stream reporting request can be sent only the first time
-    // a metric is reported to save network traffic.
+    // In case of a streaming RPC can be sent only the first time a metric is
+    // reported to save network traffic.
     MetricDescriptor metric_descriptor = 1;
 
-    // In case of a stream reporting request this can be sent for metrics that
-    // already sent the MetricDescriptor once.
+    // In case of a streaming RPC this can be sent for metrics that already
+    // sent the MetricDescriptor once.
     string name = 2;
   }
 
@@ -87,17 +87,17 @@ message MetricDescriptor {
     // have spent there.
     GAUGE_DISTRIBUTION = 3;
 
-    // Integer cumulative measurement. The value can only go up, if resets then
-    // the start_time should also be reset.
+    // Integer cumulative measurement. The value cannot decrease, if resets
+    // then the start_time should also be reset.
     CUMULATIVE_INT64 = 4;
 
-    // Floating point cumulative measurement. The value can only go up, if
+    // Floating point cumulative measurement. The value cannot decrease, if
     // resets then the start_time should also be reset. Recorded values are
     // always >= 0.
     CUMULATIVE_DOUBLE = 5;
 
-    // Distribution cumulative measurement. The count and sum can only go up, if
-    // resets then the start_time should also be reset.
+    // Distribution cumulative measurement. The count and sum cannot decrease,
+    // if resets then the start_time should also be reset.
     CUMULATIVE_DISTRIBUTION = 6;
 
     // Some frameworks implemented Histograms as a summary of observations
@@ -127,7 +127,7 @@ message LabelKey {
 message TimeSeries {
   // Must be present for cumulative metrics. The time when the cumulative value
   // was reset to zero. The cumulative value is over the time interval
-  // [start_timestamp, timestamp]. If not specified, the backend can use the
+  // [start_timestamp, timestamp). If not specified, the backend can use the
   // previous recorded value.
   google.protobuf.Timestamp start_timestamp = 1;
 
@@ -204,7 +204,7 @@ message DistributionValue {
   message BucketOptions {
     oneof type {
       // Bucket with explicit bounds.
-      Explicit explict = 1;
+      Explicit explicit = 1;
     }
 
     // Specifies a set of buckets with arbitrary upper-bounds.
@@ -226,7 +226,7 @@ message DistributionValue {
 
   // Don't change bucket boundaries within a TimeSeries if your backend doesn't
   // support this. To save network bandwidth this field can be sent only the
-  // first time a metric is send when using a stream reporting request.
+  // first time a metric is sent when using a streaming RPC.
   BucketOptions bucket_options = 4;
 
   message Bucket {
