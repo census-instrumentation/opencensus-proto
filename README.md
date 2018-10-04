@@ -12,6 +12,12 @@ consistency and interoperability for the different implementations.
 
 ## Quickstart
 
+### Install to Go
+
+```bash
+$ go get -u github.com/census-instrumentation/opencensus-proto
+```
+
 ### Add the dependencies to your Java project
 
 For Maven add to `pom.xml`:

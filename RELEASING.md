@@ -17,10 +17,13 @@ Follow the instructions [here](http://google.github.io/proto-lens/installing-pro
 Then run the following commands to re-generate the gen-go files:
 
 ```bash
+$ cd $(go env GOPATH)/src/github.com/census-instrumentation/opencensus-proto
 $ git checkout -b update-gen-go
+$ rm -rf gen-go
 $ cd src
 $ ./mkgogen.sh
-$ git commit -a -m "Update gen-go files."
+$ git add -A
+$ git commit -m "Update gen-go files."
 ```
 
 Go through PR review and merge the changes to GitHub.
