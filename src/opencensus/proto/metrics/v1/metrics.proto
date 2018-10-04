@@ -37,7 +37,7 @@ message Metric {
   // MetricDescriptor.
   oneof descriptor {
     // In case of a streaming RPC can be sent only the first time a metric is
-    // reported to save network traffic.
+    // greported to save network traffic.
     MetricDescriptor metric_descriptor = 1;
 
     // In case of a streaming RPC this can be sent for metrics that already
@@ -103,8 +103,8 @@ message MetricDescriptor {
     // Some frameworks implemented Histograms as a summary of observations
     // (usually things like request durations and response sizes). While it
     // also provides a total count of observations and a sum of all observed
-    // values, it calculates configurable percentiles over a sliding time window.
-    // This is not recommended, since it cannot be aggregated.
+    // values, it calculates configurable percentiles over a sliding time
+    // window. This is not recommended, since it cannot be aggregated.
     SUMMARY = 7;
   }
   Type type = 4;
@@ -215,7 +215,7 @@ message DistributionValue {
     // [bucket_bounds[i-1], bucket_bounds[i]) for 0 < i < N-1
     // [bucket_bounds[i-1], +infinity) for i == N-1
     message Explicit {
-      // The values must be monotonically increasing and > 0.
+      // The values must be strictly increasing and > 0.
       repeated double bounds = 1;
     }
 
@@ -293,8 +293,7 @@ message SummaryValue {
     }
 
     // A list of values at different percentiles of the distribution calculated
-    // from the current snapshot. The percentiles must be monotonically
-    // increasing.
+    // from the current snapshot. The percentiles must be strictly increasing.
     repeated ValueAtPercentile percentile_values = 3;
   }
 
