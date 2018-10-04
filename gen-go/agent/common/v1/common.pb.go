@@ -63,18 +63,19 @@ func (x LibraryInfo_Language) String() string {
 	return proto.EnumName(LibraryInfo_Language_name, int32(x))
 }
 func (LibraryInfo_Language) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_common_6a3a6d43226976c4, []int{2, 0}
+	return fileDescriptor_common_3b5adbfb210728f6, []int{2, 0}
 }
 
-// Identifier metadata of the Node that connects to OpenCensus Agent.
+// Identifier metadata of the Node (Application instrumented with OpenCensus)
+// that connects to OpenCensus Agent.
 // In the future we plan to extend the identifier proto definition to support
-// additional information (e.g cloud id, monitored resource, etc.)
+// additional information (e.g cloud id, etc.)
 type Node struct {
 	// Identifier that uniquely identifies a process within a VM/container.
 	Identifier *ProcessIdentifier `protobuf:"bytes,1,opt,name=identifier,proto3" json:"identifier,omitempty"`
-	// Information on the OpenCensus Library who initiates the stream.
+	// Information on the OpenCensus Library that initiates the stream.
 	LibraryInfo *LibraryInfo `protobuf:"bytes,2,opt,name=library_info,json=libraryInfo,proto3" json:"library_info,omitempty"`
-	// Additional informantion on service.
+	// Additional information on service.
 	ServiceInfo *ServiceInfo `protobuf:"bytes,3,opt,name=service_info,json=serviceInfo,proto3" json:"service_info,omitempty"`
 	// Additional attributes.
 	Attributes           map[string]string `protobuf:"bytes,4,rep,name=attributes,proto3" json:"attributes,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
@@ -87,7 +88,7 @@ func (m *Node) Reset()         { *m = Node{} }
 func (m *Node) String() string { return proto.CompactTextString(m) }
 func (*Node) ProtoMessage()    {}
 func (*Node) Descriptor() ([]byte, []int) {
-	return fileDescriptor_common_6a3a6d43226976c4, []int{0}
+	return fileDescriptor_common_3b5adbfb210728f6, []int{0}
 }
 func (m *Node) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Node.Unmarshal(m, b)
@@ -153,7 +154,7 @@ func (m *ProcessIdentifier) Reset()         { *m = ProcessIdentifier{} }
 func (m *ProcessIdentifier) String() string { return proto.CompactTextString(m) }
 func (*ProcessIdentifier) ProtoMessage()    {}
 func (*ProcessIdentifier) Descriptor() ([]byte, []int) {
-	return fileDescriptor_common_6a3a6d43226976c4, []int{1}
+	return fileDescriptor_common_3b5adbfb210728f6, []int{1}
 }
 func (m *ProcessIdentifier) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ProcessIdentifier.Unmarshal(m, b)
@@ -211,7 +212,7 @@ func (m *LibraryInfo) Reset()         { *m = LibraryInfo{} }
 func (m *LibraryInfo) String() string { return proto.CompactTextString(m) }
 func (*LibraryInfo) ProtoMessage()    {}
 func (*LibraryInfo) Descriptor() ([]byte, []int) {
-	return fileDescriptor_common_6a3a6d43226976c4, []int{2}
+	return fileDescriptor_common_3b5adbfb210728f6, []int{2}
 }
 func (m *LibraryInfo) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_LibraryInfo.Unmarshal(m, b)
@@ -265,7 +266,7 @@ func (m *ServiceInfo) Reset()         { *m = ServiceInfo{} }
 func (m *ServiceInfo) String() string { return proto.CompactTextString(m) }
 func (*ServiceInfo) ProtoMessage()    {}
 func (*ServiceInfo) Descriptor() ([]byte, []int) {
-	return fileDescriptor_common_6a3a6d43226976c4, []int{3}
+	return fileDescriptor_common_3b5adbfb210728f6, []int{3}
 }
 func (m *ServiceInfo) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ServiceInfo.Unmarshal(m, b)
@@ -302,10 +303,10 @@ func init() {
 }
 
 func init() {
-	proto.RegisterFile("opencensus/proto/agent/common/v1/common.proto", fileDescriptor_common_6a3a6d43226976c4)
+	proto.RegisterFile("opencensus/proto/agent/common/v1/common.proto", fileDescriptor_common_3b5adbfb210728f6)
 }
 
-var fileDescriptor_common_6a3a6d43226976c4 = []byte{
+var fileDescriptor_common_3b5adbfb210728f6 = []byte{
 	// 590 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x94, 0x4f, 0x4f, 0xdb, 0x3e,
 	0x1c, 0xc6, 0x7f, 0x69, 0x0a, 0xb4, 0xdf, 0xfc, 0x06, 0x99, 0xc5, 0xa1, 0x62, 0x87, 0xb1, 0xee,

@@ -7,6 +7,7 @@ import proto "github.com/golang/protobuf/proto"
 import fmt "fmt"
 import math "math"
 import timestamp "github.com/golang/protobuf/ptypes/timestamp"
+import wrappers "github.com/golang/protobuf/ptypes/wrappers"
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal
@@ -37,39 +38,55 @@ const (
 	MetricDescriptor_GAUGE_INT64 MetricDescriptor_Type = 1
 	// Floating point gauge. The value can go both up and down.
 	MetricDescriptor_GAUGE_DOUBLE MetricDescriptor_Type = 2
-	// Integer cumulative measurement. The value can only go up, if resets then
-	// the start_time should also be reset.
-	MetricDescriptor_CUMULATIVE_INT64 MetricDescriptor_Type = 3
-	// Floating point cumulative measurement. The value can only go up, if
-	// resets then the start_time should also be reset.
-	MetricDescriptor_CUMULATIVE_DOUBLE MetricDescriptor_Type = 4
-	// Distribution cumulative measurement. The count can only go up, if resets
+	// Distribution gauge measurement. The count and sum can go both up and
+	// down. Recorded values are always >= 0.
+	// Used in scenarios like a snapshot of time the current items in a queue
+	// have spent there.
+	MetricDescriptor_GAUGE_DISTRIBUTION MetricDescriptor_Type = 3
+	// Integer cumulative measurement. The value cannot decrease, if resets
 	// then the start_time should also be reset.
-	MetricDescriptor_CUMULATIVE_DISTRIBUTION MetricDescriptor_Type = 5
+	MetricDescriptor_CUMULATIVE_INT64 MetricDescriptor_Type = 4
+	// Floating point cumulative measurement. The value cannot decrease, if
+	// resets then the start_time should also be reset. Recorded values are
+	// always >= 0.
+	MetricDescriptor_CUMULATIVE_DOUBLE MetricDescriptor_Type = 5
+	// Distribution cumulative measurement. The count and sum cannot decrease,
+	// if resets then the start_time should also be reset.
+	MetricDescriptor_CUMULATIVE_DISTRIBUTION MetricDescriptor_Type = 6
+	// Some frameworks implemented Histograms as a summary of observations
+	// (usually things like request durations and response sizes). While it
+	// also provides a total count of observations and a sum of all observed
+	// values, it calculates configurable percentiles over a sliding time
+	// window. This is not recommended, since it cannot be aggregated.
+	MetricDescriptor_SUMMARY MetricDescriptor_Type = 7
 )
 
 var MetricDescriptor_Type_name = map[int32]string{
 	0: "UNSPECIFIED",
 	1: "GAUGE_INT64",
 	2: "GAUGE_DOUBLE",
-	3: "CUMULATIVE_INT64",
-	4: "CUMULATIVE_DOUBLE",
-	5: "CUMULATIVE_DISTRIBUTION",
+	3: "GAUGE_DISTRIBUTION",
+	4: "CUMULATIVE_INT64",
+	5: "CUMULATIVE_DOUBLE",
+	6: "CUMULATIVE_DISTRIBUTION",
+	7: "SUMMARY",
 }
 var MetricDescriptor_Type_value = map[string]int32{
 	"UNSPECIFIED":             0,
 	"GAUGE_INT64":             1,
 	"GAUGE_DOUBLE":            2,
-	"CUMULATIVE_INT64":        3,
-	"CUMULATIVE_DOUBLE":       4,
-	"CUMULATIVE_DISTRIBUTION": 5,
+	"GAUGE_DISTRIBUTION":      3,
+	"CUMULATIVE_INT64":        4,
+	"CUMULATIVE_DOUBLE":       5,
+	"CUMULATIVE_DISTRIBUTION": 6,
+	"SUMMARY":                 7,
 }
 
 func (x MetricDescriptor_Type) String() string {
 	return proto.EnumName(MetricDescriptor_Type_name, int32(x))
 }
 func (MetricDescriptor_Type) EnumDescriptor() ([]byte, []int) {
-	return fileDescriptor_metrics_34af9e3c2642bd8b, []int{1, 0}
+	return fileDescriptor_metrics_e1545aa24d376141, []int{1, 0}
 }
 
 // Defines a Metric which has one or more timeseries.
@@ -94,7 +111,7 @@ func (m *Metric) Reset()         { *m = Metric{} }
 func (m *Metric) String() string { return proto.CompactTextString(m) }
 func (*Metric) ProtoMessage()    {}
 func (*Metric) Descriptor() ([]byte, []int) {
-	return fileDescriptor_metrics_34af9e3c2642bd8b, []int{0}
+	return fileDescriptor_metrics_e1545aa24d376141, []int{0}
 }
 func (m *Metric) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Metric.Unmarshal(m, b)
@@ -249,7 +266,7 @@ func (m *MetricDescriptor) Reset()         { *m = MetricDescriptor{} }
 func (m *MetricDescriptor) String() string { return proto.CompactTextString(m) }
 func (*MetricDescriptor) ProtoMessage()    {}
 func (*MetricDescriptor) Descriptor() ([]byte, []int) {
-	return fileDescriptor_metrics_34af9e3c2642bd8b, []int{1}
+	return fileDescriptor_metrics_e1545aa24d376141, []int{1}
 }
 func (m *MetricDescriptor) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_MetricDescriptor.Unmarshal(m, b)
@@ -319,7 +336,7 @@ func (m *LabelKey) Reset()         { *m = LabelKey{} }
 func (m *LabelKey) String() string { return proto.CompactTextString(m) }
 func (*LabelKey) ProtoMessage()    {}
 func (*LabelKey) Descriptor() ([]byte, []int) {
-	return fileDescriptor_metrics_34af9e3c2642bd8b, []int{2}
+	return fileDescriptor_metrics_e1545aa24d376141, []int{2}
 }
 func (m *LabelKey) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_LabelKey.Unmarshal(m, b)
@@ -358,7 +375,7 @@ func (m *LabelKey) GetDescription() string {
 type TimeSeries struct {
 	// Must be present for cumulative metrics. The time when the cumulative value
 	// was reset to zero. The cumulative value is over the time interval
-	// [start_timestamp, timestamp]. If not specified, the backend can use the
+	// [start_timestamp, timestamp). If not specified, the backend can use the
 	// previous recorded value.
 	StartTimestamp *timestamp.Timestamp `protobuf:"bytes,1,opt,name=start_timestamp,json=startTimestamp,proto3" json:"start_timestamp,omitempty"`
 	// The set of label values that uniquely identify this timeseries. Applies to
@@ -377,7 +394,7 @@ func (m *TimeSeries) Reset()         { *m = TimeSeries{} }
 func (m *TimeSeries) String() string { return proto.CompactTextString(m) }
 func (*TimeSeries) ProtoMessage()    {}
 func (*TimeSeries) Descriptor() ([]byte, []int) {
-	return fileDescriptor_metrics_34af9e3c2642bd8b, []int{3}
+	return fileDescriptor_metrics_e1545aa24d376141, []int{3}
 }
 func (m *TimeSeries) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_TimeSeries.Unmarshal(m, b)
@@ -433,7 +450,7 @@ func (m *LabelValue) Reset()         { *m = LabelValue{} }
 func (m *LabelValue) String() string { return proto.CompactTextString(m) }
 func (*LabelValue) ProtoMessage()    {}
 func (*LabelValue) Descriptor() ([]byte, []int) {
-	return fileDescriptor_metrics_34af9e3c2642bd8b, []int{4}
+	return fileDescriptor_metrics_e1545aa24d376141, []int{4}
 }
 func (m *LabelValue) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_LabelValue.Unmarshal(m, b)
@@ -478,6 +495,7 @@ type Point struct {
 	//	*Point_Int64Value
 	//	*Point_DoubleValue
 	//	*Point_DistributionValue
+	//	*Point_SummaryValue
 	Value                isPoint_Value `protobuf_oneof:"value"`
 	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
 	XXX_unrecognized     []byte        `json:"-"`
@@ -488,7 +506,7 @@ func (m *Point) Reset()         { *m = Point{} }
 func (m *Point) String() string { return proto.CompactTextString(m) }
 func (*Point) ProtoMessage()    {}
 func (*Point) Descriptor() ([]byte, []int) {
-	return fileDescriptor_metrics_34af9e3c2642bd8b, []int{5}
+	return fileDescriptor_metrics_e1545aa24d376141, []int{5}
 }
 func (m *Point) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_Point.Unmarshal(m, b)
@@ -531,11 +549,17 @@ type Point_DistributionValue struct {
 	DistributionValue *DistributionValue `protobuf:"bytes,4,opt,name=distribution_value,json=distributionValue,proto3,oneof"`
 }
 
+type Point_SummaryValue struct {
+	SummaryValue *SummaryValue `protobuf:"bytes,5,opt,name=summary_value,json=summaryValue,proto3,oneof"`
+}
+
 func (*Point_Int64Value) isPoint_Value() {}
 
 func (*Point_DoubleValue) isPoint_Value() {}
 
 func (*Point_DistributionValue) isPoint_Value() {}
+
+func (*Point_SummaryValue) isPoint_Value() {}
 
 func (m *Point) GetValue() isPoint_Value {
 	if m != nil {
@@ -565,12 +589,20 @@ func (m *Point) GetDistributionValue() *DistributionValue {
 	return nil
 }
 
+func (m *Point) GetSummaryValue() *SummaryValue {
+	if x, ok := m.GetValue().(*Point_SummaryValue); ok {
+		return x.SummaryValue
+	}
+	return nil
+}
+
 // XXX_OneofFuncs is for the internal use of the proto package.
 func (*Point) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
 	return _Point_OneofMarshaler, _Point_OneofUnmarshaler, _Point_OneofSizer, []interface{}{
 		(*Point_Int64Value)(nil),
 		(*Point_DoubleValue)(nil),
 		(*Point_DistributionValue)(nil),
+		(*Point_SummaryValue)(nil),
 	}
 }
 
@@ -587,6 +619,11 @@ func _Point_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
 	case *Point_DistributionValue:
 		b.EncodeVarint(4<<3 | proto.WireBytes)
 		if err := b.EncodeMessage(x.DistributionValue); err != nil {
+			return err
+		}
+	case *Point_SummaryValue:
+		b.EncodeVarint(5<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.SummaryValue); err != nil {
 			return err
 		}
 	case nil:
@@ -621,6 +658,14 @@ func _Point_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) 
 		err := b.DecodeMessage(msg)
 		m.Value = &Point_DistributionValue{msg}
 		return true, err
+	case 5: // value.summary_value
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(SummaryValue)
+		err := b.DecodeMessage(msg)
+		m.Value = &Point_SummaryValue{msg}
+		return true, err
 	default:
 		return false, nil
 	}
@@ -638,6 +683,11 @@ func _Point_OneofSizer(msg proto.Message) (n int) {
 		n += 8
 	case *Point_DistributionValue:
 		s := proto.Size(x.DistributionValue)
+		n += 1 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case *Point_SummaryValue:
+		s := proto.Size(x.SummaryValue)
 		n += 1 // tag and wire
 		n += proto.SizeVarint(uint64(s))
 		n += s
@@ -669,28 +719,10 @@ type DistributionValue struct {
 	//
 	// If count is zero then this field must be zero.
 	SumOfSquaredDeviation float64 `protobuf:"fixed64,3,opt,name=sum_of_squared_deviation,json=sumOfSquaredDeviation,proto3" json:"sum_of_squared_deviation,omitempty"`
-	// A Distribution may optionally contain a histogram of the values in the
-	// population. The bucket boundaries for that histogram are described by
-	// bucket_bounds. This defines size(bucket_bounds) + 1 (= N)
-	// buckets. The boundaries for bucket index i are:
-	//
-	// (-infinity, bucket_bounds[i]) for i == 0
-	// [bucket_bounds[i-1], bucket_bounds[i]) for 0 < i < N-2
-	// [bucket_bounds[i-1], +infinity) for i == N-1
-	//
-	// i.e. an underflow bucket (number 0), zero or more finite buckets (1
-	// through N - 2, and an overflow bucket (N - 1), with inclusive lower
-	// bounds and exclusive upper bounds.
-	//
-	// If bucket_bounds has no elements (zero size), then there is no
-	// histogram associated with the Distribution. If bucket_bounds has only
-	// one element, there are no finite buckets, and that single element is the
-	// common boundary of the overflow and underflow buckets. The values must
-	// be monotonically increasing.
-	//
-	// Don't change bucket boundaries within a timeseries if your backend
-	// doesn't support this.
-	BucketBounds []float64 `protobuf:"fixed64,4,rep,packed,name=bucket_bounds,json=bucketBounds,proto3" json:"bucket_bounds,omitempty"`
+	// Don't change bucket boundaries within a TimeSeries if your backend doesn't
+	// support this. To save network bandwidth this field can be sent only the
+	// first time a metric is sent when using a streaming RPC.
+	BucketOptions *DistributionValue_BucketOptions `protobuf:"bytes,4,opt,name=bucket_options,json=bucketOptions,proto3" json:"bucket_options,omitempty"`
 	// If the distribution does not have a histogram, then omit this field.
 	// If there is a histogram, then the sum of the values in the Bucket counts
 	// must equal the value in the count field of the distribution.
@@ -704,7 +736,7 @@ func (m *DistributionValue) Reset()         { *m = DistributionValue{} }
 func (m *DistributionValue) String() string { return proto.CompactTextString(m) }
 func (*DistributionValue) ProtoMessage()    {}
 func (*DistributionValue) Descriptor() ([]byte, []int) {
-	return fileDescriptor_metrics_34af9e3c2642bd8b, []int{6}
+	return fileDescriptor_metrics_e1545aa24d376141, []int{6}
 }
 func (m *DistributionValue) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DistributionValue.Unmarshal(m, b)
@@ -745,9 +777,9 @@ func (m *DistributionValue) GetSumOfSquaredDeviation() float64 {
 	return 0
 }
 
-func (m *DistributionValue) GetBucketBounds() []float64 {
+func (m *DistributionValue) GetBucketOptions() *DistributionValue_BucketOptions {
 	if m != nil {
-		return m.BucketBounds
+		return m.BucketOptions
 	}
 	return nil
 }
@@ -755,6 +787,172 @@ func (m *DistributionValue) GetBucketBounds() []float64 {
 func (m *DistributionValue) GetBuckets() []*DistributionValue_Bucket {
 	if m != nil {
 		return m.Buckets
+	}
+	return nil
+}
+
+// A Distribution may optionally contain a histogram of the values in the
+// population. The bucket boundaries for that histogram are described by
+// BucketOptions.
+//
+// If bucket_options has no type, then there is no histogram associated with
+// the Distribution.
+type DistributionValue_BucketOptions struct {
+	// Types that are valid to be assigned to Type:
+	//	*DistributionValue_BucketOptions_Explicit_
+	Type                 isDistributionValue_BucketOptions_Type `protobuf_oneof:"type"`
+	XXX_NoUnkeyedLiteral struct{}                               `json:"-"`
+	XXX_unrecognized     []byte                                 `json:"-"`
+	XXX_sizecache        int32                                  `json:"-"`
+}
+
+func (m *DistributionValue_BucketOptions) Reset()         { *m = DistributionValue_BucketOptions{} }
+func (m *DistributionValue_BucketOptions) String() string { return proto.CompactTextString(m) }
+func (*DistributionValue_BucketOptions) ProtoMessage()    {}
+func (*DistributionValue_BucketOptions) Descriptor() ([]byte, []int) {
+	return fileDescriptor_metrics_e1545aa24d376141, []int{6, 0}
+}
+func (m *DistributionValue_BucketOptions) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DistributionValue_BucketOptions.Unmarshal(m, b)
+}
+func (m *DistributionValue_BucketOptions) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DistributionValue_BucketOptions.Marshal(b, m, deterministic)
+}
+func (dst *DistributionValue_BucketOptions) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DistributionValue_BucketOptions.Merge(dst, src)
+}
+func (m *DistributionValue_BucketOptions) XXX_Size() int {
+	return xxx_messageInfo_DistributionValue_BucketOptions.Size(m)
+}
+func (m *DistributionValue_BucketOptions) XXX_DiscardUnknown() {
+	xxx_messageInfo_DistributionValue_BucketOptions.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DistributionValue_BucketOptions proto.InternalMessageInfo
+
+type isDistributionValue_BucketOptions_Type interface {
+	isDistributionValue_BucketOptions_Type()
+}
+
+type DistributionValue_BucketOptions_Explicit_ struct {
+	Explicit *DistributionValue_BucketOptions_Explicit `protobuf:"bytes,1,opt,name=explicit,proto3,oneof"`
+}
+
+func (*DistributionValue_BucketOptions_Explicit_) isDistributionValue_BucketOptions_Type() {}
+
+func (m *DistributionValue_BucketOptions) GetType() isDistributionValue_BucketOptions_Type {
+	if m != nil {
+		return m.Type
+	}
+	return nil
+}
+
+func (m *DistributionValue_BucketOptions) GetExplicit() *DistributionValue_BucketOptions_Explicit {
+	if x, ok := m.GetType().(*DistributionValue_BucketOptions_Explicit_); ok {
+		return x.Explicit
+	}
+	return nil
+}
+
+// XXX_OneofFuncs is for the internal use of the proto package.
+func (*DistributionValue_BucketOptions) XXX_OneofFuncs() (func(msg proto.Message, b *proto.Buffer) error, func(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error), func(msg proto.Message) (n int), []interface{}) {
+	return _DistributionValue_BucketOptions_OneofMarshaler, _DistributionValue_BucketOptions_OneofUnmarshaler, _DistributionValue_BucketOptions_OneofSizer, []interface{}{
+		(*DistributionValue_BucketOptions_Explicit_)(nil),
+	}
+}
+
+func _DistributionValue_BucketOptions_OneofMarshaler(msg proto.Message, b *proto.Buffer) error {
+	m := msg.(*DistributionValue_BucketOptions)
+	// type
+	switch x := m.Type.(type) {
+	case *DistributionValue_BucketOptions_Explicit_:
+		b.EncodeVarint(1<<3 | proto.WireBytes)
+		if err := b.EncodeMessage(x.Explicit); err != nil {
+			return err
+		}
+	case nil:
+	default:
+		return fmt.Errorf("DistributionValue_BucketOptions.Type has unexpected type %T", x)
+	}
+	return nil
+}
+
+func _DistributionValue_BucketOptions_OneofUnmarshaler(msg proto.Message, tag, wire int, b *proto.Buffer) (bool, error) {
+	m := msg.(*DistributionValue_BucketOptions)
+	switch tag {
+	case 1: // type.explicit
+		if wire != proto.WireBytes {
+			return true, proto.ErrInternalBadWireType
+		}
+		msg := new(DistributionValue_BucketOptions_Explicit)
+		err := b.DecodeMessage(msg)
+		m.Type = &DistributionValue_BucketOptions_Explicit_{msg}
+		return true, err
+	default:
+		return false, nil
+	}
+}
+
+func _DistributionValue_BucketOptions_OneofSizer(msg proto.Message) (n int) {
+	m := msg.(*DistributionValue_BucketOptions)
+	// type
+	switch x := m.Type.(type) {
+	case *DistributionValue_BucketOptions_Explicit_:
+		s := proto.Size(x.Explicit)
+		n += 1 // tag and wire
+		n += proto.SizeVarint(uint64(s))
+		n += s
+	case nil:
+	default:
+		panic(fmt.Sprintf("proto: unexpected type %T in oneof", x))
+	}
+	return n
+}
+
+// Specifies a set of buckets with arbitrary upper-bounds.
+// This defines size(bounds) + 1 (= N) buckets. The boundaries for bucket
+// index i are:
+//
+// [0, bucket_bounds[i]) for i == 0
+// [bucket_bounds[i-1], bucket_bounds[i]) for 0 < i < N-1
+// [bucket_bounds[i-1], +infinity) for i == N-1
+type DistributionValue_BucketOptions_Explicit struct {
+	// The values must be strictly increasing and > 0.
+	Bounds               []float64 `protobuf:"fixed64,1,rep,packed,name=bounds,proto3" json:"bounds,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
+	XXX_unrecognized     []byte    `json:"-"`
+	XXX_sizecache        int32     `json:"-"`
+}
+
+func (m *DistributionValue_BucketOptions_Explicit) Reset() {
+	*m = DistributionValue_BucketOptions_Explicit{}
+}
+func (m *DistributionValue_BucketOptions_Explicit) String() string { return proto.CompactTextString(m) }
+func (*DistributionValue_BucketOptions_Explicit) ProtoMessage()    {}
+func (*DistributionValue_BucketOptions_Explicit) Descriptor() ([]byte, []int) {
+	return fileDescriptor_metrics_e1545aa24d376141, []int{6, 0, 0}
+}
+func (m *DistributionValue_BucketOptions_Explicit) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DistributionValue_BucketOptions_Explicit.Unmarshal(m, b)
+}
+func (m *DistributionValue_BucketOptions_Explicit) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DistributionValue_BucketOptions_Explicit.Marshal(b, m, deterministic)
+}
+func (dst *DistributionValue_BucketOptions_Explicit) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DistributionValue_BucketOptions_Explicit.Merge(dst, src)
+}
+func (m *DistributionValue_BucketOptions_Explicit) XXX_Size() int {
+	return xxx_messageInfo_DistributionValue_BucketOptions_Explicit.Size(m)
+}
+func (m *DistributionValue_BucketOptions_Explicit) XXX_DiscardUnknown() {
+	xxx_messageInfo_DistributionValue_BucketOptions_Explicit.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DistributionValue_BucketOptions_Explicit proto.InternalMessageInfo
+
+func (m *DistributionValue_BucketOptions_Explicit) GetBounds() []float64 {
+	if m != nil {
+		return m.Bounds
 	}
 	return nil
 }
@@ -774,7 +972,7 @@ func (m *DistributionValue_Bucket) Reset()         { *m = DistributionValue_Buck
 func (m *DistributionValue_Bucket) String() string { return proto.CompactTextString(m) }
 func (*DistributionValue_Bucket) ProtoMessage()    {}
 func (*DistributionValue_Bucket) Descriptor() ([]byte, []int) {
-	return fileDescriptor_metrics_34af9e3c2642bd8b, []int{6, 0}
+	return fileDescriptor_metrics_e1545aa24d376141, []int{6, 1}
 }
 func (m *DistributionValue_Bucket) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DistributionValue_Bucket.Unmarshal(m, b)
@@ -828,7 +1026,7 @@ func (m *DistributionValue_Exemplar) Reset()         { *m = DistributionValue_Ex
 func (m *DistributionValue_Exemplar) String() string { return proto.CompactTextString(m) }
 func (*DistributionValue_Exemplar) ProtoMessage()    {}
 func (*DistributionValue_Exemplar) Descriptor() ([]byte, []int) {
-	return fileDescriptor_metrics_34af9e3c2642bd8b, []int{6, 1}
+	return fileDescriptor_metrics_e1545aa24d376141, []int{6, 2}
 }
 func (m *DistributionValue_Exemplar) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_DistributionValue_Exemplar.Unmarshal(m, b)
@@ -869,6 +1067,182 @@ func (m *DistributionValue_Exemplar) GetAttachments() map[string]string {
 	return nil
 }
 
+// The start_timestamp only applies to the count and sum in the SummaryValue.
+type SummaryValue struct {
+	// The total number of recorded values since start_time. Optional since
+	// some systems don't expose this.
+	Count *wrappers.Int64Value `protobuf:"bytes,1,opt,name=count,proto3" json:"count,omitempty"`
+	// The total sum of recorded values since start_time. Optional since some
+	// systems don't expose this. If count is zero then this field must be zero.
+	// This field must be unset if the sum is not available.
+	Sum *wrappers.DoubleValue `protobuf:"bytes,2,opt,name=sum,proto3" json:"sum,omitempty"`
+	// Values calculated over an arbitrary time window.
+	Snapshot             *SummaryValue_Snapshot `protobuf:"bytes,3,opt,name=snapshot,proto3" json:"snapshot,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}               `json:"-"`
+	XXX_unrecognized     []byte                 `json:"-"`
+	XXX_sizecache        int32                  `json:"-"`
+}
+
+func (m *SummaryValue) Reset()         { *m = SummaryValue{} }
+func (m *SummaryValue) String() string { return proto.CompactTextString(m) }
+func (*SummaryValue) ProtoMessage()    {}
+func (*SummaryValue) Descriptor() ([]byte, []int) {
+	return fileDescriptor_metrics_e1545aa24d376141, []int{7}
+}
+func (m *SummaryValue) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_SummaryValue.Unmarshal(m, b)
+}
+func (m *SummaryValue) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_SummaryValue.Marshal(b, m, deterministic)
+}
+func (dst *SummaryValue) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SummaryValue.Merge(dst, src)
+}
+func (m *SummaryValue) XXX_Size() int {
+	return xxx_messageInfo_SummaryValue.Size(m)
+}
+func (m *SummaryValue) XXX_DiscardUnknown() {
+	xxx_messageInfo_SummaryValue.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_SummaryValue proto.InternalMessageInfo
+
+func (m *SummaryValue) GetCount() *wrappers.Int64Value {
+	if m != nil {
+		return m.Count
+	}
+	return nil
+}
+
+func (m *SummaryValue) GetSum() *wrappers.DoubleValue {
+	if m != nil {
+		return m.Sum
+	}
+	return nil
+}
+
+func (m *SummaryValue) GetSnapshot() *SummaryValue_Snapshot {
+	if m != nil {
+		return m.Snapshot
+	}
+	return nil
+}
+
+// The values in this message can be reset at arbitrary unknown times, with
+// the requirement that all of them are reset at the same time.
+type SummaryValue_Snapshot struct {
+	// The number of values in the snapshot. Optional since some systems don't
+	// expose this.
+	Count *wrappers.Int64Value `protobuf:"bytes,1,opt,name=count,proto3" json:"count,omitempty"`
+	// The sum of values in the snapshot. Optional since some systems don't
+	// expose this. If count is zero then this field must be zero or not set
+	// (if not supported).
+	Sum *wrappers.DoubleValue `protobuf:"bytes,2,opt,name=sum,proto3" json:"sum,omitempty"`
+	// A list of values at different percentiles of the distribution calculated
+	// from the current snapshot. The percentiles must be strictly increasing.
+	PercentileValues     []*SummaryValue_Snapshot_ValueAtPercentile `protobuf:"bytes,3,rep,name=percentile_values,json=percentileValues,proto3" json:"percentile_values,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}                                   `json:"-"`
+	XXX_unrecognized     []byte                                     `json:"-"`
+	XXX_sizecache        int32                                      `json:"-"`
+}
+
+func (m *SummaryValue_Snapshot) Reset()         { *m = SummaryValue_Snapshot{} }
+func (m *SummaryValue_Snapshot) String() string { return proto.CompactTextString(m) }
+func (*SummaryValue_Snapshot) ProtoMessage()    {}
+func (*SummaryValue_Snapshot) Descriptor() ([]byte, []int) {
+	return fileDescriptor_metrics_e1545aa24d376141, []int{7, 0}
+}
+func (m *SummaryValue_Snapshot) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_SummaryValue_Snapshot.Unmarshal(m, b)
+}
+func (m *SummaryValue_Snapshot) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_SummaryValue_Snapshot.Marshal(b, m, deterministic)
+}
+func (dst *SummaryValue_Snapshot) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SummaryValue_Snapshot.Merge(dst, src)
+}
+func (m *SummaryValue_Snapshot) XXX_Size() int {
+	return xxx_messageInfo_SummaryValue_Snapshot.Size(m)
+}
+func (m *SummaryValue_Snapshot) XXX_DiscardUnknown() {
+	xxx_messageInfo_SummaryValue_Snapshot.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_SummaryValue_Snapshot proto.InternalMessageInfo
+
+func (m *SummaryValue_Snapshot) GetCount() *wrappers.Int64Value {
+	if m != nil {
+		return m.Count
+	}
+	return nil
+}
+
+func (m *SummaryValue_Snapshot) GetSum() *wrappers.DoubleValue {
+	if m != nil {
+		return m.Sum
+	}
+	return nil
+}
+
+func (m *SummaryValue_Snapshot) GetPercentileValues() []*SummaryValue_Snapshot_ValueAtPercentile {
+	if m != nil {
+		return m.PercentileValues
+	}
+	return nil
+}
+
+// Represents the value at a given percentile of a distribution.
+type SummaryValue_Snapshot_ValueAtPercentile struct {
+	// The percentile of a distribution. Must be in the interval
+	// (0.0, 100.0].
+	Percentile float64 `protobuf:"fixed64,1,opt,name=percentile,proto3" json:"percentile,omitempty"`
+	// The value at the given percentile of a distribution.
+	Value                float64  `protobuf:"fixed64,2,opt,name=value,proto3" json:"value,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *SummaryValue_Snapshot_ValueAtPercentile) Reset() {
+	*m = SummaryValue_Snapshot_ValueAtPercentile{}
+}
+func (m *SummaryValue_Snapshot_ValueAtPercentile) String() string { return proto.CompactTextString(m) }
+func (*SummaryValue_Snapshot_ValueAtPercentile) ProtoMessage()    {}
+func (*SummaryValue_Snapshot_ValueAtPercentile) Descriptor() ([]byte, []int) {
+	return fileDescriptor_metrics_e1545aa24d376141, []int{7, 0, 0}
+}
+func (m *SummaryValue_Snapshot_ValueAtPercentile) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_SummaryValue_Snapshot_ValueAtPercentile.Unmarshal(m, b)
+}
+func (m *SummaryValue_Snapshot_ValueAtPercentile) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_SummaryValue_Snapshot_ValueAtPercentile.Marshal(b, m, deterministic)
+}
+func (dst *SummaryValue_Snapshot_ValueAtPercentile) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_SummaryValue_Snapshot_ValueAtPercentile.Merge(dst, src)
+}
+func (m *SummaryValue_Snapshot_ValueAtPercentile) XXX_Size() int {
+	return xxx_messageInfo_SummaryValue_Snapshot_ValueAtPercentile.Size(m)
+}
+func (m *SummaryValue_Snapshot_ValueAtPercentile) XXX_DiscardUnknown() {
+	xxx_messageInfo_SummaryValue_Snapshot_ValueAtPercentile.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_SummaryValue_Snapshot_ValueAtPercentile proto.InternalMessageInfo
+
+func (m *SummaryValue_Snapshot_ValueAtPercentile) GetPercentile() float64 {
+	if m != nil {
+		return m.Percentile
+	}
+	return 0
+}
+
+func (m *SummaryValue_Snapshot_ValueAtPercentile) GetValue() float64 {
+	if m != nil {
+		return m.Value
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterType((*Metric)(nil), "opencensus.proto.metrics.v1.Metric")
 	proto.RegisterType((*MetricDescriptor)(nil), "opencensus.proto.metrics.v1.MetricDescriptor")
@@ -877,69 +1251,89 @@ func init() {
 	proto.RegisterType((*LabelValue)(nil), "opencensus.proto.metrics.v1.LabelValue")
 	proto.RegisterType((*Point)(nil), "opencensus.proto.metrics.v1.Point")
 	proto.RegisterType((*DistributionValue)(nil), "opencensus.proto.metrics.v1.DistributionValue")
+	proto.RegisterType((*DistributionValue_BucketOptions)(nil), "opencensus.proto.metrics.v1.DistributionValue.BucketOptions")
+	proto.RegisterType((*DistributionValue_BucketOptions_Explicit)(nil), "opencensus.proto.metrics.v1.DistributionValue.BucketOptions.Explicit")
 	proto.RegisterType((*DistributionValue_Bucket)(nil), "opencensus.proto.metrics.v1.DistributionValue.Bucket")
 	proto.RegisterType((*DistributionValue_Exemplar)(nil), "opencensus.proto.metrics.v1.DistributionValue.Exemplar")
 	proto.RegisterMapType((map[string]string)(nil), "opencensus.proto.metrics.v1.DistributionValue.Exemplar.AttachmentsEntry")
+	proto.RegisterType((*SummaryValue)(nil), "opencensus.proto.metrics.v1.SummaryValue")
+	proto.RegisterType((*SummaryValue_Snapshot)(nil), "opencensus.proto.metrics.v1.SummaryValue.Snapshot")
+	proto.RegisterType((*SummaryValue_Snapshot_ValueAtPercentile)(nil), "opencensus.proto.metrics.v1.SummaryValue.Snapshot.ValueAtPercentile")
 	proto.RegisterEnum("opencensus.proto.metrics.v1.MetricDescriptor_Type", MetricDescriptor_Type_name, MetricDescriptor_Type_value)
 }
 
 func init() {
-	proto.RegisterFile("opencensus/proto/metrics/v1/metrics.proto", fileDescriptor_metrics_34af9e3c2642bd8b)
+	proto.RegisterFile("opencensus/proto/metrics/v1/metrics.proto", fileDescriptor_metrics_e1545aa24d376141)
 }
 
-var fileDescriptor_metrics_34af9e3c2642bd8b = []byte{
-	// 848 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x55, 0x5d, 0x8f, 0xdb, 0x44,
-	0x14, 0x8d, 0x93, 0xec, 0x36, 0xb9, 0x0e, 0xad, 0x77, 0xb4, 0x15, 0x56, 0x56, 0x82, 0xe0, 0x0a,
-	0x11, 0x1e, 0xd6, 0x51, 0x43, 0x69, 0xab, 0x3e, 0x14, 0xad, 0x37, 0xe9, 0x26, 0xb0, 0xdd, 0x5d,
-	0x4d, 0x92, 0x3e, 0x20, 0x24, 0xcb, 0x4e, 0x66, 0xb3, 0x66, 0xfd, 0x85, 0x67, 0x1c, 0x91, 0x77,
-	0xc4, 0x1f, 0xe4, 0x89, 0x7f, 0xc0, 0x2b, 0xe2, 0x0f, 0xa0, 0x99, 0xb1, 0x63, 0x37, 0x40, 0x20,
-	0xbc, 0xcd, 0x9c, 0x39, 0xe7, 0xce, 0xb9, 0xd7, 0xc7, 0x36, 0x7c, 0x1e, 0xc5, 0x24, 0x9c, 0x93,
-	0x90, 0xa6, 0xb4, 0x17, 0x27, 0x11, 0x8b, 0x7a, 0x01, 0x61, 0x89, 0x37, 0xa7, 0xbd, 0xd5, 0xd3,
-	0x7c, 0x69, 0x8a, 0x03, 0x74, 0x52, 0x50, 0x25, 0x62, 0xe6, 0xe7, 0xab, 0xa7, 0xed, 0x8f, 0x97,
-	0x51, 0xb4, 0xf4, 0x89, 0xac, 0xe1, 0xa6, 0xb7, 0x3d, 0xe6, 0x05, 0x84, 0x32, 0x27, 0x88, 0x25,
-	0xd7, 0xf8, 0x45, 0x81, 0xc3, 0xb7, 0x82, 0x8f, 0xbe, 0x83, 0x23, 0xa9, 0xb4, 0x17, 0x84, 0xce,
-	0x13, 0x2f, 0x66, 0x51, 0xa2, 0x2b, 0x1d, 0xa5, 0xab, 0xf6, 0x4f, 0xcd, 0x1d, 0x97, 0x98, 0x52,
-	0x3f, 0xd8, 0x88, 0x46, 0x15, 0xac, 0x05, 0x5b, 0x18, 0x3a, 0x86, 0x7a, 0xe8, 0x04, 0x44, 0xaf,
-	0x76, 0x94, 0x6e, 0x73, 0x54, 0xc1, 0x62, 0x87, 0x2e, 0x00, 0x84, 0x23, 0x92, 0x78, 0x84, 0xea,
-	0xb5, 0x4e, 0xad, 0xab, 0xf6, 0x3f, 0xdb, 0x79, 0xd9, 0xd4, 0x0b, 0xc8, 0x44, 0xd0, 0x71, 0x49,
-	0x6a, 0xb5, 0x00, 0x0a, 0xd7, 0xc6, 0xef, 0x55, 0xd0, 0xb6, 0x5d, 0x21, 0x94, 0x39, 0xe0, 0x2d,
-	0x35, 0xb3, 0xfb, 0x3b, 0xa0, 0xe6, 0x32, 0x2f, 0x0a, 0xa5, 0x39, 0x5c, 0x86, 0xb8, 0x2a, 0x0d,
-	0x3d, 0xa6, 0xd7, 0xa4, 0x8a, 0xaf, 0xd1, 0x1b, 0xa8, 0xb3, 0x75, 0x4c, 0xf4, 0x7a, 0x47, 0xe9,
-	0x3e, 0xec, 0xf7, 0xf7, 0x1a, 0x8e, 0x39, 0x5d, 0xc7, 0x04, 0x0b, 0x3d, 0x1a, 0x00, 0xf8, 0x8e,
-	0x4b, 0x7c, 0xfb, 0x9e, 0xac, 0xa9, 0x7e, 0x20, 0xba, 0xff, 0x74, 0x67, 0xb5, 0x4b, 0x4e, 0xff,
-	0x86, 0xac, 0x71, 0xd3, 0xcf, 0x56, 0xd4, 0xf8, 0x49, 0x81, 0x3a, 0x2f, 0x8a, 0x1e, 0x81, 0x3a,
-	0xbb, 0x9a, 0xdc, 0x0c, 0xcf, 0xc7, 0x6f, 0xc6, 0xc3, 0x81, 0x56, 0xe1, 0xc0, 0xc5, 0xd9, 0xec,
-	0x62, 0x68, 0x8f, 0xaf, 0xa6, 0xcf, 0x9f, 0x69, 0x0a, 0xd2, 0xa0, 0x25, 0x81, 0xc1, 0xf5, 0xcc,
-	0xba, 0x1c, 0x6a, 0x55, 0x74, 0x0c, 0xda, 0xf9, 0xec, 0xed, 0xec, 0xf2, 0x6c, 0x3a, 0x7e, 0x97,
-	0xf3, 0x6a, 0xe8, 0x31, 0x1c, 0x95, 0xd0, 0x8c, 0x5c, 0x47, 0x27, 0xf0, 0x61, 0x19, 0x1e, 0x4f,
-	0xa6, 0x78, 0x6c, 0xcd, 0xa6, 0xe3, 0xeb, 0x2b, 0xed, 0xc0, 0x78, 0x0d, 0x8d, 0xdc, 0x1d, 0xd2,
-	0xa0, 0x76, 0x4f, 0xd6, 0xd9, 0xa4, 0xf9, 0xf2, 0xdf, 0x07, 0x6d, 0xfc, 0xaa, 0x00, 0x14, 0x0f,
-	0x17, 0x9d, 0xc3, 0x23, 0xca, 0x9c, 0x84, 0xd9, 0x9b, 0xc4, 0x66, 0x59, 0x6c, 0x9b, 0x32, 0xd3,
-	0x66, 0x9e, 0x69, 0x11, 0x09, 0xc1, 0xc0, 0x0f, 0x85, 0x64, 0xb3, 0x47, 0x5f, 0x43, 0x4b, 0x0e,
-	0x78, 0xe5, 0xf8, 0x29, 0xa1, 0x7a, 0xf5, 0x3f, 0x04, 0x4c, 0x34, 0xf1, 0x8e, 0xf3, 0xb1, 0xea,
-	0x6f, 0xd6, 0x14, 0xbd, 0x82, 0xc3, 0x38, 0xf2, 0x42, 0x96, 0xc7, 0xd4, 0xd8, 0x59, 0xe5, 0x86,
-	0x53, 0x71, 0xa6, 0x30, 0xbe, 0x02, 0x28, 0xca, 0xa2, 0x63, 0x38, 0x10, 0x7e, 0xb2, 0xf9, 0xc8,
-	0x0d, 0x3a, 0x81, 0xe6, 0x9d, 0x43, 0xa5, 0x53, 0x31, 0x9f, 0x06, 0x6e, 0xdc, 0x39, 0x54, 0x48,
-	0x8c, 0x3f, 0x14, 0x38, 0x10, 0x25, 0xd1, 0x4b, 0x68, 0xee, 0x33, 0x91, 0x82, 0x8c, 0x3e, 0x01,
-	0xd5, 0x0b, 0xd9, 0xf3, 0x67, 0xa5, 0x2b, 0x6a, 0xa3, 0x0a, 0x06, 0x01, 0x4a, 0x67, 0x4f, 0xa0,
-	0xb5, 0x88, 0x52, 0xd7, 0x27, 0x19, 0x87, 0x87, 0x5e, 0x19, 0x55, 0xb0, 0x2a, 0x51, 0x49, 0xb2,
-	0x01, 0x2d, 0x3c, 0xca, 0x12, 0xcf, 0x4d, 0xf9, 0x83, 0xcb, 0xa8, 0x75, 0x61, 0xc5, 0xdc, 0x39,
-	0x94, 0x41, 0x49, 0x26, 0x6a, 0x8d, 0x2a, 0xf8, 0x68, 0xb1, 0x0d, 0x5a, 0x0f, 0xb2, 0xf9, 0x18,
-	0xbf, 0xd5, 0xe1, 0xe8, 0x2f, 0x1a, 0x3e, 0xbe, 0x79, 0x94, 0x86, 0x4c, 0x74, 0x5f, 0xc3, 0x72,
-	0xc3, 0x23, 0x47, 0xd3, 0x40, 0x74, 0xa5, 0x60, 0xbe, 0x44, 0x2f, 0x40, 0xa7, 0x69, 0x60, 0x47,
-	0xb7, 0x36, 0xfd, 0x21, 0x75, 0x12, 0xb2, 0xb0, 0x17, 0x64, 0xe5, 0x39, 0x22, 0x7f, 0xa2, 0x31,
-	0xfc, 0x98, 0xa6, 0xc1, 0xf5, 0xed, 0x44, 0x9e, 0x0e, 0xf2, 0x43, 0xf4, 0x04, 0x3e, 0x70, 0xd3,
-	0xf9, 0x3d, 0x61, 0xb6, 0x1b, 0xa5, 0xe1, 0x82, 0xea, 0xf5, 0x4e, 0xad, 0xab, 0xe0, 0x96, 0x04,
-	0x2d, 0x81, 0xa1, 0x6b, 0x78, 0x20, 0xf7, 0xf9, 0x8b, 0xfb, 0xe5, 0x7e, 0xad, 0x9b, 0x96, 0x50,
-	0xe3, 0xbc, 0x4a, 0x9b, 0xc2, 0xa1, 0x84, 0xfe, 0xa1, 0xc1, 0x09, 0x34, 0xc8, 0x8f, 0x24, 0x88,
-	0x7d, 0x27, 0x11, 0x5d, 0xaa, 0xfd, 0x17, 0x7b, 0xde, 0x38, 0xcc, 0xe4, 0x78, 0x53, 0xa8, 0xfd,
-	0x73, 0x15, 0x1a, 0x39, 0xfc, 0x7e, 0x2e, 0x95, 0x3c, 0x97, 0xef, 0x05, 0xae, 0xba, 0x4f, 0xe0,
-	0xbe, 0x07, 0xd5, 0x61, 0xcc, 0x99, 0xdf, 0x05, 0xa4, 0x78, 0x6d, 0x46, 0xff, 0xd3, 0xb4, 0x79,
-	0x56, 0x94, 0x1a, 0x86, 0x2c, 0x59, 0xe3, 0x72, 0xf1, 0xf6, 0x6b, 0xd0, 0xb6, 0x09, 0x7f, 0xf3,
-	0x15, 0xda, 0x74, 0x58, 0x2d, 0xbd, 0x79, 0xaf, 0xaa, 0x2f, 0x15, 0x6b, 0x05, 0x1f, 0x79, 0xd1,
-	0x2e, 0x6b, 0x56, 0x4b, 0x7e, 0xc9, 0xe9, 0x0d, 0x3f, 0xb8, 0x51, 0xbe, 0x1d, 0x2c, 0x3d, 0x76,
-	0x97, 0xba, 0xe6, 0x3c, 0x0a, 0x7a, 0x52, 0x73, 0xea, 0x85, 0x94, 0x25, 0x29, 0x77, 0x20, 0x82,
-	0xd4, 0x2b, 0xca, 0x9d, 0xca, 0x9f, 0xf8, 0x92, 0x84, 0xa7, 0xcb, 0xf2, 0xbf, 0xdc, 0x3d, 0x14,
-	0x07, 0x5f, 0xfc, 0x19, 0x00, 0x00, 0xff, 0xff, 0x77, 0x55, 0x9e, 0xc9, 0xf1, 0x07, 0x00, 0x00,
+var fileDescriptor_metrics_e1545aa24d376141 = []byte{
+	// 1083 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x56, 0xdb, 0x6e, 0x23, 0x45,
+	0x13, 0xf6, 0xd8, 0x8e, 0xe3, 0xd4, 0x38, 0xd9, 0x71, 0x2b, 0xbb, 0xbf, 0xe5, 0xfc, 0x0a, 0x66,
+	0x10, 0x22, 0x7b, 0x91, 0xb1, 0x62, 0x96, 0xdd, 0xd5, 0x0a, 0x2d, 0x8a, 0x63, 0x6f, 0x6c, 0xc8,
+	0xc1, 0x6a, 0xdb, 0x2b, 0x81, 0x90, 0xac, 0xf1, 0xb8, 0x93, 0x0c, 0xf1, 0x1c, 0x76, 0xba, 0x27,
+	0xe0, 0x17, 0xe0, 0x11, 0xb8, 0xe6, 0x16, 0xf1, 0x1c, 0x5c, 0x71, 0xc9, 0x15, 0x4f, 0xc1, 0x2b,
+	0xa0, 0xe9, 0xee, 0x39, 0x24, 0x01, 0x2f, 0x5e, 0x24, 0xee, 0xba, 0xaa, 0xeb, 0xfb, 0xfa, 0xeb,
+	0xaa, 0xea, 0x9a, 0x81, 0xc7, 0x9e, 0x4f, 0x5c, 0x8b, 0xb8, 0x34, 0xa4, 0x4d, 0x3f, 0xf0, 0x98,
+	0xd7, 0x74, 0x08, 0x0b, 0x6c, 0x8b, 0x36, 0x6f, 0x0e, 0xe2, 0xa5, 0xc1, 0x37, 0xd0, 0x4e, 0x1a,
+	0x2a, 0x3c, 0x46, 0xbc, 0x7f, 0x73, 0x50, 0x7f, 0xef, 0xd2, 0xf3, 0x2e, 0xe7, 0x44, 0x70, 0x4c,
+	0xc3, 0x8b, 0x26, 0xb3, 0x1d, 0x42, 0x99, 0xe9, 0xf8, 0x22, 0xb6, 0xbe, 0x7b, 0x37, 0xe0, 0xdb,
+	0xc0, 0xf4, 0x7d, 0x12, 0x48, 0x2e, 0xfd, 0x37, 0x05, 0x4a, 0xa7, 0x9c, 0x0f, 0x7d, 0x0d, 0x55,
+	0xc1, 0x3c, 0x99, 0x11, 0x6a, 0x05, 0xb6, 0xcf, 0xbc, 0xa0, 0xa6, 0x34, 0x94, 0x3d, 0xb5, 0xb5,
+	0x6f, 0x2c, 0x11, 0x61, 0x08, 0x7c, 0x27, 0x01, 0xf5, 0x72, 0x58, 0x73, 0xee, 0xf8, 0xd0, 0x36,
+	0x14, 0x5d, 0xd3, 0x21, 0xb5, 0x7c, 0x43, 0xd9, 0xdb, 0xe8, 0xe5, 0x30, 0xb7, 0xd0, 0x31, 0x00,
+	0x57, 0x4c, 0x02, 0x9b, 0xd0, 0x5a, 0xa1, 0x51, 0xd8, 0x53, 0x5b, 0x1f, 0x2d, 0x3d, 0x6c, 0x64,
+	0x3b, 0x64, 0xc8, 0xc3, 0x71, 0x06, 0xda, 0xae, 0x00, 0xa4, 0xaa, 0xf5, 0x1f, 0x0a, 0xa0, 0xdd,
+	0x55, 0x85, 0x90, 0x54, 0x10, 0x5d, 0x69, 0x43, 0x9e, 0xdf, 0x00, 0x35, 0x86, 0xd9, 0x9e, 0x2b,
+	0xc4, 0xe1, 0xac, 0x2b, 0x42, 0x85, 0xae, 0xcd, 0x6a, 0x05, 0x81, 0x8a, 0xd6, 0xe8, 0x15, 0x14,
+	0xd9, 0xc2, 0x27, 0xb5, 0x62, 0x43, 0xd9, 0xdb, 0x6a, 0xb5, 0x56, 0x4a, 0x8e, 0x31, 0x5a, 0xf8,
+	0x04, 0x73, 0x3c, 0xea, 0x00, 0xcc, 0xcd, 0x29, 0x99, 0x4f, 0xae, 0xc9, 0x82, 0xd6, 0xd6, 0xf8,
+	0xed, 0x3f, 0x5c, 0xca, 0x76, 0x12, 0x85, 0x7f, 0x41, 0x16, 0x78, 0x63, 0x2e, 0x57, 0x54, 0xff,
+	0x49, 0x81, 0x62, 0x44, 0x8a, 0x1e, 0x80, 0x3a, 0x3e, 0x1b, 0x0e, 0xba, 0x47, 0xfd, 0x57, 0xfd,
+	0x6e, 0x47, 0xcb, 0x45, 0x8e, 0xe3, 0xc3, 0xf1, 0x71, 0x77, 0xd2, 0x3f, 0x1b, 0x3d, 0x7d, 0xa2,
+	0x29, 0x48, 0x83, 0x8a, 0x70, 0x74, 0xce, 0xc7, 0xed, 0x93, 0xae, 0x96, 0x47, 0x8f, 0x00, 0x49,
+	0x4f, 0x7f, 0x38, 0xc2, 0xfd, 0xf6, 0x78, 0xd4, 0x3f, 0x3f, 0xd3, 0x0a, 0x68, 0x1b, 0xb4, 0xa3,
+	0xf1, 0xe9, 0xf8, 0xe4, 0x70, 0xd4, 0x7f, 0x1d, 0xe3, 0x8b, 0xe8, 0x21, 0x54, 0x33, 0x5e, 0x49,
+	0xb2, 0x86, 0x76, 0xe0, 0x7f, 0x59, 0x77, 0x96, 0xa9, 0x84, 0x54, 0x58, 0x1f, 0x8e, 0x4f, 0x4f,
+	0x0f, 0xf1, 0x97, 0xda, 0xba, 0xfe, 0x12, 0xca, 0xf1, 0x15, 0x90, 0x06, 0x85, 0x6b, 0xb2, 0x90,
+	0xe5, 0x88, 0x96, 0x6f, 0xaf, 0x86, 0xfe, 0xbb, 0x02, 0x90, 0x76, 0x00, 0x3a, 0x82, 0x07, 0x94,
+	0x99, 0x01, 0x9b, 0x24, 0x6d, 0x2f, 0x1b, 0xb6, 0x6e, 0x88, 0xbe, 0x37, 0xe2, 0xbe, 0xe7, 0x7d,
+	0xc3, 0x23, 0xf0, 0x16, 0x87, 0x24, 0x36, 0xfa, 0x1c, 0x2a, 0xa2, 0x0a, 0x37, 0xe6, 0x3c, 0x24,
+	0xb4, 0x96, 0xff, 0x07, 0x5d, 0xc8, 0x2f, 0xf1, 0x3a, 0x8a, 0xc7, 0xea, 0x3c, 0x59, 0x53, 0xf4,
+	0x02, 0x4a, 0xbe, 0x67, 0xbb, 0x2c, 0xee, 0x65, 0x7d, 0x29, 0xcb, 0x20, 0x0a, 0xc5, 0x12, 0xa1,
+	0x7f, 0x06, 0x90, 0xd2, 0xa2, 0x6d, 0x58, 0xe3, 0x7a, 0x64, 0x7e, 0x84, 0x81, 0x76, 0x60, 0xe3,
+	0xca, 0xa4, 0x42, 0x29, 0xcf, 0x4f, 0x19, 0x97, 0xaf, 0x4c, 0xca, 0x21, 0xfa, 0x2f, 0x79, 0x58,
+	0xe3, 0x94, 0xe8, 0x39, 0x6c, 0xac, 0x92, 0x91, 0x34, 0x18, 0xbd, 0x0f, 0xaa, 0xed, 0xb2, 0xa7,
+	0x4f, 0x32, 0x47, 0x14, 0x7a, 0x39, 0x0c, 0xdc, 0x29, 0x94, 0x7d, 0x00, 0x95, 0x99, 0x17, 0x4e,
+	0xe7, 0x44, 0xc6, 0x44, 0x2f, 0x43, 0xe9, 0xe5, 0xb0, 0x2a, 0xbc, 0x22, 0x68, 0x02, 0x68, 0x66,
+	0x53, 0x16, 0xd8, 0xd3, 0x30, 0x2a, 0x9c, 0x0c, 0x2d, 0x72, 0x29, 0xc6, 0xd2, 0xa4, 0x74, 0x32,
+	0x30, 0xce, 0xd5, 0xcb, 0xe1, 0xea, 0xec, 0xae, 0x13, 0x0d, 0x60, 0x93, 0x86, 0x8e, 0x63, 0x06,
+	0x0b, 0xc9, 0xbd, 0xc6, 0xb9, 0x1f, 0x2f, 0xe5, 0x1e, 0x0a, 0x44, 0x4c, 0x5b, 0xa1, 0x19, 0xbb,
+	0xbd, 0x2e, 0x33, 0xae, 0xff, 0x5a, 0x82, 0xea, 0x3d, 0x15, 0x51, 0x41, 0x2c, 0x2f, 0x74, 0x19,
+	0xcf, 0x67, 0x01, 0x0b, 0x23, 0x6a, 0x62, 0x1a, 0x3a, 0x3c, 0x4f, 0x0a, 0x8e, 0x96, 0xe8, 0x19,
+	0xd4, 0x68, 0xe8, 0x4c, 0xbc, 0x8b, 0x09, 0x7d, 0x13, 0x9a, 0x01, 0x99, 0x4d, 0x66, 0xe4, 0xc6,
+	0x36, 0x79, 0x47, 0xf3, 0x54, 0xe1, 0x87, 0x34, 0x74, 0xce, 0x2f, 0x86, 0x62, 0xb7, 0x13, 0x6f,
+	0x22, 0x0b, 0xb6, 0xa6, 0xa1, 0x75, 0x4d, 0xd8, 0xc4, 0xe3, 0xcd, 0x4e, 0x65, 0xba, 0x3e, 0x5d,
+	0x2d, 0x5d, 0x46, 0x9b, 0x93, 0x9c, 0x0b, 0x0e, 0xbc, 0x39, 0xcd, 0x9a, 0xe8, 0x1c, 0xd6, 0x85,
+	0x23, 0x9e, 0x37, 0x9f, 0xbc, 0x13, 0x3b, 0x8e, 0x59, 0xea, 0x3f, 0x2a, 0xb0, 0x79, 0xeb, 0x44,
+	0x64, 0x41, 0x99, 0x7c, 0xe7, 0xcf, 0x6d, 0xcb, 0x66, 0xb2, 0xf7, 0xba, 0xff, 0xe6, 0x06, 0x46,
+	0x57, 0x92, 0xf5, 0x72, 0x38, 0x21, 0xae, 0xeb, 0x50, 0x8e, 0xfd, 0xe8, 0x11, 0x94, 0xa6, 0x5e,
+	0xe8, 0xce, 0x68, 0x4d, 0x69, 0x14, 0xf6, 0x14, 0x2c, 0xad, 0x76, 0x49, 0x8c, 0xe9, 0x3a, 0x85,
+	0x92, 0x60, 0xfc, 0x9b, 0x1a, 0x0e, 0x23, 0xc1, 0xc4, 0xf1, 0xe7, 0x66, 0xc0, 0x0b, 0xa9, 0xb6,
+	0x9e, 0xad, 0x28, 0xb8, 0x2b, 0xe1, 0x38, 0x21, 0xaa, 0x7f, 0x9f, 0x8f, 0x14, 0x0a, 0xe3, 0xf6,
+	0x63, 0x56, 0xe2, 0xc7, 0x7c, 0xeb, 0x95, 0xe6, 0x57, 0x79, 0xa5, 0xdf, 0x80, 0x6a, 0x32, 0x66,
+	0x5a, 0x57, 0x0e, 0x49, 0x67, 0x4d, 0xef, 0x1d, 0x45, 0x1b, 0x87, 0x29, 0x55, 0xd7, 0x65, 0xc1,
+	0x02, 0x67, 0xc9, 0xeb, 0x2f, 0x41, 0xbb, 0x1b, 0xf0, 0x17, 0xa3, 0x3b, 0xb9, 0x61, 0x3e, 0x33,
+	0xae, 0x5e, 0xe4, 0x9f, 0x2b, 0xfa, 0x1f, 0x05, 0xa8, 0x64, 0xdf, 0x1d, 0x3a, 0xc8, 0x16, 0x41,
+	0x6d, 0xed, 0xdc, 0xbb, 0x72, 0x3f, 0x99, 0x35, 0x71, 0x85, 0x8c, 0xf4, 0x95, 0xa9, 0xad, 0xff,
+	0xdf, 0x03, 0x74, 0xd2, 0xc1, 0x23, 0xde, 0xe0, 0x19, 0x94, 0xa9, 0x6b, 0xfa, 0xf4, 0xca, 0x13,
+	0x1f, 0x6e, 0xf5, 0x2d, 0x1f, 0xe9, 0xac, 0x3e, 0x63, 0x28, 0x91, 0x38, 0xe1, 0xa8, 0xff, 0x9c,
+	0x87, 0x72, 0xec, 0xfe, 0x2f, 0xf4, 0xbf, 0x81, 0xaa, 0x4f, 0x02, 0x8b, 0xb8, 0xcc, 0x8e, 0xc7,
+	0x6c, 0x5c, 0xe5, 0xce, 0xea, 0x17, 0x31, 0xb8, 0x79, 0xc8, 0x06, 0x09, 0x25, 0xd6, 0x52, 0x7a,
+	0xf1, 0xe5, 0xaa, 0xf7, 0xa1, 0x7a, 0x2f, 0x0c, 0xed, 0x02, 0xa4, 0x81, 0xb2, 0x79, 0x33, 0x9e,
+	0xdb, 0x55, 0x8f, 0xfb, 0xba, 0x7d, 0x03, 0xbb, 0xb6, 0xb7, 0x4c, 0x66, 0xbb, 0x22, 0xfe, 0x8a,
+	0xe8, 0x20, 0xda, 0x18, 0x28, 0x5f, 0x75, 0x2e, 0x6d, 0x76, 0x15, 0x4e, 0x0d, 0xcb, 0x73, 0x9a,
+	0x02, 0xb3, 0x6f, 0xbb, 0x94, 0x05, 0x61, 0xd4, 0x73, 0x7c, 0x3a, 0x36, 0x53, 0xba, 0x7d, 0xf1,
+	0xc3, 0x7c, 0x49, 0xdc, 0xfd, 0xcb, 0xec, 0x7f, 0xf3, 0xb4, 0xc4, 0x37, 0x3e, 0xfe, 0x33, 0x00,
+	0x00, 0xff, 0xff, 0x27, 0x9d, 0x24, 0xc2, 0x5d, 0x0b, 0x00, 0x00,
 }
