@@ -37,7 +37,7 @@ message Metric {
   // MetricDescriptor.
   oneof descriptor {
     // In case of a streaming RPC can be sent only the first time a metric is
-    // greported to save network traffic.
+    // reported to save network traffic.
     MetricDescriptor metric_descriptor = 1;
 
     // In case of a streaming RPC this can be sent for metrics that already
