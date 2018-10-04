@@ -17,10 +17,11 @@ Follow the instructions [here](http://google.github.io/proto-lens/installing-pro
 Then run the following commands to re-generate the gen-go files:
 
 ```bash
-$ cd $(go env GOPATH)/src/github.com/census-instrumentation/opencensus-proto/src
+$ cd $(go env GOPATH)/src/github.com/census-instrumentation/opencensus-proto
 $ git checkout -b update-gen-go
+$ rm -rf gen-go
+$ cd src
 $ ./mkgogen.sh
-$ # If there are protos that were removed, manually delete the corresponding go files.
 $ git add -A
 $ git commit -m "Update gen-go files."
 ```
