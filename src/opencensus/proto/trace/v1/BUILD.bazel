@@ -16,13 +16,6 @@ package(default_visibility = ["//visibility:public"])
 
 load("@org_pubref_rules_protobuf//go:rules.bzl", "go_proto_library")
 
-#filegroup(
-#    name = "trace_protos",
-#    srcs = [
-#        "trace.proto",
-#    ],
-#)
-
 proto_library(
     name = "trace_proto",
     srcs = ["trace.proto"],
