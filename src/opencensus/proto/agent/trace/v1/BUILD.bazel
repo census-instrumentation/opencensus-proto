@@ -15,6 +15,7 @@
 package(default_visibility = ["//visibility:public"])
 
 load("@grpc_java//:java_grpc_library.bzl", "java_grpc_library")
+load("@org_pubref_rules_protobuf//go:rules.bzl", "go_proto_library")
 
 proto_library(
     name = "trace_service_proto",
@@ -52,3 +53,20 @@ java_grpc_library(
 #    deps = [
 #    ],
 #)
+
+go_proto_library(
+    name = "trace_service_proto_go",
+    protos = ["trace_service.proto"],
+    imports = [
+        "external/com_google_protobuf/src",
+    ],
+    proto_deps = [
+        "//opencensus/proto/agent/common/v1:common_proto_go",
+        "//opencensus/proto/trace/v1:trace_proto_go",
+        "//opencensus/proto/trace/v1:trace_config_proto_go",
+    ],
+    pb_options = [
+       # omit the go_package declared in proto files to make bazel works as expect
+       "paths=source_relative",
+    ],
+)

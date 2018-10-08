@@ -14,10 +14,30 @@
 
 package(default_visibility = ["//visibility:public"])
 
+load("@org_pubref_rules_protobuf//go:rules.bzl", "go_proto_library")
+
 proto_library(
     name = "common_proto",
     srcs = ["common.proto"],
     deps = [
         "@com_google_protobuf//:timestamp_proto",
+    ],
+)
+
+go_proto_library(
+    name = "common_proto_go",
+    protos = ["common.proto"],
+    imports = [
+        "external/com_google_protobuf/src",
+    ],
+    inputs = [
+        "@com_google_protobuf//:well_known_protos",
+    ],
+    pb_options = [
+       # omit the go_package declared in proto files to make bazel works as expect
+       "paths=source_relative",
+    ],
+    deps = [
+        "@com_github_golang_protobuf//ptypes/timestamp:go_default_library",
     ],
 )
