@@ -43,17 +43,6 @@ java_grpc_library(
     deps = [":trace_service_proto_java"],
 )
 
-# TODO(songya): resolve dependencies and add go_proto_library if it's needed.
-#go_proto_library(
-#    name = "trace_service_proto_go",
-#    compilers = ["@io_bazel_rules_go//proto:go_grpc"],
-#    importpath =
-#    "github.com/census-instrumentation/opencensus-proto/gen-go/agent/trace/v1",
-#    proto = ":trace_service_proto",
-#    deps = [
-#    ],
-#)
-
 go_proto_library(
     name = "trace_service_proto_go",
     protos = ["trace_service.proto"],
