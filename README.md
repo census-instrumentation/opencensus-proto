@@ -18,6 +18,12 @@ consistency and interoperability for the different implementations.
 $ go get -u github.com/census-instrumentation/opencensus-proto
 ```
 
+In most cases you should depend on the gen-go files directly. If you are
+building with Bazel, there are also go_proto_library build rules available.
+See [PR/132](https://github.com/census-instrumentation/opencensus-proto/pull/132)
+for details. However, please note that Bazel doesn't generate the final
+artifacts.
+
 ### Add the dependencies to your Java project
 
 For Maven add to `pom.xml`:
