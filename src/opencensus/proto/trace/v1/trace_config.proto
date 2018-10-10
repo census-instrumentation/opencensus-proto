@@ -34,7 +34,17 @@ message TraceConfig {
     RateLimitingSampler rate_limiting_sampler = 3;
   }
 
-  // TODO(songya): add more fields.
+  // The global default max number of attributes per span.
+  int64 max_number_of_attributes = 4;
+
+  // The global default max number of annotation events per span.
+  int64 max_number_of_annotations = 5;
+
+  // The global default max number of message events per span.
+  int64 max_number_of_message_events = 6;
+
+  // The global default max number of link entries per span.
+  int64 max_number_of_links = 7;
 }
 
 // Sampler that tries to uniformly sample traces with a given probability.
