@@ -18,6 +18,7 @@ package opencensus.proto.agent.metrics.v1;
 
 import "opencensus/proto/agent/common/v1/common.proto";
 import "opencensus/proto/metrics/v1/metrics.proto";
+import "opencensus/proto/resource/v1/resource.proto";
 
 option java_multiple_files = true;
 option java_package = "io.opencensus.proto.agent.metrics.v1";
@@ -42,6 +43,13 @@ message ExportMetricsServiceRequest {
 
   // A list of metrics that belong to the last received Node.
   repeated opencensus.proto.metrics.v1.Metric metrics = 2;
+
+  // The resource for the metrics in this message that do not have an explicit
+  // resource set.
+  // If unset, the most recently set resource in the RPC stream applies. It is
+  // valid to never be set within a stream, e.g. when no resource info is known
+  // at all or when all sent metrics have an explicit resource set.
+  opencensus.proto.resource.v1.Resource resource = 3;
 }
 
 message ExportMetricsServiceResponse {

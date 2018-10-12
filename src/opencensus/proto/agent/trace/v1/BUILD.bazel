@@ -22,6 +22,7 @@ proto_library(
     srcs = ["trace_service.proto"],
     deps = [
         "//opencensus/proto/agent/common/v1:common_proto",
+        "//opencensus/proto/resource/v1:resource_proto",
         "//opencensus/proto/trace/v1:trace_proto",
         "//opencensus/proto/trace/v1:trace_config_proto",
     ],
@@ -51,6 +52,7 @@ go_proto_library(
     ],
     proto_deps = [
         "//opencensus/proto/agent/common/v1:common_proto_go",
+        "//opencensus/proto/resource/v1:resource_proto_go",
         "//opencensus/proto/trace/v1:trace_proto_go",
         "//opencensus/proto/trace/v1:trace_config_proto_go",
     ],
