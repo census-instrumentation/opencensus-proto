@@ -44,3 +44,37 @@ compile 'io.opencensus:opencensus-proto:0.0.2'
 [travis-url]: https://travis-ci.org/census-instrumentation/opencensus-proto
 [maven-image]: https://maven-badges.herokuapp.com/maven-central/io.opencensus/opencensus-proto/badge.svg
 [maven-url]: https://maven-badges.herokuapp.com/maven-central/io.opencensus/opencensus-proto
+
+### Add the dependencies to Bazel project
+
+In WORKSPACE, add:
+```
+git_repository(
+    name = "io_opencensus_proto",
+    strip_prefix = "src",
+    tag = "v0.0.2", # CURRENT_OPENCENSUS_PROTO_VERSION
+    remote = "https://github.com/census-instrumentation/opencensus-proto",
+)
+```
+or
+
+```
+http_archive(
+    name = "io_opencensus_proto",
+    strip_prefix = "opencensus-proto-master/src",
+    urls = ["https://github.com/census-instrumentation/opencensus-proto/archive/master.zip"],
+)
+```
+
+In BUILD.bazel:
+```bazel
+proto_library(
+    name = "foo_proto",
+    srcs = ["foo.proto"],
+    deps = [
+      "@io_opencensus_proto//opencensus/proto/metrics/v1:metrics_proto",
+      "@io_opencensus_proto//opencensus/proto/trace/v1:trace_proto",
+      # etc.
+    ],
+)
+```
