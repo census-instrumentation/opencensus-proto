@@ -49,6 +49,16 @@ compile 'io.opencensus:opencensus-proto:0.0.2'
 
 In WORKSPACE, add:
 ```
+git_repository(
+    name = "io_opencensus_proto",
+    strip_prefix = "src",
+    tag = "v0.0.2", # CURRENT_OPENCENSUS_PROTO_VERSION
+    remote = "https://github.com/census-instrumentation/opencensus-proto",
+)
+```
+or
+
+```
 http_archive(
     name = "io_opencensus_proto",
     strip_prefix = "opencensus-proto-master/src",
