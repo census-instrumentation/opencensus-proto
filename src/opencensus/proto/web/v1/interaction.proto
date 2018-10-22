@@ -1,0 +1,401 @@
+// Copyright 2016-18, OpenCensus Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+// NOTE: This proto is experimental and is subject to change at this point.
+// Please do not use it at the moment.
+
+package opencensus.proto.web.v1;
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/struct.proto";
+
+option go_package = "github.com/census-instrumentation/opencensus-proto/gen-go/web/v1";
+
+option java_multiple_files = true;
+option java_package = "io.opencensus.proto.web";
+option java_outer_classname = "WebProto";
+
+// A measurable user interaction within a web browser client. This could be an
+// initial page load, a route transition within a single page application, or an
+// on-page user interaction such as clicking a button. This proto contains all
+// the information needed for the web interaction interceptor to generate spans
+// and metrics related to the interaction.
+message Interaction {
+  // The trace ID for the user interaction. All spans within an interaction are
+  // part of the same trace. The ID is a 16-byte array encoded in hexadecimal.
+  string trace_id = 1;
+
+  // The time origin of the performance clock in the browser session that
+  // collected this interaction, measured as milliseconds since the epoch.
+  // See https://www.w3.org/TR/hr-time/
+  double time_origin = 2;
+
+  // The time in milliseconds since the epoch that the frontend web server
+  // received the request to render the initial template for the web UI. This
+  // time is measured by the server's clock and is used to adjust for clock skew
+  // between the client and server. This should be sent from the web server to
+  // client as a value in a <script> tag in the rendered HTML. A value of 0
+  // indicates that it is missing.
+  double server_request_start = 3;
+
+  // The time in milliseconds since the epoch that the frontend web server
+  // started sending the response to render the web UI template. This is
+  // measured by the server clock and is used to adjust for clock skew between
+  // client and server. This should also be sent from server to client via the
+  // rendered HTML, and a value of 0 indicates that it is missing.
+  double server_response_start = 4;
+
+  // Performance data from `performance.getEntries()` retrieved after this
+  // interaction ended. All timings are in milleconds since the browser
+  // navigation start. Values may be zero if the browser security policy
+  // does not permit reading the field, e.g. if the resource requested is
+  // from another domain and no matching Timing-Allow-Origin header is sent.
+  // See detailed specs at:
+  // https://www.w3.org/TR/performance-timeline-2/
+  // https://www.w3.org/TR/resource-timing-2/
+  // https://www.w3.org/TR/navigation-timing-2/
+  // https://www.w3.org/TR/server-timing/
+  //
+  // Sending the raw performance entries allows the JavaScript client code
+  // o be smaller. The OpenCensus agent web interceptor can use these entries to
+  // generate detailed spans.
+  message PerformanceEntry {
+    // Type of performnce entry e.g. "navigation" or "resource".
+    string entry_type = 1;
+
+    // The first timestamp of the entry, e.g. for a resource timing, the time
+    // right before the browser starts the fetch.
+    double start_time = 2;
+
+    // The duration of the performance entry in milliseconds.
+    double duration = 3;
+
+    // URL of the retrieved resource or page.
+    string name = 4;
+
+    // The type of navigation for a navigation entry.
+    string type = 5;
+
+    // The type of resource that initiated the performance event.
+    string initiator_type = 6;
+
+    // If the document has an active service worker registration, this is
+    // time right before the browser ran the worker or fired the `fetch` event.
+    double worker_start = 7;
+
+    // If there are HTTP redirects when navigating and if all are from the same
+    // origin, this is the start time of the fetch that initiated the redirect.
+    double redirect_start = 8;
+
+    // Number of redirects since the last non-redirect navigation.
+    int32 redirect_count = 9;
+
+    // The time right after receiving the last byte of the last redirect.
+    double redirect_end = 10;
+
+    // Time right before the browser checks caches for a resource.
+    double fetch_start = 11;
+
+    // Time right before the browser starts the domain name lookup.
+    double domain_lookup_start = 12;
+
+    // Time right after the browser finishes the domain name lookup.
+    double domain_lookup_end = 13;
+
+    // Time right before the browser starts establishing the server connection.
+    // If a persistent connection is used or the resource is retrieved from
+    // cache, this will match domain_lookup_end.
+    double connect_start = 14;
+
+    // Time right before the browser starts the handshake to secure the
+    // connection, or zero if a secure connection is not used.
+    double secure_connection_start = 15;
+
+    // Time right after the browser finishes establishing the connection.
+    // If a persistent connection is used or the resource is retrieved from
+    // cache, this will match domain_lookup_end.
+    double connect_end = 16;
+
+    // Network protocol used to fetch the resource by ALPN Protocol ID.
+    string next_hop_protocol = 17;
+
+    // Time right before the browser starts requesting the resource.
+    double request_start = 18;
+
+    // Time right after the browser receives the first byte of the response.
+    double response_start = 19;
+
+    // Time right after the browser receives the last byte of the response.
+    double response_end = 20;
+
+    // Number of bytes received from a HTTP fetch from both headers and payload.
+    int64 transfer_size = 21;
+
+    // Compressed size of the payload body in bytes.
+    int64 encoded_body_size = 22;
+
+    // Uncompressed size of the payload body in bytes.
+    int64 decoded_body_size = 23;
+
+    // Timing entries sent by the server via the Server-Timing header.
+    // See https://www.w3.org/TR/server-timing/
+    message PerformanceServerTiming {
+      // Metric name sent by the server.
+      string name = 1;
+      // Metric description sent by the server.
+      string description = 2;
+      // Metric value sent by the server.
+      double duration = 3;
+    }
+
+    // Server timings associated with the performance entry.
+    repeated PerformanceServerTiming server_timing = 24;
+
+    // Time right before browser starts the unload event of previous document.
+    // If previous document was from different origin, this is zero.
+    double unload_event_start = 25;
+
+    // Time right after browser finishes the unload event of previous document.
+    // If previous document was from different origin, this is zero.
+    double unload_event_end = 26;
+
+    // Time right before the browser sets document readiness to "interactive".
+    double dom_interactive = 27;
+
+    // Time right before the browser fires DOMContentLoaded event.
+    double dom_content_loaded_event_start = 28;
+
+    // Time right after the DOMContentLoaded event completes.
+    double dom_content_loaded_event_end = 29;
+
+    // Time right before the browser sets document readiness to "complete".
+    double dom_complete = 30;
+
+    // Time right before the load event of the current document is fired.
+    double load_event_end = 31;
+
+    // Time when the load event of the current document is completed.
+    double load_event_start = 32;
+
+    // Deprecated in Navigation Timing Level 2 Spec.
+    // Time when the browser sets document readiness to "loading".
+    // Due to browser differences this should not be used in meaningful metrics.
+    double dom_loading = 33;
+  }
+
+  // Web performance entries associated with the interaction.
+  repeated PerformanceEntry performance_entries = 5;
+
+  // A Span is similar to main OpenCensus Span, but is designed to be easier
+  // for browser JavaScript to write via HTTP-JSON that will be converted to
+  // the proto via jsonpb. All spans for an interaction are assumed to have the
+  // same trace ID, specified above (otherwise send two interactions with
+  // links).
+  // See
+  // https://github.com/census-instrumentation/opencensus-proto/blob/master/src/opencensus/proto/trace/v1/trace.proto
+  message Span {
+    // A unique identifier for a span within the interaction. It is 8-bytes
+    // encoded as a hexadecimal string.
+    string span_id = 1;
+
+    // Information about request position in multiple distributed tracing
+    // graphs. See https://github.com/w3c/distributed-tracing for details.
+    map<string, string> tracestate = 2;
+
+    // The `span_id` of this span's parent span. If this is a root span, then
+    // this field must be empty. It is 8-bytes encoded as a hexadecimal string.
+    string parent_span_id = 3;
+
+    // A description of the span's operation.
+    string name = 4;
+
+    // Type of span. Can be used to specify additional relationships between
+    // spans in addition to a parent/child relationship.
+    enum SpanKind {
+      // Unspecified.
+      SPAN_KIND_UNSPECIFIED = 0;
+
+      // Indicates that the span covers server-side handling of an RPC or other
+      // remote network request.
+      SERVER = 1;
+
+      // Indicates that the span covers the client-side wrapper around an RPC or
+      // other remote request.
+      // These will be joined with browser performance data.
+      CLIENT = 2;
+    }
+    SpanKind kind = 5;
+
+    // Span start time as measured by browser performance clock (the result of
+    // calling `performance.now()`). This is the number of milliseconds since
+    // the browser clock timeOrigin (the start of the navigation).
+    double start = 6;
+
+    // Span end time in browser performance clock milliseconds.
+    double end = 7;
+
+    // Attributes associated with the span. Defining this as a Struct makes it
+    // easier for the JavaScript client to send attributes as normal JSON
+    // values. JSON booleans, strings and numbers will be converted to the
+    // trace.v1.Span.AttributeValue string_value, bool_value or double_value
+    // fields respectively. To specify an int value in JSON use e.g.
+    // {intValue:"2"} as the attribute value.
+    google.protobuf.Struct attributes = 8;
+
+    // Unparse JavaScript stack trace associated with this span. This will be
+    // the value of `Error.stack`.
+    string stack_trace = 9;
+
+    // A time stamped text annotation with a set of attributes.
+    message Annotation {
+      // Time the event occurred in performance clock milliseconds.
+      double time = 1;
+
+      // Attributes for the event.
+      google.protobuf.Struct attributes = 2;
+    }
+
+    // Time stamped text annotations for events associated with the span.
+    repeated Annotation annotations = 10;
+
+    // An event describing a message sent/received between Spans.
+    message MessageEvent {
+      // Time the message was sent/received in performance clock milliseconds.
+      double time = 1;
+
+      // Indicates whether the message was sent or received.
+      enum Type {
+        // Unknown event type.
+        TYPE_UNSPECIFIED = 0;
+        // Indicates a sent message.
+        SENT = 1;
+        // Indicates a received message.
+        RECEIVED = 2;
+      }
+
+      // MessageEvent type. Indicates whether the message was sent or received.
+      Type type = 2;
+
+      // An identifier for the MessageEvent's message that can be used to match
+      // SENT and RECEIVED MessageEvents. For example, this field could
+      // represent a sequence ID for a streaming RPC. It is recommended to be
+      // unique within a Span.
+      uint64 id = 3;
+
+      // The number of uncompressed bytes sent or received.
+      uint64 uncompressed_size = 4;
+
+      // The number of compressed bytes sent or received. If zero, assumed to
+      // be the same size as uncompressed.
+      uint64 compressed_size = 5;
+    }
+
+    // Message events associated with the span
+    repeated MessageEvent message_events = 11;
+
+    // A pointer from the current span to another span in the same trace or in a
+    // different trace. For example, this can be used in batching operations,
+    // where a single batch handler processes multiple requests from different
+    // traces or when the handler receives a request from a different project.
+    message Link {
+      // Unique identifier for linked trace. It is a 16-byte hex-encoded string.
+      string trace_id = 1;
+
+      // Unique identifier for span within linked trace. It is a 16-byte
+      // hex-encoded string.
+      string span_id = 2;
+
+      // The relationship of the current span relative to the linked span:
+      // child, parent, or unspecified.
+      enum Type {
+        // The relationship of the two spans is unknown, or known but other
+        // than parent-child.
+        UNSPECIFIED = 0;
+        // The linked span is a child of the current span.
+        CHILD_LINKED_SPAN = 1;
+        // The linked span is a parent of the current span.
+        PARENT_LINKED_SPAN = 2;
+      }
+
+      Type type = 3;
+
+      // Attributes about the trace link.
+      google.protobuf.Struct attributes = 4;
+    }
+    repeated Link links = 12;
+
+    // The `Status` type defines a logical error model that is suitable for
+    // different programming environments, including REST APIs and RPC APIs.
+    // This proto's fields are a subset of those of
+    // [google.rpc.Status](https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto),
+    // which is used by [gRPC](https://github.com/grpc).
+    message Status {
+      // The HTTP status code associated with the span.
+      int32 code = 1;
+      // A developer-facing error message, which should be in English.
+      string message = 2;
+    }
+
+    Status status = 13;
+
+    // A highly recommended but not required flag that identifies when a trace
+    // crosses a process boundary. True when the parent_span belongs to the
+    // same process as the current span.
+    // This will typically be defaulted to true by the web interceptor.
+    google.protobuf.BoolValue same_process_as_parent_span = 14;
+
+    // An optional number of child spans that were generated while this span
+    // was active. If set, allows an implementation to detect missing child
+    // spans. This will typically be computed automatically by the interceptor.
+    google.protobuf.UInt32Value child_span_count = 15;
+  }
+
+  repeated Span spans = 6;
+
+  // Information about the OpenCensus web library that measured the interaction.
+  // This is a simplified version of the LibraryInfo message used to write
+  // server side Spans. There is no `Language` field currently as we assume the
+  // language writing web interaction data is browser JavaScript. See
+  // https://github.com/census-instrumentation/opencensus-proto/blob/master/src/opencensus/proto/agent/common/v1/common.proto
+  message LibraryInfo {
+    // The version of the OpenCensus web client library.
+    string library_version = 2;
+
+    // The version of the OpenCensus web Agent exporter library. If omitted,
+    // this is assumed to be the same as `library_version`.
+    string exporter_version = 3;
+  }
+
+  // OpenCensus web library info.
+  LibraryInfo library_info = 7;
+
+  // Service description for the web UI that generated the interaction.
+  message ServiceInfo {
+    // Name of the service.
+    string name = 1;
+  }
+
+  // Service description for the web UI.
+  ServiceInfo service_info = 8;
+
+  // Attributes associated with web client that generated the interaction. This
+  // could be related to the end user (e.g. user ID, session ID) or could be
+  // related to the web UI service (e.g. serving region, environment type).
+  // This plays a similar role to the Node `attributes` field.
+  // See
+  // https://github.com/census-instrumentation/opencensus-proto/blob/master/src/opencensus/proto/agent/common/v1/common.proto
+  map<string, string> client_attributes = 9;
+}
