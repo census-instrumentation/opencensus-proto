@@ -126,8 +126,8 @@ message LabelKey {
 // of a metric.
 message TimeSeries {
   // Must be present for cumulative metrics. The time when the cumulative value
-  // was reset to zero. The cumulative value is over the time interval
-  // [start_timestamp, timestamp). If not specified, the backend can use the
+  // was reset to zero. Exclusive. The cumulative value is over the time interval
+  // (start_timestamp, timestamp]. If not specified, the backend can use the
   // previous recorded value.
   google.protobuf.Timestamp start_timestamp = 1;
 
@@ -151,8 +151,8 @@ message LabelValue {
 
 // A timestamped measurement.
 message Point {
-  // The moment when this point was recorded. If not specified, the timestamp
-  // will be decided by the backend.
+  // The moment when this point was recorded. Inclusive.
+  // If not specified, the timestamp will be decided by the backend.
   google.protobuf.Timestamp timestamp = 1;
 
   // The actual point value.
