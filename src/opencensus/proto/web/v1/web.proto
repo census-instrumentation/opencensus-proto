@@ -158,7 +158,7 @@ message Interaction {
       // Metric description sent by the server.
       string description = 2;
       // Metric value sent by the server.
-      double duration = 3;
+      google.protobuf.DoubleValue duration = 3;
     }
 
     // Server timings associated with the performance entry.
