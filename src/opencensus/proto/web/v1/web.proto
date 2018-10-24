@@ -242,10 +242,14 @@ message Interaction {
     // Span start time as measured by browser performance clock (the result of
     // calling `performance.now()`). This is the number of milliseconds since
     // the browser clock timeOrigin (the start of the navigation).
-    double start = 6;
+    // If this value is missing for an HTTP network call span, it can be
+    // inferred from the web performance entry for that network call.
+    google.protobuf.DoubleValue start = 6;
 
     // Span end time in browser performance clock milliseconds.
-    double end = 7;
+    // If this value is missing for an HTTP network call span, it can be
+    // inferred from the web performance entry for that network call.
+    google.protobuf.DoubleValue end = 7;
 
     // Attributes associated with the span. Defining this as a Struct makes it
     // easier for the JavaScript client to send attributes as normal JSON
