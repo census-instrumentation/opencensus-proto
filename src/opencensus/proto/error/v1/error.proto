@@ -14,7 +14,7 @@
 
 syntax = "proto3";
 
-package opencensus.proto.trace.v1;
+package opencensus.proto.error.v1;
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
@@ -76,7 +76,7 @@ message Error {
       // see https://cloud.google.com/error-reporting/docs/formatting-error-messages
     }
 
-    // Discussion (TODO: do we need raw exporter now):
+    // Discussion (TODO: do we need raw stack trace now):
     //  - Having raw stack trace is beneficial for all backends that support exceptions.
     //  - Parsed stack is needed for advanced scenarios only.
     //    E.g. Jaeger likely does not need parsed one, and StackDriver has parser on the backend
@@ -84,7 +84,7 @@ message Error {
     //  and for specific language (i.e using helper tools that exists in this language) 
     //  is more sustainable approach then making all backends parse all language-specific errors.
     // 
-    //  One the other side, backends that do not need parsed stack would still need raw one 
+    //  On the other side, backends that do not need parsed stack would still need raw one 
     //  and making them format string from it is not sustainable again.
     
     //  Proposal: by default send both, make it configurable by agent/service
@@ -127,7 +127,7 @@ message Error {
   }
   
   // A list of attributes on the error
-  Attributes attributes = 7;
+  Attributes attributes = 8;
 }
 
 // Indicates error severity

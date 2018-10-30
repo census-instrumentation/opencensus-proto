@@ -28,6 +28,10 @@ proto_library(
 proto_library(
     name = "error_config_proto",
     srcs = ["error_config.proto"],
+    deps = [
+        "//opencensus/proto/error/v1:error_proto",
+    ],
+
 )
 
 cc_proto_library(
@@ -65,13 +69,19 @@ go_proto_library(
     ],
     deps = [
         "@com_github_golang_protobuf//ptypes/timestamp:go_default_library",
-        "@com_github_golang_protobuf//ptypes/wrappers:go_default_library",
+        "@com_github_golang_protobuf//ptypes/wrappers:go_default_library",        
     ],
 )
 
 go_proto_library(
     name = "error_config_proto_go",
     protos = ["error_config.proto"],
+    imports = [
+        "external/com_google_protobuf/src",
+    ],
+    proto_deps = [
+        "//opencensus/proto/error/v1:error_proto_go",
+    ],    
     pb_options = [
        # omit the go_package declared in proto files to make bazel works as expect
        "paths=source_relative",

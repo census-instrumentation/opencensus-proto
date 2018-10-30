@@ -15,5 +15,8 @@ protoc --go_out=plugins=grpc:$OUTDIR opencensus/proto/stats/v1/stats.proto \
     && protoc --go_out=plugins=grpc:$OUTDIR opencensus/proto/metrics/v1/metrics.proto \
     && protoc --go_out=plugins=grpc:$OUTDIR opencensus/proto/trace/v1/trace.proto \
     && protoc --go_out=plugins=grpc:$OUTDIR opencensus/proto/trace/v1/trace_config.proto \
+    && protoc --go_out=plugins=grpc:$OUTDIR opencensus/proto/error/v1/error.proto \
+    && protoc --go_out=plugins=grpc:$OUTDIR opencensus/proto/error/v1/error_config.proto \
     && protoc -I=. --go_out=plugins=grpc:$OUTDIR opencensus/proto/agent/common/v1/common.proto \
-    && protoc -I=. --go_out=plugins=grpc:$OUTDIR opencensus/proto/agent/trace/v1/trace_service.proto
+    && protoc -I=. --go_out=plugins=grpc:$OUTDIR opencensus/proto/agent/trace/v1/trace_service.proto \
+    && protoc -I=. --go_out=plugins=grpc:$OUTDIR opencensus/proto/agent/error/v1/error_service.proto

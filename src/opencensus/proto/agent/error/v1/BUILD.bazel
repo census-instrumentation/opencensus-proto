@@ -18,41 +18,41 @@ load("@grpc_java//:java_grpc_library.bzl", "java_grpc_library")
 load("@org_pubref_rules_protobuf//go:rules.bzl", "go_proto_library")
 
 proto_library(
-    name = "trace_service_proto",
-    srcs = ["trace_service.proto"],
+    name = "error_service_proto",
+    srcs = ["error_service.proto"],
     deps = [
         "//opencensus/proto/agent/common/v1:common_proto",
-        "//opencensus/proto/trace/v1:trace_proto",
-        "//opencensus/proto/trace/v1:trace_config_proto",
+        "//opencensus/proto/error/v1:error_proto",
+        "//opencensus/proto/error/v1:error_config_proto",
     ],
 )
 
 cc_proto_library(
-    name = "trace_service_proto_cc",
-    deps = [":trace_service_proto"],
+    name = "error_service_proto_cc",
+    deps = [":error_service_proto"],
 )
 
 java_proto_library(
-    name = "trace_service_proto_java",
-    deps = [":trace_service_proto"],
+    name = "error_service_proto_java",
+    deps = [":error_service_proto"],
 )
 
 java_grpc_library(
-    name = "trace_service_grpc_java",
-    srcs = [":trace_service_proto"],
-    deps = [":trace_service_proto_java"],
+    name = "error_service_grpc_java",
+    srcs = [":error_service_proto"],
+    deps = [":error_service_proto_java"],
 )
 
 go_proto_library(
-    name = "trace_service_proto_go",
-    protos = ["trace_service.proto"],
+    name = "error_service_proto_go",
+    protos = ["error_service.proto"],
     imports = [
         "external/com_google_protobuf/src",
     ],
     proto_deps = [
         "//opencensus/proto/agent/common/v1:common_proto_go",
-        "//opencensus/proto/trace/v1:trace_proto_go",
-        "//opencensus/proto/trace/v1:trace_config_proto_go",
+        "//opencensus/proto/error/v1:error_proto_go",
+        "//opencensus/proto/error/v1:error_config_proto_go",
     ],
     pb_options = [
        # omit the go_package declared in proto files to make bazel works as expect

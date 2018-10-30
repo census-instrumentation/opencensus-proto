@@ -16,7 +16,7 @@ syntax = "proto3";
 
 package opencensus.proto.error.v1;
 
-import "opencensus/proto/trace/v1/error.proto";
+import "opencensus/proto/error/v1/error.proto";
 
 option java_multiple_files = true;
 option java_package = "io.opencensus.proto.error.v1";
