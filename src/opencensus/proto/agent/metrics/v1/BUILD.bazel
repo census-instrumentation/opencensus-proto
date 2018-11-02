@@ -23,6 +23,7 @@ proto_library(
     deps = [
         "//opencensus/proto/agent/common/v1:common_proto",
         "//opencensus/proto/metrics/v1:metrics_proto",
+        "//opencensus/proto/resource/v1:resource_proto",
     ],
 )
 
@@ -51,6 +52,7 @@ go_proto_library(
     proto_deps = [
         "//opencensus/proto/agent/common/v1:common_proto_go",
         "//opencensus/proto/metrics/v1:metrics_proto_go",
+        "//opencensus/proto/resource/v1:resource_proto_go",
     ],
     pb_options = [
        # omit the go_package declared in proto files to make bazel works as expect

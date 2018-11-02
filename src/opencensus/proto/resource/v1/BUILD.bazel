@@ -17,43 +17,25 @@ package(default_visibility = ["//visibility:public"])
 load("@org_pubref_rules_protobuf//go:rules.bzl", "go_proto_library")
 
 proto_library(
-    name = "metrics_proto",
-    srcs = ["metrics.proto"],
-    deps = [
-        "@com_google_protobuf//:timestamp_proto",
-        "@com_google_protobuf//:wrappers_proto",
-        "//opencensus/proto/resource/v1:resource_proto",
-    ],
+    name = "resource_proto",
+    srcs = ["resource.proto"],
 )
 
 cc_proto_library(
-    name = "metrics_proto_cc",
-    deps = [":metrics_proto"],
+    name = "resource_proto_cc",
+    deps = [":resource_proto"],
 )
 
 java_proto_library(
-    name = "metrics_proto_java",
-    deps = [":metrics_proto"],
+    name = "resource_proto_java",
+    deps = [":resource_proto"],
 )
 
 go_proto_library(
-    name = "metrics_proto_go",
-    protos = ["metrics.proto"],
-    imports = [
-        "external/com_google_protobuf/src",
-    ],
-    inputs = [
-        "@com_google_protobuf//:well_known_protos",
-    ],
+    name = "resource_proto_go",
+    protos = ["resource.proto"],
     pb_options = [
        # omit the go_package declared in proto files to make bazel works as expect
        "paths=source_relative",
-    ],
-    proto_deps = [
-        "//opencensus/proto/resource/v1:resource_proto_go",
-    ],
-    deps = [
-        "@com_github_golang_protobuf//ptypes/timestamp:go_default_library",
-        "@com_github_golang_protobuf//ptypes/wrappers:go_default_library",
     ],
 )

@@ -23,6 +23,7 @@ package opencensus.proto.metrics.v1;
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
+import "opencensus/proto/resource/v1/resource.proto";
 
 option go_package = "github.com/census-instrumentation/opencensus-proto/gen-go/metrics/v1";
 
@@ -48,6 +49,10 @@ message Metric {
   // One or more timeseries for a single metric, where each timeseries has
   // one or more points.
   repeated TimeSeries timeseries = 3;
+
+  // The resource for the metric. If unset, it may be set to a default value
+  // provided for a sequence of messages in an RPC stream.
+  opencensus.proto.resource.v1.Resource resource = 4;
 }
 
 // Defines a metric type and its schema.

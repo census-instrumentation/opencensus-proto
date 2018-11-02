@@ -20,6 +20,7 @@ syntax = "proto3";
 package opencensus.proto.agent.trace.v1;
 
 import "opencensus/proto/agent/common/v1/common.proto";
+import "opencensus/proto/resource/v1/resource.proto";
 import "opencensus/proto/trace/v1/trace.proto";
 import "opencensus/proto/trace/v1/trace_config.proto";
 
@@ -72,6 +73,12 @@ message ExportTraceServiceRequest {
 
   // A list of Spans that belong to the last received Node.
   repeated opencensus.proto.trace.v1.Span spans = 2;
+
+  // The resource for the spans in this message that do not have an explicit
+  // resource set.
+  // If unset, the most recently set resource in the RPC stream applies. It is
+  // valid to never be set within a stream, e.g. when no resource info is known.
+  opencensus.proto.resource.v1.Resource resource = 3;
 }
 
 message ExportTraceServiceResponse {
