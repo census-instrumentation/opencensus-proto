@@ -1,7 +1,9 @@
 OpenCensus Proto - Language Independent Interface Types For OpenCensus
 ===============================================================
+[![Gitter chat][gitter-image]][gitter-url]
 [![Build Status][travis-image]][travis-url]
 [![Maven Central][maven-image]][maven-url]
+[![Javadocs][javadoc-image]][javadoc-url]
 
 Census provides a framework to define and collect stats against metrics and to
 break those stats down across user-defined dimensions.
@@ -44,6 +46,10 @@ compile 'io.opencensus:opencensus-proto:0.1.0'
 [travis-url]: https://travis-ci.org/census-instrumentation/opencensus-proto
 [maven-image]: https://maven-badges.herokuapp.com/maven-central/io.opencensus/opencensus-proto/badge.svg
 [maven-url]: https://maven-badges.herokuapp.com/maven-central/io.opencensus/opencensus-proto
+[gitter-image]: https://badges.gitter.im/census-instrumentation/lobby.svg
+[gitter-url]: https://gitter.im/census-instrumentation/lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+[javadoc-image]: https://www.javadoc.io/badge/io.opencensus/opencensus-proto.svg
+[javadoc-url]: https://www.javadoc.io/doc/io.opencensus/opencensus-proto
 
 ### Add the dependencies to Bazel project
 
