@@ -31,13 +31,13 @@ For Maven add to `pom.xml`:
 <dependency>
   <groupId>io.opencensus</groupId>
   <artifactId>opencensus-proto</artifactId>
-  <version>0.0.2</version>
+  <version>0.1.0</version>
 </dependency>
 ```
 
 For Gradle add to dependencies:
 ```gradle
-compile 'io.opencensus:opencensus-proto:0.0.2'
+compile 'io.opencensus:opencensus-proto:0.1.0'
 ```
 
 [travis-image]: https://travis-ci.org/census-instrumentation/opencensus-proto.svg?branch=master
@@ -52,7 +52,7 @@ In WORKSPACE, add:
 git_repository(
     name = "io_opencensus_proto",
     strip_prefix = "src",
-    tag = "v0.0.2", # CURRENT_OPENCENSUS_PROTO_VERSION
+    tag = "v0.1.0", # CURRENT_OPENCENSUS_PROTO_VERSION
     remote = "https://github.com/census-instrumentation/opencensus-proto",
 )
 ```
