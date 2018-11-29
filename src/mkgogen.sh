@@ -22,4 +22,5 @@ protoc --go_out=plugins=grpc:$OUTDIR opencensus/proto/stats/v1/stats.proto \
     && protoc -I=. --go_out=plugins=grpc:$OUTDIR opencensus/proto/agent/common/v1/common.proto \
     && protoc -I=. --go_out=plugins=grpc:$OUTDIR opencensus/proto/agent/metrics/v1/metrics_service.proto \
     && protoc -I=. --go_out=plugins=grpc:$OUTDIR opencensus/proto/agent/trace/v1/trace_service.proto \
+    && protoc -I=. --go_out=plugins=grpc:$OUTDIR opencensus/proto/agent/trace/v1/trace_service.proto \
     && protoc --grpc-gateway_out=logtostderr=true,grpc_api_configuration=./opencensus/proto/agent/trace/v1/trace_service_http.yaml:$OUTDIR opencensus/proto/agent/trace/v1/trace_service.proto
