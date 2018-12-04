@@ -62,6 +62,13 @@ http_archive(
 git_repository(
     name = "io_bazel_rules_go",
     remote = "https://github.com/bazelbuild/rules_go.git",
+    # we need rules_go of tag 0.12.0 or greater
+    # which includes golang protobuf that supports "paths=source_relative"
+    # the "paths=source_relative" option for protoc-gen-go makes bazel works as expect
+    # when go_package was declared in proto files
+    # see https://github.com/bazelbuild/rules_go/blob/release-0.12/go/private/repositories.bzl#L75
+    # for the included golang protobuf version and
+    # see https://github.com/golang/protobuf/pull/544 for "paths=source_relative" usage
     tag = "0.15.8",
 )
 
