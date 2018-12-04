@@ -18,16 +18,14 @@ load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
 
 proto_library(
     name = "trace_proto",
-    srcs = ["trace.proto"],
+    srcs = [
+        "trace.proto",
+        "trace_config.proto"
+    ],
     deps = [
         "@com_google_protobuf//:timestamp_proto",
         "@com_google_protobuf//:wrappers_proto",
     ],
-)
-
-proto_library(
-    name = "trace_config_proto",
-    srcs = ["trace_config.proto"],
 )
 
 cc_proto_library(
@@ -35,19 +33,9 @@ cc_proto_library(
     deps = [":trace_proto"],
 )
 
-cc_proto_library(
-    name = "trace_config_proto_cc",
-    deps = [":trace_config_proto"],
-)
-
 java_proto_library(
     name = "trace_proto_java",
     deps = [":trace_proto"],
-)
-
-java_proto_library(
-    name = "trace_config_proto_java",
-    deps = [":trace_config_proto"],
 )
 
 go_proto_library(
@@ -58,10 +46,4 @@ go_proto_library(
         "@com_github_golang_protobuf//ptypes/timestamp:go_default_library",
         "@com_github_golang_protobuf//ptypes/wrappers:go_default_library",
     ],
-)
-
-go_proto_library(
-    name = "trace_config_proto_go",
-    proto = ":trace_config_proto",
-    importpath = "github.com/census-instrumentation/opencensus-proto/gen-go/trace/v1",
 )
