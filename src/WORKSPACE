@@ -62,32 +62,9 @@ http_archive(
 git_repository(
     name = "io_bazel_rules_go",
     remote = "https://github.com/bazelbuild/rules_go.git",
-    # we need rules_go of tag 0.12.1
-    # which includes golang protobuf that supports "paths=source_relative"
-    # the "paths=source_relative" option for protoc-gen-go makes bazel works as expect
-    # when go_package was declared in proto files
-    # see https://github.com/bazelbuild/rules_go/blob/release-0.12/go/private/repositories.bzl#L75
-    # for the included golang protobuf version and
-    # see https://github.com/golang/protobuf/pull/544 for "paths=source_relative" usage
-    tag = "0.12.1",
+    tag = "0.15.8",
 )
 
 load("@io_bazel_rules_go//go:def.bzl", "go_rules_dependencies", "go_register_toolchains")
 go_rules_dependencies()
 go_register_toolchains()
-
-# golang protobuf rules related
-git_repository(
-    name = "org_pubref_rules_protobuf",
-    commit = "5cae42382b620aa1e347ecf30b3e92fd0d97998c", # Jun 23, 2018
-    remote = "https://github.com/pubref/rules_protobuf.git",
-)
-
-load("@org_pubref_rules_protobuf//go:rules.bzl", "go_proto_repositories")
-go_proto_repositories(
-  excludes = [
-        # we have specified protobuf above
-        # so ignore it in case version collision
-        "com_google_protobuf",
-  ],
-)
