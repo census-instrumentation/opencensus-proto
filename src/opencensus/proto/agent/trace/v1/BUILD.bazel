@@ -48,14 +48,9 @@ go_proto_library(
     name = "trace_service_proto_go",
     proto = ":trace_service_proto",
     importpath = "github.com/census-instrumentation/opencensus-proto/gen-go/agent/trace/v1",
-    embed = [
-        "//opencensus/proto/trace/v1:trace_proto_go",
-        "//opencensus/proto/trace/v1:trace_config_proto_go",
-    ],
     deps = [
         "//opencensus/proto/agent/common/v1:common_proto_go",
         "//opencensus/proto/resource/v1:resource_proto_go",
-        "//opencensus/proto/trace/v1:trace_proto_go",
-        "//opencensus/proto/trace/v1:trace_config_proto_go",
+        "//opencensus/proto/trace/v1:trace_and_config_proto_go",
     ],
 )
