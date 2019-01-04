@@ -26,7 +26,7 @@ option java_outer_classname = "TraceProto";
 option go_package = "github.com/census-instrumentation/opencensus-proto/gen-go/trace/v1";
 
 // A span represents a single operation within a trace. Spans can be
-// nested to form a trace tree. Often, a trace contains a root span
+// nested to form a trace graph. Often, a trace contains a root span
 // that describes the end-to-end latency, and one or more subspans for
 // its sub-operations. A trace can also contain multiple root spans,
 // or none at all. Spans do not need to be contiguous - there may be
@@ -36,13 +36,15 @@ option go_package = "github.com/census-instrumentation/opencensus-proto/gen-go/t
 // TODO(bdrutu): Add an example.
 message Span {
   // A unique identifier for a trace. All spans from the same trace share
-  // the same `trace_id`. The ID is a 16-byte array.
+  // the same `trace_id`. The ID is a 16-byte array. All zeroes ID is 
+  // considered incorrect.
   //
   // This field is required.
   bytes trace_id = 1;
 
   // A unique identifier for a span within a trace, assigned when the span
-  // is created. The ID is an 8-byte array.
+  // is created. The ID is an 8-byte array. All zeroes ID is considered
+  // incorrect.
   //
   // This field is required.
   bytes span_id = 2;
@@ -101,8 +103,8 @@ message Span {
   }
 
   // Distinguishes between spans generated in a particular context. For example,
-  // two spans with the same name may be distinguished using `CLIENT`
-  // and `SERVER` to identify queueing latency associated with the span.
+  // two spans with the same name may be distinguished using `CLIENT` (caller)
+  // and `SERVER` (callee) to identify queueing latency associated with the span.
   SpanKind kind = 14;
 
   // The start time of the span. On the client side, this is the time kept by
@@ -117,13 +119,14 @@ message Span {
 
   // A set of attributes, each with a key and a value.
   message Attributes {
-    // The set of attributes. The value can be a string, an integer, or the
-    // Boolean values `true` and `false`. For example:
+    // The set of attributes. The value can be a string, an integer, a double
+    // or the Boolean values `true` or `false`. Note, global attributes like 
+    // server name can be set as tags using resource API. Examples of attributes:
     //
-    //     "/instance_id": "my-instance"
-    //     "/http/user_agent": ""
+    //     "/http/user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
     //     "/http/server_latency": 300
     //     "abc.com/myattribute": true
+    //     "abc.com/score": 10.239
     map<string, AttributeValue> attribute_map = 1;
 
     // The number of attributes that were discarded. Attributes can be discarded
@@ -217,12 +220,11 @@ message Span {
   // where a single batch handler processes multiple requests from different
   // traces or when the handler receives a request from a different project.
   message Link {
-    // A unique identifier for a trace. All spans from the same trace share
-    // the same `trace_id`. The ID is a 16-byte array.
+    // A unique identifier of a trace this linked span is part of. The ID is a 
+    // 16-byte array.
     bytes trace_id = 1;
 
-    // A unique identifier for a span within a trace, assigned when the span
-    // is created. The ID is an 8-byte array.
+    // A unique identifier for the linked span. The ID is an 8-byte array.
     bytes span_id = 2;
 
     // The relationship of the current span relative to the linked span: child,
