@@ -30,7 +30,7 @@ script:
   - case "$BUILD" in
       "BAZEL")
         cd src;
-        bazel build --show_result=100 ... ;;
+        bazel build --incompatible_package_name_is_a_function=false --show_result=100 ... ;;
       "GRADLE")
         ./gradlew clean assemble --stacktrace ;
         ./gradlew check --stacktrace ;;
