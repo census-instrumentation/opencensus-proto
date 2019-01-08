@@ -21,7 +21,7 @@
         "operationId": "Export",
         "responses": {
           "200": {
-            "description": "(streaming responses)",
+            "description": "A successful response.(streaming responses)",
             "schema": {
               "$ref": "#/definitions/v1ExportTraceServiceResponse"
             }
