@@ -108,11 +108,21 @@ message Span {
   // The start time of the span. On the client side, this is the time kept by
   // the local machine where the span execution starts. On the server side, this
   // is the time when the server's application handler starts running.
+  //
+  // This field is semantically required. When not set on receive -
+  // receiver should set it to current time.
+  //
+  // This field is required.
   google.protobuf.Timestamp start_time = 5;
 
   // The end time of the span. On the client side, this is the time kept by
   // the local machine where the span execution ends. On the server side, this
   // is the time when the server application handler stops running.
+  //
+  // This field is semantically required. When not set on receive -
+  // receiver should set it to start_time value.
+  //
+  // This field is required.
   google.protobuf.Timestamp end_time = 6;
 
   // A set of attributes, each with a key and a value.
