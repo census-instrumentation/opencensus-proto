@@ -272,7 +272,9 @@ message Span {
   // The included links.
   Links links = 10;
 
-  // An optional final status for this span.
+  // An optional final status for this span. Semantically when Status
+  // wasn't set it is means span ended without errors and assume
+  // Status.Ok (code = 0).
   Status status = 11;
 
   // A highly recommended but not required flag that identifies when a
@@ -293,7 +295,8 @@ message Span {
 // [google.rpc.Status](https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto),
 // which is used by [gRPC](https://github.com/grpc).
 message Status {
-  // The status code.
+  // The status code. This is optional field. It is safe to assume 0 (OK)
+  // when not set.
   int32 code = 1;
 
   // A developer-facing error message, which should be in English.
