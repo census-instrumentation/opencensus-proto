@@ -74,6 +74,9 @@ message Tag {
 // TagMap is an abstract data type that represents collection of tags. i.e.,
 // each key is associated with exactly one value.
 message TagMap {
+  // The list of tags MUST contains unique TagKeys.
+  //
   // Not a map becuase the proto3 map does not allow a message as the key.
+  // https://developers.google.com/protocol-buffers/docs/proto3#maps
   repeated Tag tags = 1;
 }

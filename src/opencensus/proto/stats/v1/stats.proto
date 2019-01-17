@@ -64,7 +64,7 @@ message View {
   // An array of tag keys. These values associated with tags of this name form the basis by which
   // individual stats will be aggregated (one aggregation per unique tag value). If none are
   // provided, then all data is recorded in a single aggregation.
-  repeated string columns = 4;
+  repeated opencensus.proto.tags.v1.TagKey columns = 4;
 
   // The description of the aggregation used for this view which describes how data collected are
   // aggregated.
