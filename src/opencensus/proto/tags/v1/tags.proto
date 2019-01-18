@@ -23,20 +23,17 @@ option java_package = "io.opencensus.proto.tags.v1";
 option java_outer_classname = "TagsProto";
 
 // TagScope is used to determine the scope of a Tag.
-message TagScope {
-  enum Scope {
-    // Unknown type.
-    TYPE_UNSPECIFIED = 0;
-    // Tag with Local scope are used within the process it created.
-    LOCAL_SCOPE = 1;
-    // A tag is created with the Request scope then it is propagated across
-    // process boundaries subject to outgoing and incoming (on remote side)
-    // filter criteria.
-    REQUEST_SCOPE = 2;
-  }
-
-  // This field is required.
-  Scope scope = 1;
+//
+//
+enum TagScope {
+  // Unknown type.
+  TYPE_UNSPECIFIED = 0;
+  // Tag with Local scope are used within the process it created.
+  LOCAL_SCOPE = 1;
+  // A tag is created with the Request scope then it is propagated across
+  // process boundaries subject to outgoing and incoming (on remote side)
+  // filter criteria.
+  REQUEST_SCOPE = 2;
 }
 
 // TagKey is the name of the Tag.
@@ -68,6 +65,9 @@ message Tag {
 
   // This field is optional, if not present the default scope is REQUEST_SCOPE
   // (the motivation is backwards compatibility).
+  //
+  // This field is only needed for data generation and tags defining cases, not
+  // for exporting.
   TagScope scope = 3;
 }
 
