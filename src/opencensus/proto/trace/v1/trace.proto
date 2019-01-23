@@ -16,6 +16,7 @@ syntax = "proto3";
 
 package opencensus.proto.trace.v1;
 
+import "opencensus/proto/resource/v1/resource.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 
