@@ -300,6 +300,11 @@ message Span {
   // An optional number of child spans that were generated while this span
   // was active. If set, allows an implementation to detect missing child spans.
   google.protobuf.UInt32Value child_span_count = 13;
+
+  // An optional resource that this span describes. If not set, this span 
+  // should be part of a batch that does include the span information, unless resource 
+  // information is unknown.
+  opencensus.proto.resource.v1.Resource resource = 14;
 }
 
 // The `Status` type defines a logical error model that is suitable for different
