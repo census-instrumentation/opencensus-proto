@@ -291,7 +291,7 @@ message Span {
   // Status.Ok (code = 0).
   Status status = 11;
 
-  // An optional resource that this span describes. If not set, this span 
+  // An optional resource that is associated with this span. If not set, this span 
   // should be part of a batch that does include the resource information, unless resource 
   // information is unknown.
   opencensus.proto.resource.v1.Resource resource = 16;
