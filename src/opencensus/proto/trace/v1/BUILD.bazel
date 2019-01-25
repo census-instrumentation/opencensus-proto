@@ -23,6 +23,7 @@ proto_library(
     deps = [
         "@com_google_protobuf//:timestamp_proto",
         "@com_google_protobuf//:wrappers_proto",
+        "//opencensus/proto/resource/v1:resource_proto",
     ],
 )
 
@@ -58,6 +59,7 @@ go_proto_library(
     deps = [
         "@com_github_golang_protobuf//ptypes/timestamp:go_default_library",
         "@com_github_golang_protobuf//ptypes/wrappers:go_default_library",
+        "//opencensus/proto/resource/v1:resource_proto_go",
     ],
 )
 

@@ -16,6 +16,7 @@ syntax = "proto3";
 
 package opencensus.proto.trace.v1;
 
+import "opencensus/proto/resource/v1/resource.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 
@@ -33,7 +34,7 @@ option go_package = "github.com/census-instrumentation/opencensus-proto/gen-go/t
 // multiple root spans, or none at all. Spans do not need to be
 // contiguous - there may be gaps or overlaps between spans in a trace.
 //
-// The next id is 16.
+// The next id is 17.
 // TODO(bdrutu): Add an example.
 message Span {
   // A unique identifier for a trace. All spans from the same trace share
@@ -289,6 +290,11 @@ message Span {
   // wasn't set it is means span ended without errors and assume
   // Status.Ok (code = 0).
   Status status = 11;
+
+  // An optional resource that is associated with this span. If not set, this span 
+  // should be part of a batch that does include the resource information, unless resource 
+  // information is unknown.
+  opencensus.proto.resource.v1.Resource resource = 16;
 
   // A highly recommended but not required flag that identifies when a
   // trace crosses a process boundary. True when the parent_span belongs
