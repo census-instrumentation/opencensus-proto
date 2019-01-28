@@ -89,6 +89,7 @@ clean {
 idea {
     module {
         sourceDirs += file("${protobuf.generatedFilesBaseDir}/main/java");
+        sourceDirs += file("${protobuf.generatedFilesBaseDir}/main/grpc");
         // If you have additional sourceSets and/or codegen plugins, add all of them
     }
 }
