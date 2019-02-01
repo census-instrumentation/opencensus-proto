@@ -31,7 +31,7 @@ install:
 script:
   - case "$BUILD" in
       "BAZEL")
-        cd src;
+        cd src ;
         bazel build --show_result=100 ... ;;
       "GRADLE")
         ./gradlew clean assemble --stacktrace ;
