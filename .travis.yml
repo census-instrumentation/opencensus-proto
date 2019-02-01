@@ -23,6 +23,8 @@ install:
   - case "$BUILD" in
       "BAZEL")
         sudo apt-get install bazel ;
+        echo "build --disk_cache=$HOME/bazel-cache" > ~/.bazelrc ;
+        echo "build --experimental_strict_action_env" >> ~/.bazelrc ;
         bazel version;;
     esac
 
@@ -47,3 +49,4 @@ cache:
     - $HOME/.gradle
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
+    - $HOME/bazel-cache/
