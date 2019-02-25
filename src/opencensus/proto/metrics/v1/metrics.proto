@@ -218,7 +218,7 @@ message DistributionValue {
     //
     // [0, bucket_bounds[i]) for i == 0
     // [bucket_bounds[i-1], bucket_bounds[i]) for 0 < i < N-1
-    // [bucket_bounds[i-1], +infinity) for i == N-1
+    // [bucket_bounds[i], +infinity) for i == N-1
     message Explicit {
       // The values must be strictly increasing and > 0.
       repeated double bounds = 1;
