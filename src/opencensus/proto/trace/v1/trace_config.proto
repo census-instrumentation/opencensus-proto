@@ -55,12 +55,22 @@ message ProbabilitySampler {
   double samplingProbability = 1;
 }
 
-// Sampler that makes a constant decision (either always "yes" or always "no")
-// on span sampling.
+// Sampler that always makes a constant decision on span sampling.
 message ConstantSampler {
 
-  // Whether spans should be always sampled, or never sampled.
+  // DEPRECATED: whether spans should be always sampled, or never sampled.
   bool decision = 1;
+
+  // How spans should be sampled:
+  // - Always on
+  // - Always off
+  // - Always follow the parent Span's decision (off if no parent).
+  enum ConstantDecision {
+    ALWAYS_OFF = 0;
+    ALWAYS_ON = 1;
+    ALWAYS_PARENT = 2;
+  }
+  ConstantDecision decision_v2 = 2;
 }
 
 // Sampler that tries to sample with a rate per time window.
