@@ -23,6 +23,7 @@ option java_outer_classname = "TraceConfigProto";
 option go_package = "github.com/census-instrumentation/opencensus-proto/gen-go/trace/v1";
 
 // Global configuration of the trace service.
+// All maximum values must be specified, or the maximums will be set to zero.
 message TraceConfig {
 
   // The global default sampler used to make decisions on span sampling.
