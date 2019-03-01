@@ -67,7 +67,7 @@ message ConstantSampler {
     ALWAYS_ON = 1;
     ALWAYS_PARENT = 2;
   }
-  ConstantDecision decision = 2;
+  ConstantDecision decision = 1;
 }
 
 // Sampler that tries to sample with a rate per time window.
