@@ -70,8 +70,8 @@ func (LibraryInfo_Language) EnumDescriptor() ([]byte, []int) {
 	return fileDescriptor_126c72ed8a252c84, []int{2, 0}
 }
 
-// Identifier metadata of the Node (Application instrumented with OpenCensus)
-// that connects to OpenCensus Agent.
+// Identifier metadata of the Node that produces the span or tracing data.
+// Note, this is not the metadata about the Node or service that is described by associated spans.
 // In the future we plan to extend the identifier proto definition to support
 // additional information (e.g cloud id, etc.)
 type Node struct {
