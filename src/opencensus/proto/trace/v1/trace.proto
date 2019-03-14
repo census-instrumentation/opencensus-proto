@@ -270,6 +270,9 @@ message Span {
 
     // A set of attributes on the link.
     Attributes attributes = 4;
+
+    // The Tracestate associated with the link.
+    Tracestate tracestate = 5;
   }
 
   // A collection of links, which are references from this span to a span
