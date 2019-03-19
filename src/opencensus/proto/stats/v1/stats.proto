@@ -17,6 +17,7 @@ syntax = "proto3";
 package opencensus.proto.stats.v1;
 
 import "google/protobuf/timestamp.proto";
+import "opencensus/proto/tags/v1/tags.proto";
 
 option go_package = "github.com/census-instrumentation/opencensus-proto/gen-go/stats/v1";
 
@@ -24,13 +25,6 @@ option java_multiple_files = true;
 option java_package = "io.opencensus.proto.stats.v1";
 option java_outer_classname = "StatsProto";
 
-// TODO(bdrutu): Consider if this should be moved to a "tags" directory to match the API structure.
-message Tag {
-  string key = 1;
-  string value = 2;
-}
-
-// Measure .
 message Measure {
   // A string by which the measure will be referred to, e.g. "rpc_server_latency". Names MUST be
   // unique within the library.
@@ -70,7 +64,7 @@ message View {
   // An array of tag keys. These values associated with tags of this name form the basis by which
   // individual stats will be aggregated (one aggregation per unique tag value). If none are
   // provided, then all data is recorded in a single aggregation.
-  repeated string columns = 4;
+  repeated opencensus.proto.tags.v1.TagKey columns = 4;
 
   // The description of the aggregation used for this view which describes how data collected are
   // aggregated.
@@ -119,7 +113,7 @@ message DistributionAggregation {
 
 // Describes a data point to be collected for a Measure.
 message Measurement {
-  repeated Tag tags = 1;
+  opencensus.proto.tags.v1.TagMap tag_map = 1;
 
   // The name of the measure to which the value is applied.
   string measure_name = 2;

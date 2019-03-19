@@ -1,4 +1,4 @@
-# Copyright 2017, OpenCensus Authors
+# Copyright 2019, OpenCensus Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,31 +17,25 @@ package(default_visibility = ["//visibility:public"])
 load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
 
 proto_library(
-    name = "stats_proto",
-    srcs = ["stats.proto"],
-    deps = [
-        "//opencensus/proto/tags/v1:tags_proto",
-        "@com_google_protobuf//:duration_proto",
-        "@com_google_protobuf//:timestamp_proto",
-    ],
+    name = "tags_proto",
+    srcs = ["tags.proto"],
 )
 
 cc_proto_library(
-    name = "stats_proto_cc",
-    deps = [":stats_proto"],
+    name = "tags_proto_cc",
+    deps = [":tags_proto"],
 )
 
 java_proto_library(
-    name = "stats_proto_java",
-    deps = [":stats_proto"],
+    name = "tags_proto_java",
+    deps = [":tags_proto"],
 )
 
 go_proto_library(
-    name = "stats_proto_go",
-    importpath = "github.com/census-instrumentation/opencensus-proto/gen-go/stats/v1",
-    proto = ":stats_proto",
+    name = "tags_proto_go",
+    importpath = "github.com/census-instrumentation/opencensus-proto/gen-go/tags/v1",
+    proto = ":tags_proto",
     deps = [
-        "//opencensus/proto/tags/v1:tags_proto_go",
         "@com_github_golang_protobuf//ptypes/timestamp:go_default_library",
     ],
 )
