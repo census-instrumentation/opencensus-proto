@@ -28,6 +28,27 @@ $ git commit -m "Update gen-go files."
 
 Go through PR review and merge the changes to GitHub.
 
+## Release Ruby files
+
+To generate the Ruby files from protos, you'll need to install grpc-tools gem.
+
+```bash
+gem install grpc-tools
+```
+
+Then run the following commands to re-generate the gen-ruby files:
+
+```bash
+$ git@github.com:census-instrumentation/opencensus-proto.git
+$ cd opencensus-proto
+$ git checkout -b update-gen-ruby
+$ rm -rf gen-ruby
+$ cd src
+$ ./mkrubygen.sh
+$ git add -A
+$ git commit -m "Update gen-ruby files."
+```
+
 ## Tagging the Release
 
 Our release branches follow the naming convention of `v<major>.<minor>.x`, while the tags include the
