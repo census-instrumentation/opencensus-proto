@@ -49,6 +49,25 @@ $ git add -A
 $ git commit -m "Update gen-ruby files."
 ```
 
+## Release Python files
+
+To generate the Python files from protos, you'll need to install grpc-tools from PIP.
+
+```bash
+python -m pip install grpcio-tools
+```
+
+Then run the following commands to re-generate the gen-python files:
+
+```bash
+$ git checkout -b update-gen-python # Assume you're under opencensus-proto/
+$ rm -rf gen-python
+$ cd src
+$ ./mkpygen.sh
+$ git add -A
+$ git commit -m "Update gen-python files."
+```
+
 ## Tagging the Release
 
 Our release branches follow the naming convention of `v<major>.<minor>.x`, while the tags include the
