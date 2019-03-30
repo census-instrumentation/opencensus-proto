@@ -61,7 +61,6 @@ Then run the following commands to re-generate the gen-python files:
 
 ```bash
 $ git checkout -b update-gen-python # Assume you're under opencensus-proto/
-$ rm -rf gen-python
 $ cd src
 $ ./mkpygen.sh
 $ git add -A
@@ -86,7 +85,7 @@ token](https://help.github.com/articles/creating-a-personal-access-token-for-the
     $ MAJOR=0 MINOR=4 PATCH=0 # Set appropriately for new release
     $ VERSION_FILES=(
       build.gradle
-      pom.xml
+      gen-python/version.py
       )
     $ git checkout -b v$MAJOR.$MINOR.x master
     $ git push upstream v$MAJOR.$MINOR.x
@@ -216,6 +215,36 @@ the repository. If this completes successfully, the repository can then be
 Central (the staging repository will be destroyed in the process). You can see
 the complete process for releasing to Maven Central on the [OSSRH
 site](http://central.sonatype.org/pages/releasing-the-deployment.html).
+
+## Push Python package to PyPI
+
+We follow the same package distribution process outlined at
+[Python Packaging User Guide](https://packaging.python.org/tutorials/packaging-projects/).
+
+### Prerequisites
+
+If you haven't already, install the latest versions of setuptools, wheel and twine:
+```bash
+$ python3 -m pip install --user --upgrade setuptools wheel twine
+```
+
+### Branch
+
+Before building/deploying, be sure to switch to the appropriate tag. The tag
+must reference a commit that has been pushed to the main repository, i.e., has
+gone through code review. For the current release use:
+
+```bash
+$ git checkout -b v$MAJOR.$MINOR.$PATCH tags/v$MAJOR.$MINOR.$PATCH
+```
+
+### Generate and upload the distribution archives
+
+```bash
+$ cd gen-python
+$ python3 setup.py sdist bdist_wheel
+$ python3 -m twine upload dist/*
+```
 
 ## Announcement
 
