@@ -5,6 +5,7 @@ OpenCensus Proto - Language Independent Interface Types For OpenCensus
 [![Maven Central][maven-image]][maven-url]
 [![Javadocs][javadoc-image]][javadoc-url]
 [![GoDoc][godoc-image]][godoc-url]
+[![PyPI][pypi-image]][pypi-url]
 
 Census provides a framework to define and collect stats against metrics and to
 break those stats down across user-defined dimensions.
@@ -53,6 +54,8 @@ compile 'io.opencensus:opencensus-proto:0.2.0'
 [javadoc-url]: https://www.javadoc.io/doc/io.opencensus/opencensus-proto
 [godoc-image]: https://godoc.org/github.com/census-instrumentation/opencensus-proto?status.svg
 [godoc-url]: https://godoc.org/github.com/census-instrumentation/opencensus-proto
+[pypi-image]: https://badge.fury.io/py/opencensus-proto.svg
+[pypi-url]: https://pypi.org/project/opencensus-proto/
 
 ### Add the dependencies to Bazel project
 
