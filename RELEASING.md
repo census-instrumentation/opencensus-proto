@@ -83,10 +83,8 @@ token](https://help.github.com/articles/creating-a-personal-access-token-for-the
 
     ```bash
     $ MAJOR=0 MINOR=4 PATCH=0 # Set appropriately for new release
-    $ VERSION_FILES=(
-      build.gradle
-      gen-python/version.py
-      )
+    $ JAVA_VERSION_FILES=(build.gradle)
+    $ PYTHON_VERSION_FILES=(gen-python/version.py)
     $ git checkout -b v$MAJOR.$MINOR.x master
     $ git push upstream v$MAJOR.$MINOR.x
     ```
@@ -116,9 +114,11 @@ token](https://help.github.com/articles/creating-a-personal-access-token-for-the
 
     ```bash
     $ git checkout -b bump-version master
-    # Change version to next minor (and keep -SNAPSHOT)
+    # Change version to next minor (and keep -SNAPSHOT and .dev0)
     $ sed -i 's/[0-9]\+\.[0-9]\+\.[0-9]\+\(.*CURRENT_OPENCENSUS_PROTO_VERSION\)/'$MAJOR.$((MINOR+1)).0'\1/' \
-      "${VERSION_FILES[@]}"
+      "${JAVA_VERSION_FILES[@]}"
+    $ sed -i 's/[0-9]\+\.[0-9]\+\(.*CURRENT_OPENCENSUS_PROTO_VERSION\)/'$MAJOR.$((MINOR+1))'\1/' \
+      "${PYTHON_VERSION_FILES[@]}"
     $ ./gradlew build
     $ git commit -a -m "Start $MAJOR.$((MINOR+1)).0 development cycle"
     ```
@@ -138,8 +138,9 @@ token](https://help.github.com/articles/creating-a-personal-access-token-for-the
 
     ```bash
     $ git checkout -b release v$MAJOR.$MINOR.x
-    # Change version to remove -SNAPSHOT
-    $ sed -i 's/-SNAPSHOT\(.*CURRENT_OPENCENSUS_PROTO_VERSION\)/\1/' "${VERSION_FILES[@]}"
+    # Change version to remove -SNAPSHOT and .dev0
+    $ sed -i 's/-SNAPSHOT\(.*CURRENT_OPENCENSUS_PROTO_VERSION\)/\1/' "${JAVA_VERSION_FILES[@]}"
+    $ sed -i 's/dev0\(.*CURRENT_OPENCENSUS_PROTO_VERSION\)/'0'\1/' "${PYTHON_VERSION_FILES[@]}"
     $ ./gradlew build
     $ git commit -a -m "Bump version to $MAJOR.$MINOR.$PATCH"
     $ git tag -a v$MAJOR.$MINOR.$PATCH -m "Version $MAJOR.$MINOR.$PATCH"
@@ -149,9 +150,11 @@ token](https://help.github.com/articles/creating-a-personal-access-token-for-the
         `0.4.1-SNAPSHOT`). Commit the result:
 
     ```bash
-    # Change version to next patch and add -SNAPSHOT
+    # Change version to next patch and add -SNAPSHOT and .dev1
     $ sed -i 's/[0-9]\+\.[0-9]\+\.[0-9]\+\(.*CURRENT_OPENCENSUS_PROTO_VERSION\)/'$MAJOR.$MINOR.$((PATCH+1))-SNAPSHOT'\1/' \
-     "${VERSION_FILES[@]}"
+     "${JAVA_VERSION_FILES[@]}"
+     $ sed -i 's/[0-9]\+\.[0-9]\+\.[0-9]\+\(.*CURRENT_OPENCENSUS_PROTO_VERSION\)/'$MAJOR.$MINOR.dev$((PATCH+1))'\1/' \
+     "${PYTHON_VERSION_FILES[@]}"
     $ ./gradlew build
     $ git commit -a -m "Bump version to $MAJOR.$MINOR.$((PATCH+1))-SNAPSHOT"
     ```
