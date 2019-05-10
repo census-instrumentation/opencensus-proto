@@ -21,7 +21,7 @@ $ cd $(go env GOPATH)/src/github.com/census-instrumentation/opencensus-proto
 $ git checkout -b update-gen-go
 $ rm -rf gen-go
 $ cd src
-$ ./mkgogen.sh
+$ ./mkgogogen.sh
 $ git add -A
 $ git commit -m "Update gen-go files."
 ```
