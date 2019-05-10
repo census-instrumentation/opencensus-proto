@@ -27,6 +27,11 @@ class TraceServiceStub(object):
         request_serializer=opencensus_dot_proto_dot_agent_dot_trace_dot_v1_dot_trace__service__pb2.ExportTraceServiceRequest.SerializeToString,
         response_deserializer=opencensus_dot_proto_dot_agent_dot_trace_dot_v1_dot_trace__service__pb2.ExportTraceServiceResponse.FromString,
         )
+    self.ExportOne = channel.unary_unary(
+        '/opencensus.proto.agent.trace.v1.TraceService/ExportOne',
+        request_serializer=opencensus_dot_proto_dot_agent_dot_trace_dot_v1_dot_trace__service__pb2.ExportTraceServiceRequest.SerializeToString,
+        response_deserializer=opencensus_dot_proto_dot_agent_dot_trace_dot_v1_dot_trace__service__pb2.ExportTraceServiceResponse.FromString,
+        )
 
 
 class TraceServiceServicer(object):
@@ -53,6 +58,13 @@ class TraceServiceServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def ExportOne(self, request, context):
+    """ExportOne is used to export a single span batch as a unary rpc
+    """
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
 
 def add_TraceServiceServicer_to_server(servicer, server):
   rpc_method_handlers = {
@@ -63,6 +75,11 @@ def add_TraceServiceServicer_to_server(servicer, server):
       ),
       'Export': grpc.stream_stream_rpc_method_handler(
           servicer.Export,
+          request_deserializer=opencensus_dot_proto_dot_agent_dot_trace_dot_v1_dot_trace__service__pb2.ExportTraceServiceRequest.FromString,
+          response_serializer=opencensus_dot_proto_dot_agent_dot_trace_dot_v1_dot_trace__service__pb2.ExportTraceServiceResponse.SerializeToString,
+      ),
+      'ExportOne': grpc.unary_unary_rpc_method_handler(
+          servicer.ExportOne,
           request_deserializer=opencensus_dot_proto_dot_agent_dot_trace_dot_v1_dot_trace__service__pb2.ExportTraceServiceRequest.FromString,
           response_serializer=opencensus_dot_proto_dot_agent_dot_trace_dot_v1_dot_trace__service__pb2.ExportTraceServiceResponse.SerializeToString,
       ),

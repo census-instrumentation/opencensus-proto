@@ -7,3 +7,6 @@ http:
  - selector: opencensus.proto.agent.trace.v1.TraceService.Export
    post: /v1/trace
    body: "*"
+ - selector: opencensus.proto.agent.trace.v1.TraceService.ExportOne
+   post: /v1/trace-one
+   body: "*"

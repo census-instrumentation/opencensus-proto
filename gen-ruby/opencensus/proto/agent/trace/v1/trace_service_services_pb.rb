@@ -44,6 +44,8 @@ module OpenCensus
               # For performance reasons, it is recommended to keep this RPC
               # alive for the entire life of the application.
               rpc :Export, stream(ExportTraceServiceRequest), stream(ExportTraceServiceResponse)
+              # ExportOne is used to export a single span batch as a unary rpc
+              rpc :ExportOne, ExportTraceServiceRequest, ExportTraceServiceResponse
             end
 
             Stub = Service.rpc_stub_class

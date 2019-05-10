@@ -7,87 +7,89 @@ require 'google/protobuf/timestamp_pb'
 require 'google/protobuf/wrappers_pb'
 require 'opencensus/proto/resource/v1/resource_pb'
 Google::Protobuf::DescriptorPool.generated_pool.build do
-  add_message "opencensus.proto.metrics.v1.Metric" do
-    optional :metric_descriptor, :message, 1, "opencensus.proto.metrics.v1.MetricDescriptor"
-    repeated :timeseries, :message, 2, "opencensus.proto.metrics.v1.TimeSeries"
-    optional :resource, :message, 3, "opencensus.proto.resource.v1.Resource"
-  end
-  add_message "opencensus.proto.metrics.v1.MetricDescriptor" do
-    optional :name, :string, 1
-    optional :description, :string, 2
-    optional :unit, :string, 3
-    optional :type, :enum, 4, "opencensus.proto.metrics.v1.MetricDescriptor.Type"
-    repeated :label_keys, :message, 5, "opencensus.proto.metrics.v1.LabelKey"
-  end
-  add_enum "opencensus.proto.metrics.v1.MetricDescriptor.Type" do
-    value :UNSPECIFIED, 0
-    value :GAUGE_INT64, 1
-    value :GAUGE_DOUBLE, 2
-    value :GAUGE_DISTRIBUTION, 3
-    value :CUMULATIVE_INT64, 4
-    value :CUMULATIVE_DOUBLE, 5
-    value :CUMULATIVE_DISTRIBUTION, 6
-    value :SUMMARY, 7
-  end
-  add_message "opencensus.proto.metrics.v1.LabelKey" do
-    optional :key, :string, 1
-    optional :description, :string, 2
-  end
-  add_message "opencensus.proto.metrics.v1.TimeSeries" do
-    optional :start_timestamp, :message, 1, "google.protobuf.Timestamp"
-    repeated :label_values, :message, 2, "opencensus.proto.metrics.v1.LabelValue"
-    repeated :points, :message, 3, "opencensus.proto.metrics.v1.Point"
-  end
-  add_message "opencensus.proto.metrics.v1.LabelValue" do
-    optional :value, :string, 1
-    optional :has_value, :bool, 2
-  end
-  add_message "opencensus.proto.metrics.v1.Point" do
-    optional :timestamp, :message, 1, "google.protobuf.Timestamp"
-    oneof :value do
-      optional :int64_value, :int64, 2
-      optional :double_value, :double, 3
-      optional :distribution_value, :message, 4, "opencensus.proto.metrics.v1.DistributionValue"
-      optional :summary_value, :message, 5, "opencensus.proto.metrics.v1.SummaryValue"
+  add_file("opencensus/proto/metrics/v1/metrics.proto", :syntax => :proto3) do
+    add_message "opencensus.proto.metrics.v1.Metric" do
+      optional :metric_descriptor, :message, 1, "opencensus.proto.metrics.v1.MetricDescriptor"
+      repeated :timeseries, :message, 2, "opencensus.proto.metrics.v1.TimeSeries"
+      optional :resource, :message, 3, "opencensus.proto.resource.v1.Resource"
     end
-  end
-  add_message "opencensus.proto.metrics.v1.DistributionValue" do
-    optional :count, :int64, 1
-    optional :sum, :double, 2
-    optional :sum_of_squared_deviation, :double, 3
-    optional :bucket_options, :message, 4, "opencensus.proto.metrics.v1.DistributionValue.BucketOptions"
-    repeated :buckets, :message, 5, "opencensus.proto.metrics.v1.DistributionValue.Bucket"
-  end
-  add_message "opencensus.proto.metrics.v1.DistributionValue.BucketOptions" do
-    oneof :type do
-      optional :explicit, :message, 1, "opencensus.proto.metrics.v1.DistributionValue.BucketOptions.Explicit"
+    add_message "opencensus.proto.metrics.v1.MetricDescriptor" do
+      optional :name, :string, 1
+      optional :description, :string, 2
+      optional :unit, :string, 3
+      optional :type, :enum, 4, "opencensus.proto.metrics.v1.MetricDescriptor.Type"
+      repeated :label_keys, :message, 5, "opencensus.proto.metrics.v1.LabelKey"
     end
-  end
-  add_message "opencensus.proto.metrics.v1.DistributionValue.BucketOptions.Explicit" do
-    repeated :bounds, :double, 1
-  end
-  add_message "opencensus.proto.metrics.v1.DistributionValue.Bucket" do
-    optional :count, :int64, 1
-    optional :exemplar, :message, 2, "opencensus.proto.metrics.v1.DistributionValue.Exemplar"
-  end
-  add_message "opencensus.proto.metrics.v1.DistributionValue.Exemplar" do
-    optional :value, :double, 1
-    optional :timestamp, :message, 2, "google.protobuf.Timestamp"
-    map :attachments, :string, :string, 3
-  end
-  add_message "opencensus.proto.metrics.v1.SummaryValue" do
-    optional :count, :message, 1, "google.protobuf.Int64Value"
-    optional :sum, :message, 2, "google.protobuf.DoubleValue"
-    optional :snapshot, :message, 3, "opencensus.proto.metrics.v1.SummaryValue.Snapshot"
-  end
-  add_message "opencensus.proto.metrics.v1.SummaryValue.Snapshot" do
-    optional :count, :message, 1, "google.protobuf.Int64Value"
-    optional :sum, :message, 2, "google.protobuf.DoubleValue"
-    repeated :percentile_values, :message, 3, "opencensus.proto.metrics.v1.SummaryValue.Snapshot.ValueAtPercentile"
-  end
-  add_message "opencensus.proto.metrics.v1.SummaryValue.Snapshot.ValueAtPercentile" do
-    optional :percentile, :double, 1
-    optional :value, :double, 2
+    add_enum "opencensus.proto.metrics.v1.MetricDescriptor.Type" do
+      value :UNSPECIFIED, 0
+      value :GAUGE_INT64, 1
+      value :GAUGE_DOUBLE, 2
+      value :GAUGE_DISTRIBUTION, 3
+      value :CUMULATIVE_INT64, 4
+      value :CUMULATIVE_DOUBLE, 5
+      value :CUMULATIVE_DISTRIBUTION, 6
+      value :SUMMARY, 7
+    end
+    add_message "opencensus.proto.metrics.v1.LabelKey" do
+      optional :key, :string, 1
+      optional :description, :string, 2
+    end
+    add_message "opencensus.proto.metrics.v1.TimeSeries" do
+      optional :start_timestamp, :message, 1, "google.protobuf.Timestamp"
+      repeated :label_values, :message, 2, "opencensus.proto.metrics.v1.LabelValue"
+      repeated :points, :message, 3, "opencensus.proto.metrics.v1.Point"
+    end
+    add_message "opencensus.proto.metrics.v1.LabelValue" do
+      optional :value, :string, 1
+      optional :has_value, :bool, 2
+    end
+    add_message "opencensus.proto.metrics.v1.Point" do
+      optional :timestamp, :message, 1, "google.protobuf.Timestamp"
+      oneof :value do
+        optional :int64_value, :int64, 2
+        optional :double_value, :double, 3
+        optional :distribution_value, :message, 4, "opencensus.proto.metrics.v1.DistributionValue"
+        optional :summary_value, :message, 5, "opencensus.proto.metrics.v1.SummaryValue"
+      end
+    end
+    add_message "opencensus.proto.metrics.v1.DistributionValue" do
+      optional :count, :int64, 1
+      optional :sum, :double, 2
+      optional :sum_of_squared_deviation, :double, 3
+      optional :bucket_options, :message, 4, "opencensus.proto.metrics.v1.DistributionValue.BucketOptions"
+      repeated :buckets, :message, 5, "opencensus.proto.metrics.v1.DistributionValue.Bucket"
+    end
+    add_message "opencensus.proto.metrics.v1.DistributionValue.BucketOptions" do
+      oneof :type do
+        optional :explicit, :message, 1, "opencensus.proto.metrics.v1.DistributionValue.BucketOptions.Explicit"
+      end
+    end
+    add_message "opencensus.proto.metrics.v1.DistributionValue.BucketOptions.Explicit" do
+      repeated :bounds, :double, 1
+    end
+    add_message "opencensus.proto.metrics.v1.DistributionValue.Bucket" do
+      optional :count, :int64, 1
+      optional :exemplar, :message, 2, "opencensus.proto.metrics.v1.DistributionValue.Exemplar"
+    end
+    add_message "opencensus.proto.metrics.v1.DistributionValue.Exemplar" do
+      optional :value, :double, 1
+      optional :timestamp, :message, 2, "google.protobuf.Timestamp"
+      map :attachments, :string, :string, 3
+    end
+    add_message "opencensus.proto.metrics.v1.SummaryValue" do
+      optional :count, :message, 1, "google.protobuf.Int64Value"
+      optional :sum, :message, 2, "google.protobuf.DoubleValue"
+      optional :snapshot, :message, 3, "opencensus.proto.metrics.v1.SummaryValue.Snapshot"
+    end
+    add_message "opencensus.proto.metrics.v1.SummaryValue.Snapshot" do
+      optional :count, :message, 1, "google.protobuf.Int64Value"
+      optional :sum, :message, 2, "google.protobuf.DoubleValue"
+      repeated :percentile_values, :message, 3, "opencensus.proto.metrics.v1.SummaryValue.Snapshot.ValueAtPercentile"
+    end
+    add_message "opencensus.proto.metrics.v1.SummaryValue.Snapshot.ValueAtPercentile" do
+      optional :percentile, :double, 1
+      optional :value, :double, 2
+    end
   end
 end
 
