@@ -14,7 +14,6 @@
 
 package(default_visibility = ["//visibility:public"])
 
-load("@grpc_java//:java_grpc_library.bzl", "java_grpc_library")
 load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
 
 proto_library(
@@ -35,12 +34,6 @@ cc_proto_library(
 java_proto_library(
     name = "metrics_service_proto_java",
     deps = [":metrics_service_proto"],
-)
-
-java_grpc_library(
-    name = "metrics_service_grpc_java",
-    srcs = [":metrics_service_proto"],
-    deps = [":metrics_service_proto_java"],
 )
 
 go_proto_library(
