@@ -32,3 +32,8 @@ go_proto_library(
         "@com_github_golang_protobuf//ptypes/timestamp:go_default_library",
     ],
 )
+
+cc_proto_library(
+    name = "common_proto_cc",
+    deps = [":common_proto"],
+)
