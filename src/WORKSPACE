@@ -17,46 +17,28 @@ workspace(name = "opencensus_proto")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-# Import gRPC git repo so that we can load java_grpc_library build.
+# Import grpc_java for java_grpc_library().
 git_repository(
     name = "grpc_java",
     remote = "https://github.com/grpc/grpc-java.git",
-    tag = "v1.10.1",
+    tag = "v1.22.1",
 )
 
 load("@grpc_java//:repositories.bzl", "grpc_java_repositories")
 
-grpc_java_repositories(
-    # Omit to avoid conflicts.
-    omit_com_google_protobuf=True,
-    omit_com_google_protobuf_nano_protobuf_javanano=True,
+grpc_java_repositories()
+
+# Import grpc for cc_grpc_library().
+http_archive(
+    name = "com_github_grpc_grpc",
+    sha256 = "54130a7fa3dae57ed148f24cddcc91ff56e8023ed3d1e44cff4e1a922406087d",
+    strip_prefix = "grpc-809e7c951358a80182d7126b255c3a40881fb3fa",
+    urls = ["https://github.com/grpc/grpc/archive/809e7c951358a80182d7126b255c3a40881fb3fa.zip"],
 )
 
-# proto_library rules implicitly depend on @com_google_protobuf//:protoc,
-# which is the proto-compiler.
-# This statement defines the @com_google_protobuf repo.
-http_archive(
-    name = "com_google_protobuf",
-    sha256 = "73fdad358857e120fd0fa19e071a96e15c0f23bb25f85d3f7009abfd4f264a2a",
-    strip_prefix = "protobuf-3.6.1.3",
-    urls = ["https://github.com/google/protobuf/archive/v3.6.1.3.tar.gz"],
-)
+load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
 
-http_archive(
-    name = "com_google_protobuf_cc",
-    sha256 = "73fdad358857e120fd0fa19e071a96e15c0f23bb25f85d3f7009abfd4f264a2a",
-    strip_prefix = "protobuf-3.6.1.3",
-    urls = ["https://github.com/google/protobuf/archive/v3.6.1.3.tar.gz"],
-)
-
-# java_proto_library rules implicitly depend on @com_google_protobuf_java//:java_toolchain,
-# which is the Java proto runtime (base classes and common utilities).
-http_archive(
-    name = "com_google_protobuf_java",
-    sha256 = "73fdad358857e120fd0fa19e071a96e15c0f23bb25f85d3f7009abfd4f264a2a",
-    strip_prefix = "protobuf-3.6.1.3",
-    urls = ["https://github.com/google/protobuf/archive/v3.6.1.3.tar.gz"],
-)
+grpc_deps()
 
 # go rules related
 git_repository(
@@ -69,10 +51,10 @@ git_repository(
     # see https://github.com/bazelbuild/rules_go/blob/release-0.12/go/private/repositories.bzl#L75
     # for the included golang protobuf version and
     # see https://github.com/golang/protobuf/pull/544 for "paths=source_relative" usage
-    tag = "0.15.8",
+    tag = "0.19.1",
 )
 
-load("@io_bazel_rules_go//go:def.bzl", "go_rules_dependencies", "go_register_toolchains")
+load("@io_bazel_rules_go//go:deps.bzl", "go_rules_dependencies", "go_register_toolchains")
 go_rules_dependencies()
 go_register_toolchains()
 
