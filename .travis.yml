@@ -1,4 +1,3 @@
-sudo: required
 dist: trusty
 
 matrix:
@@ -14,9 +13,11 @@ matrix:
 install:
   - case "$BUILD" in
       "BAZEL")
-        curl -LO "https://github.com/bazelbuild/bazel/releases/download/0.26.0/bazel_0.26.0-linux-x86_64.deb" ;
-        sudo dpkg -i bazel_*.deb ;
-        sudo apt-get install -f ;
+        export BAZEL_OS="linux" ;
+        export BAZEL_VERSION="0.26.0" ;
+        wget "https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-installer-${BAZEL_OS}-x86_64.sh" ;
+        chmod +x bazel-${BAZEL_VERSION}-installer-${BAZEL_OS}-x86_64.sh ;
+        ./bazel-${BAZEL_VERSION}-installer-${BAZEL_OS}-x86_64.sh --user ;
         bazel version ;;
     esac
 
