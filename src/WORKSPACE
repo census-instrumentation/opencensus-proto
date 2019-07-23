@@ -17,7 +17,7 @@ workspace(name = "opencensus_proto")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
-# Import gRPC git repo so that we can load java_grpc_library build.
+# Import grpc_java for java_grpc_library().
 git_repository(
     name = "grpc_java",
     remote = "https://github.com/grpc/grpc-java.git",
@@ -31,6 +31,18 @@ grpc_java_repositories(
     omit_com_google_protobuf=True,
     omit_com_google_protobuf_nano_protobuf_javanano=True,
 )
+
+# Import grpc for cc_library().
+http_archive(
+    name = "com_github_grpc_grpc",
+    sha256 = "54130a7fa3dae57ed148f24cddcc91ff56e8023ed3d1e44cff4e1a922406087d",
+    strip_prefix = "grpc-809e7c951358a80182d7126b255c3a40881fb3fa",
+    urls = ["https://github.com/grpc/grpc/archive/809e7c951358a80182d7126b255c3a40881fb3fa.zip"],
+)
+
+load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
+
+grpc_deps()
 
 # proto_library rules implicitly depend on @com_google_protobuf//:protoc,
 # which is the proto-compiler.
