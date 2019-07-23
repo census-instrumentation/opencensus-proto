@@ -28,7 +28,7 @@ load("@grpc_java//:repositories.bzl", "grpc_java_repositories")
 
 grpc_java_repositories()
 
-# Import grpc for cc_library().
+# Import grpc for cc_grpc_library().
 http_archive(
     name = "com_github_grpc_grpc",
     sha256 = "54130a7fa3dae57ed148f24cddcc91ff56e8023ed3d1e44cff4e1a922406087d",
