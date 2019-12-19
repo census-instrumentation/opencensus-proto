@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+load("//third_party/bazel_rules/rules_proto/proto:defs.bzl", "proto_library")
+
 package(default_visibility = ["//visibility:public"])
 
 load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
@@ -23,8 +25,8 @@ proto_library(
     deps = [
         "//opencensus/proto/agent/common/v1:common_proto",
         "//opencensus/proto/resource/v1:resource_proto",
-        "//opencensus/proto/trace/v1:trace_proto",
         "//opencensus/proto/trace/v1:trace_config_proto",
+        "//opencensus/proto/trace/v1:trace_proto",
     ],
 )
 
@@ -36,14 +38,14 @@ cc_proto_library(
 cc_grpc_library(
     name = "trace_service_grpc_cc",
     srcs = [":trace_service_proto"],
-    deps = [":trace_service_proto_cc"],
     grpc_only = True,
+    deps = [":trace_service_proto_cc"],
 )
 
 go_proto_library(
     name = "trace_service_proto_go",
-    proto = ":trace_service_proto",
     importpath = "github.com/census-instrumentation/opencensus-proto/gen-go/agent/trace/v1",
+    proto = ":trace_service_proto",
     deps = [
         "//opencensus/proto/agent/common/v1:common_proto_go",
         "//opencensus/proto/resource/v1:resource_proto_go",
