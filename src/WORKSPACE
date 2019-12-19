@@ -34,14 +34,33 @@ rules_proto_toolchains()
 # Import grpc for cc_grpc_library().
 http_archive(
     name = "com_github_grpc_grpc",
-    sha256 = "54130a7fa3dae57ed148f24cddcc91ff56e8023ed3d1e44cff4e1a922406087d",
-    strip_prefix = "grpc-809e7c951358a80182d7126b255c3a40881fb3fa",
-    urls = ["https://github.com/grpc/grpc/archive/809e7c951358a80182d7126b255c3a40881fb3fa.zip"],
+    #sha256 = "54130a7fa3dae57ed148f24cddcc91ff56e8023ed3d1e44cff4e1a922406087d",
+    strip_prefix = "grpc-b1547c9d19034740b1e5b4d73cb91d068dc0acb4",
+    urls = ["https://github.com/grpc/grpc/archive/b1547c9d19034740b1e5b4d73cb91d068dc0acb4.zip"],
 )
 
 load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
-
 grpc_deps()
+
+# grpc_deps() cannot load() its deps, this WORKSPACE has to do it.
+# See also: https://github.com/bazelbuild/bazel/issues/1943
+load(
+    "@build_bazel_rules_apple//apple:repositories.bzl",
+    "apple_rules_dependencies",
+)
+
+apple_rules_dependencies()
+
+load(
+    "@build_bazel_apple_support//lib:repositories.bzl",
+    "apple_support_dependencies",
+)
+
+apple_support_dependencies()
+
+load("@upb//bazel:repository_defs.bzl", "bazel_version_repository")
+
+bazel_version_repository(name = "bazel_version")
 
 # go rules related
 git_repository(
