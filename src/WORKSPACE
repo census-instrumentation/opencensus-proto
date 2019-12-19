@@ -54,7 +54,7 @@ git_repository(
     # see https://github.com/bazelbuild/rules_go/blob/release-0.12/go/private/repositories.bzl#L75
     # for the included golang protobuf version and
     # see https://github.com/golang/protobuf/pull/544 for "paths=source_relative" usage
-    tag = "0.19.1",
+    tag = "v0.19.9",
 )
 
 load("@io_bazel_rules_go//go:deps.bzl", "go_rules_dependencies", "go_register_toolchains")
