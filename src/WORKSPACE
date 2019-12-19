@@ -34,7 +34,7 @@ rules_proto_toolchains()
 # Import grpc for cc_grpc_library().
 http_archive(
     name = "com_github_grpc_grpc",
-    #sha256 = "54130a7fa3dae57ed148f24cddcc91ff56e8023ed3d1e44cff4e1a922406087d",
+    sha256 = "bbda0588df1b31aca41b83d09cf69816df653b5a89f820d16ab95af8eb1f9072",
     strip_prefix = "grpc-b1547c9d19034740b1e5b4d73cb91d068dc0acb4",
     urls = ["https://github.com/grpc/grpc/archive/b1547c9d19034740b1e5b4d73cb91d068dc0acb4.zip"],
 )
