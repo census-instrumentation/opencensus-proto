@@ -17,17 +17,50 @@ workspace(name = "opencensus_proto")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
+# Import rules_proto for proto_library().
+http_archive(
+    name = "rules_proto",
+    sha256 = "602e7161d9195e50246177e7c55b2f39950a9cf7366f74ed5f22fd45750cd208",
+    strip_prefix = "rules_proto-97d8af4dc474595af3900dd85cb3a29ad28cc313",
+    urls = [
+        "https://mirror.bazel.build/github.com/bazelbuild/rules_proto/archive/97d8af4dc474595af3900dd85cb3a29ad28cc313.tar.gz",
+        "https://github.com/bazelbuild/rules_proto/archive/97d8af4dc474595af3900dd85cb3a29ad28cc313.tar.gz",
+    ],
+)
+load("@rules_proto//proto:repositories.bzl", "rules_proto_dependencies", "rules_proto_toolchains")
+rules_proto_dependencies()
+rules_proto_toolchains()
+
 # Import grpc for cc_grpc_library().
 http_archive(
     name = "com_github_grpc_grpc",
-    sha256 = "54130a7fa3dae57ed148f24cddcc91ff56e8023ed3d1e44cff4e1a922406087d",
-    strip_prefix = "grpc-809e7c951358a80182d7126b255c3a40881fb3fa",
-    urls = ["https://github.com/grpc/grpc/archive/809e7c951358a80182d7126b255c3a40881fb3fa.zip"],
+    sha256 = "bbda0588df1b31aca41b83d09cf69816df653b5a89f820d16ab95af8eb1f9072",
+    strip_prefix = "grpc-b1547c9d19034740b1e5b4d73cb91d068dc0acb4",
+    urls = ["https://github.com/grpc/grpc/archive/b1547c9d19034740b1e5b4d73cb91d068dc0acb4.zip"],
 )
 
 load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
-
 grpc_deps()
+
+# grpc_deps() cannot load() its deps, this WORKSPACE has to do it.
+# See also: https://github.com/bazelbuild/bazel/issues/1943
+load(
+    "@build_bazel_rules_apple//apple:repositories.bzl",
+    "apple_rules_dependencies",
+)
+
+apple_rules_dependencies()
+
+load(
+    "@build_bazel_apple_support//lib:repositories.bzl",
+    "apple_support_dependencies",
+)
+
+apple_support_dependencies()
+
+load("@upb//bazel:repository_defs.bzl", "bazel_version_repository")
+
+bazel_version_repository(name = "bazel_version")
 
 # go rules related
 git_repository(
@@ -40,7 +73,7 @@ git_repository(
     # see https://github.com/bazelbuild/rules_go/blob/release-0.12/go/private/repositories.bzl#L75
     # for the included golang protobuf version and
     # see https://github.com/golang/protobuf/pull/544 for "paths=source_relative" usage
-    tag = "0.19.1",
+    tag = "v0.19.9",
 )
 
 load("@io_bazel_rules_go//go:deps.bzl", "go_rules_dependencies", "go_register_toolchains")

@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
 package(default_visibility = ["//visibility:public"])
 
 load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
@@ -26,8 +28,8 @@ proto_library(
 
 go_proto_library(
     name = "common_proto_go",
-    proto = ":common_proto",
     importpath = "github.com/census-instrumentation/opencensus-proto/gen-go/agent/common/v1",
+    proto = ":common_proto",
     deps = [
         "@com_github_golang_protobuf//ptypes/timestamp:go_default_library",
     ],

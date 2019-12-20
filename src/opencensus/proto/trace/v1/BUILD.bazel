@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
 package(default_visibility = ["//visibility:public"])
 
 load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
@@ -22,9 +24,9 @@ proto_library(
     name = "trace_proto",
     srcs = ["trace.proto"],
     deps = [
+        "//opencensus/proto/resource/v1:resource_proto",
         "@com_google_protobuf//:timestamp_proto",
         "@com_google_protobuf//:wrappers_proto",
-        "//opencensus/proto/resource/v1:resource_proto",
     ],
 )
 
@@ -55,27 +57,27 @@ java_proto_library(
 
 go_proto_library(
     name = "trace_proto_go",
-    proto = ":trace_proto",
     importpath = "github.com/census-instrumentation/opencensus-proto/gen-go/trace/v1",
+    proto = ":trace_proto",
     deps = [
+        "//opencensus/proto/resource/v1:resource_proto_go",
         "@com_github_golang_protobuf//ptypes/timestamp:go_default_library",
         "@com_github_golang_protobuf//ptypes/wrappers:go_default_library",
-        "//opencensus/proto/resource/v1:resource_proto_go",
     ],
 )
 
 go_proto_library(
     name = "trace_config_proto_go",
-    proto = ":trace_config_proto",
     importpath = "github.com/census-instrumentation/opencensus-proto/gen-go/trace/v1",
+    proto = ":trace_config_proto",
 )
 
 py_proto_library(
     name = "trace_proto_py",
     srcs = ["trace.proto"],
     deps = [
-        "@com_google_protobuf//:protobuf_python",
         "//opencensus/proto/resource/v1:resource_proto_py",
+        "@com_google_protobuf//:protobuf_python",
     ],
 )
 
@@ -94,5 +96,5 @@ go_library(
     embed = [
         ":trace_proto_go",
         ":trace_config_proto_go",
-    ]
+    ],
 )
