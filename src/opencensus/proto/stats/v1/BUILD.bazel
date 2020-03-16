@@ -21,6 +21,7 @@ load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
 proto_library(
     name = "stats_proto",
     srcs = ["stats.proto"],
+    strip_import_prefix = "/src",
     deps = [
         "@com_google_protobuf//:duration_proto",
         "@com_google_protobuf//:timestamp_proto",
@@ -42,6 +43,6 @@ go_proto_library(
     importpath = "github.com/census-instrumentation/opencensus-proto/gen-go/stats/v1",
     proto = ":stats_proto",
     deps = [
-        "@com_github_golang_protobuf//ptypes/timestamp:go_default_library",
+        "@io_bazel_rules_go//proto/wkt:timestamp_go_proto",
     ],
 )

@@ -21,8 +21,9 @@ load("@io_bazel_rules_go//proto:def.bzl", "go_proto_library")
 proto_library(
     name = "metrics_proto",
     srcs = ["metrics.proto"],
+    strip_import_prefix = "/src",
     deps = [
-        "//opencensus/proto/resource/v1:resource_proto",
+        "//src/opencensus/proto/resource/v1:resource_proto",
         "@com_google_protobuf//:timestamp_proto",
         "@com_google_protobuf//:wrappers_proto",
     ],
@@ -43,8 +44,8 @@ go_proto_library(
     importpath = "github.com/census-instrumentation/opencensus-proto/gen-go/metrics/v1",
     proto = ":metrics_proto",
     deps = [
-        "//opencensus/proto/resource/v1:resource_proto_go",
-        "@com_github_golang_protobuf//ptypes/timestamp:go_default_library",
-        "@com_github_golang_protobuf//ptypes/wrappers:go_default_library",
+        "//src/opencensus/proto/resource/v1:resource_proto_go",
+        "@io_bazel_rules_go//proto/wkt:timestamp_go_proto",
+        "@io_bazel_rules_go//proto/wkt:wrappers_go_proto",
     ],
 )

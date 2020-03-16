@@ -22,6 +22,7 @@ load("@com_google_protobuf//:protobuf.bzl", "py_proto_library")
 proto_library(
     name = "resource_proto",
     srcs = ["resource.proto"],
+    strip_import_prefix = "/src",
 )
 
 cc_proto_library(
