@@ -4,10 +4,6 @@
     "title": "opencensus/proto/agent/metrics/v1/metrics_service.proto",
     "version": "version not set"
   },
-  "schemes": [
-    "http",
-    "https"
-  ],
   "consumes": [
     "application/json"
   ],
@@ -18,12 +14,27 @@
     "/v1/metrics": {
       "post": {
         "summary": "For performance reasons, it is recommended to keep this RPC\nalive for the entire life of the application.",
-        "operationId": "Export",
+        "operationId": "MetricsService_Export",
         "responses": {
           "200": {
             "description": "A successful response.(streaming responses)",
             "schema": {
-              "$ref": "#/x-stream-definitions/v1ExportMetricsServiceResponse"
+              "type": "object",
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/v1ExportMetricsServiceResponse"
+                },
+                "error": {
+                  "$ref": "#/definitions/runtimeStreamError"
+                }
+              },
+              "title": "Stream result of v1ExportMetricsServiceResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -187,6 +198,27 @@
         "value": {
           "type": "string",
           "format": "byte"
+        }
+      }
+    },
+    "runtimeError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
         }
       }
     },
@@ -511,20 +543,6 @@
         }
       },
       "description": "A collection of data points that describes the time-varying values\nof a metric."
-    }
-  },
-  "x-stream-definitions": {
-    "v1ExportMetricsServiceResponse": {
-      "type": "object",
-      "properties": {
-        "result": {
-          "$ref": "#/definitions/v1ExportMetricsServiceResponse"
-        },
-        "error": {
-          "$ref": "#/definitions/runtimeStreamError"
-        }
-      },
-      "title": "Stream result of v1ExportMetricsServiceResponse"
     }
   }
 }

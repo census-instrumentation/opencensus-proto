@@ -4,10 +4,6 @@
     "title": "opencensus/proto/agent/trace/v1/trace_service.proto",
     "version": "version not set"
   },
-  "schemes": [
-    "http",
-    "https"
-  ],
   "consumes": [
     "application/json"
   ],
@@ -18,12 +14,27 @@
     "/v1/trace": {
       "post": {
         "summary": "For performance reasons, it is recommended to keep this RPC\nalive for the entire life of the application.",
-        "operationId": "Export",
+        "operationId": "TraceService_Export",
         "responses": {
           "200": {
             "description": "A successful response.(streaming responses)",
             "schema": {
-              "$ref": "#/x-stream-definitions/v1ExportTraceServiceResponse"
+              "type": "object",
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/v1ExportTraceServiceResponse"
+                },
+                "error": {
+                  "$ref": "#/definitions/runtimeStreamError"
+                }
+              },
+              "title": "Stream result of v1ExportTraceServiceResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -337,6 +348,27 @@
         "value": {
           "type": "string",
           "format": "byte"
+        }
+      }
+    },
+    "runtimeError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
         }
       }
     },
@@ -717,32 +749,6 @@
           "description": "Requested updated configuration."
         }
       }
-    }
-  },
-  "x-stream-definitions": {
-    "v1ExportTraceServiceResponse": {
-      "type": "object",
-      "properties": {
-        "result": {
-          "$ref": "#/definitions/v1ExportTraceServiceResponse"
-        },
-        "error": {
-          "$ref": "#/definitions/runtimeStreamError"
-        }
-      },
-      "title": "Stream result of v1ExportTraceServiceResponse"
-    },
-    "v1UpdatedLibraryConfig": {
-      "type": "object",
-      "properties": {
-        "result": {
-          "$ref": "#/definitions/v1UpdatedLibraryConfig"
-        },
-        "error": {
-          "$ref": "#/definitions/runtimeStreamError"
-        }
-      },
-      "title": "Stream result of v1UpdatedLibraryConfig"
     }
   }
 }
