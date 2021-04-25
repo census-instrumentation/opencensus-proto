@@ -15,6 +15,6 @@
 package(default_visibility = ["//visibility:public"])
 
 alias(
-    name = "go_default_library",
+    name = "trace",
     actual = "//src/opencensus/proto/agent/trace/v1:trace_service_proto_go",
 )

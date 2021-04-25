@@ -15,6 +15,6 @@
 package(default_visibility = ["//visibility:public"])
 
 alias(
-    name = "go_default_library",
+    name = "resource",
     actual = "//src/opencensus/proto/resource/v1:resource_proto_go",
 )

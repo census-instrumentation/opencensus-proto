@@ -15,6 +15,6 @@
 package(default_visibility = ["//visibility:public"])
 
 alias(
-    name = "go_default_library",
+    name = "stats",
     actual = "//src/opencensus/proto/stats/v1:stats_proto_go",
 )
