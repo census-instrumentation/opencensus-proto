@@ -4,9 +4,10 @@
     "title": "opencensus/proto/agent/metrics/v1/metrics_service.proto",
     "version": "version not set"
   },
-  "schemes": [
-    "http",
-    "https"
+  "tags": [
+    {
+      "name": "MetricsService"
+    }
   ],
   "consumes": [
     "application/json"
@@ -18,13 +19,27 @@
     "/v1/metrics": {
       "post": {
         "summary": "For performance reasons, it is recommended to keep this RPC\nalive for the entire life of the application.",
-        "operationId": "Export",
+        "operationId": "MetricsService_Export",
         "responses": {
           "200": {
-            "description": "(streaming responses)",
+            "description": "A successful response.(streaming responses)",
             "schema": {
-              "$ref": "#/definitions/v1ExportMetricsServiceResponse",
-              "additionalProperties": null
+              "type": "object",
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/v1ExportMetricsServiceResponse"
+                },
+                "error": {
+                  "$ref": "#/definitions/rpcStatus"
+                }
+              },
+              "title": "Stream result of v1ExportMetricsServiceResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
             }
           }
         },
@@ -35,8 +50,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1ExportMetricsServiceRequest",
-              "additionalProperties": null
+              "$ref": "#/definitions/v1ExportMetricsServiceRequest"
             }
           }
         ],
@@ -56,11 +70,9 @@
             "type": "number",
             "format": "double"
           },
-          "additionalProperties": null,
           "description": "The values must be strictly increasing and \u003e 0."
         }
       },
-      "additionalProperties": null,
       "description": "[0, bucket_bounds[i]) for i == 0\n[bucket_bounds[i-1], bucket_bounds[i]) for 0 \u003c i \u003c N-1\n[bucket_bounds[i], +infinity) for i == N-1",
       "title": "Specifies a set of buckets with arbitrary upper-bounds.\nThis defines size(bounds) + 1 (= N) buckets. The boundaries for bucket\nindex i are:"
     },
@@ -70,27 +82,22 @@
         "count": {
           "type": "string",
           "format": "int64",
-          "additionalProperties": null,
           "description": "The number of values in each bucket of the histogram, as described in\nbucket_bounds."
         },
         "exemplar": {
           "$ref": "#/definitions/DistributionValueExemplar",
-          "additionalProperties": null,
           "description": "If the distribution does not have a histogram, then omit this field."
         }
-      },
-      "additionalProperties": null
+      }
     },
     "DistributionValueBucketOptions": {
       "type": "object",
       "properties": {
         "explicit": {
           "$ref": "#/definitions/BucketOptionsExplicit",
-          "additionalProperties": null,
           "description": "Bucket with explicit bounds."
         }
       },
-      "additionalProperties": null,
       "description": "A Distribution may optionally contain a histogram of the values in the\npopulation. The bucket boundaries for that histogram are described by\nBucketOptions.\n\nIf bucket_options has no type, then there is no histogram associated with\nthe Distribution."
     },
     "DistributionValueExemplar": {
@@ -99,25 +106,21 @@
         "value": {
           "type": "number",
           "format": "double",
-          "additionalProperties": null,
           "description": "Value of the exemplar point. It determines which bucket the exemplar\nbelongs to."
         },
         "timestamp": {
           "type": "string",
           "format": "date-time",
-          "additionalProperties": null,
           "description": "The observation (sampling) time of the above value."
         },
         "attachments": {
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "additionalProperties": null
+            "type": "string"
           },
           "description": "Contextual information about the example value."
         }
       },
-      "additionalProperties": null,
       "description": "Exemplars are example points that may be used to annotate aggregated\nDistribution values. They are metadata that gives information about a\nparticular value added to a Distribution bucket."
     },
     "LibraryInfoLanguage": {
@@ -135,8 +138,7 @@
         "RUBY",
         "WEB_JS"
       ],
-      "default": "LANGUAGE_UNSPECIFIED",
-      "additionalProperties": null
+      "default": "LANGUAGE_UNSPECIFIED"
     },
     "MetricDescriptorType": {
       "type": "string",
@@ -151,7 +153,6 @@
         "SUMMARY"
       ],
       "default": "UNSPECIFIED",
-      "additionalProperties": null,
       "description": "The kind of metric. It describes how the data is reported.\n\nA gauge is an instantaneous measurement of a value.\n\nA cumulative measurement is a value accumulated over a time interval. In\na time series, cumulative measurements should have the same start time,\nincreasing values and increasing end times, until an event resets the\ncumulative value to zero and sets a new start time for the following\npoints.\n\n - UNSPECIFIED: Do not use this default value.\n - GAUGE_INT64: Integer gauge. The value can go both up and down.\n - GAUGE_DOUBLE: Floating point gauge. The value can go both up and down.\n - GAUGE_DISTRIBUTION: Distribution gauge measurement. The count and sum can go both up and\ndown. Recorded values are always \u003e= 0.\nUsed in scenarios like a snapshot of time the current items in a queue\nhave spent there.\n - CUMULATIVE_INT64: Integer cumulative measurement. The value cannot decrease, if resets\nthen the start_time should also be reset.\n - CUMULATIVE_DOUBLE: Floating point cumulative measurement. The value cannot decrease, if\nresets then the start_time should also be reset. Recorded values are\nalways \u003e= 0.\n - CUMULATIVE_DISTRIBUTION: Distribution cumulative measurement. The count and sum cannot decrease,\nif resets then the start_time should also be reset.\n - SUMMARY: Some frameworks implemented Histograms as a summary of observations\n(usually things like request durations and response sizes). While it\nalso provides a total count of observations and a sum of all observed\nvalues, it calculates configurable percentiles over a sliding time\nwindow. This is not recommended, since it cannot be aggregated."
     },
     "SnapshotValueAtPercentile": {
@@ -160,17 +161,14 @@
         "percentile": {
           "type": "number",
           "format": "double",
-          "additionalProperties": null,
           "description": "The percentile of a distribution. Must be in the interval\n(0.0, 100.0]."
         },
         "value": {
           "type": "number",
           "format": "double",
-          "additionalProperties": null,
           "description": "The value at the given percentile of a distribution."
         }
       },
-      "additionalProperties": null,
       "description": "Represents the value at a given percentile of a distribution."
     },
     "SummaryValueSnapshot": {
@@ -179,26 +177,52 @@
         "count": {
           "type": "string",
           "format": "int64",
-          "additionalProperties": null,
           "description": "The number of values in the snapshot. Optional since some systems don't\nexpose this."
         },
         "sum": {
           "type": "number",
           "format": "double",
-          "additionalProperties": null,
           "description": "The sum of values in the snapshot. Optional since some systems don't\nexpose this. If count is zero then this field must be zero or not set\n(if not supported)."
         },
-        "percentile_values": {
+        "percentileValues": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/SnapshotValueAtPercentile"
           },
-          "additionalProperties": null,
           "description": "A list of values at different percentiles of the distribution calculated\nfrom the current snapshot. The percentiles must be strictly increasing."
         }
       },
-      "additionalProperties": null,
       "description": "The values in this message can be reset at arbitrary unknown times, with\nthe requirement that all of them are reset at the same time."
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "typeUrl": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
     },
     "v1DistributionValue": {
       "type": "object",
@@ -206,25 +230,21 @@
         "count": {
           "type": "string",
           "format": "int64",
-          "additionalProperties": null,
           "description": "The number of values in the population. Must be non-negative. This value\nmust equal the sum of the values in bucket_counts if a histogram is\nprovided."
         },
         "sum": {
           "type": "number",
           "format": "double",
-          "additionalProperties": null,
           "description": "The sum of the values in the population. If count is zero then this field\nmust be zero."
         },
-        "sum_of_squared_deviation": {
+        "sumOfSquaredDeviation": {
           "type": "number",
           "format": "double",
-          "additionalProperties": null,
           "description": "Sum[i=1..n]((x_i - mean)^2)\n\nKnuth, \"The Art of Computer Programming\", Vol. 2, page 323, 3rd edition\ndescribes Welford's method for accumulating this sum in one pass.\n\nIf count is zero then this field must be zero.",
           "title": "The sum of squared deviations from the mean of the values in the\npopulation. For values x_i this is:"
         },
-        "bucket_options": {
+        "bucketOptions": {
           "$ref": "#/definitions/DistributionValueBucketOptions",
-          "additionalProperties": null,
           "description": "Don't change bucket boundaries within a TimeSeries if your backend doesn't\nsupport this.\nTODO(issue #152): consider not required to send bucket options for\noptimization."
         },
         "buckets": {
@@ -232,11 +252,9 @@
           "items": {
             "$ref": "#/definitions/DistributionValueBucket"
           },
-          "additionalProperties": null,
           "description": "If the distribution does not have a histogram, then omit this field.\nIf there is a histogram, then the sum of the values in the Bucket counts\nmust equal the value in the count field of the distribution."
         }
       },
-      "additionalProperties": null,
       "description": "Distribution contains summary statistics for a population of values. It\noptionally contains a histogram representing the distribution of those\nvalues across a set of buckets."
     },
     "v1ExportMetricsServiceRequest": {
@@ -244,7 +262,6 @@
       "properties": {
         "node": {
           "$ref": "#/definitions/v1Node",
-          "additionalProperties": null,
           "description": "This is required only in the first message on the stream or if the\nprevious sent ExportMetricsServiceRequest message has a different Node (e.g.\nwhen the same RPC is used to send Metrics from multiple Applications)."
         },
         "metrics": {
@@ -252,36 +269,29 @@
           "items": {
             "$ref": "#/definitions/v1Metric"
           },
-          "additionalProperties": null,
           "description": "A list of metrics that belong to the last received Node."
         },
         "resource": {
           "$ref": "#/definitions/v1Resource",
-          "additionalProperties": null,
           "description": "The resource for the metrics in this message that do not have an explicit\nresource set.\nIf unset, the most recently set resource in the RPC stream applies. It is\nvalid to never be set within a stream, e.g. when no resource info is known\nat all or when all sent metrics have an explicit resource set."
         }
-      },
-      "additionalProperties": null
+      }
     },
     "v1ExportMetricsServiceResponse": {
-      "type": "object",
-      "additionalProperties": null
+      "type": "object"
     },
     "v1LabelKey": {
       "type": "object",
       "properties": {
         "key": {
           "type": "string",
-          "additionalProperties": null,
           "description": "The key for the label."
         },
         "description": {
           "type": "string",
-          "additionalProperties": null,
           "description": "A human-readable description of what this label key represents."
         }
       },
-      "additionalProperties": null,
       "description": "Defines a label key associated with a metric descriptor."
     },
     "v1LabelValue": {
@@ -289,46 +299,37 @@
       "properties": {
         "value": {
           "type": "string",
-          "additionalProperties": null,
           "description": "The value for the label."
         },
-        "has_value": {
+        "hasValue": {
           "type": "boolean",
-          "format": "boolean",
-          "additionalProperties": null,
           "description": "If false the value field is ignored and considered not set.\nThis is used to differentiate a missing label from an empty string."
         }
-      },
-      "additionalProperties": null
+      }
     },
     "v1LibraryInfo": {
       "type": "object",
       "properties": {
         "language": {
           "$ref": "#/definitions/LibraryInfoLanguage",
-          "additionalProperties": null,
           "description": "Language of OpenCensus Library."
         },
-        "exporter_version": {
+        "exporterVersion": {
           "type": "string",
-          "additionalProperties": null,
           "description": "Version of Agent exporter of Library."
         },
-        "core_library_version": {
+        "coreLibraryVersion": {
           "type": "string",
-          "additionalProperties": null,
           "description": "Version of OpenCensus Library."
         }
       },
-      "additionalProperties": null,
       "description": "Information on OpenCensus Library."
     },
     "v1Metric": {
       "type": "object",
       "properties": {
-        "metric_descriptor": {
+        "metricDescriptor": {
           "$ref": "#/definitions/v1MetricDescriptor",
-          "additionalProperties": null,
           "description": "The descriptor of the Metric.\nTODO(issue #152): consider only sending the name of descriptor for\noptimization."
         },
         "timeseries": {
@@ -336,16 +337,13 @@
           "items": {
             "$ref": "#/definitions/v1TimeSeries"
           },
-          "additionalProperties": null,
           "description": "One or more timeseries for a single metric, where each timeseries has\none or more points."
         },
         "resource": {
           "$ref": "#/definitions/v1Resource",
-          "additionalProperties": null,
           "description": "The resource for the metric. If unset, it may be set to a default value\nprovided for a sequence of messages in an RPC stream."
         }
       },
-      "additionalProperties": null,
       "description": "Defines a Metric which has one or more timeseries."
     },
     "v1MetricDescriptor": {
@@ -353,33 +351,27 @@
       "properties": {
         "name": {
           "type": "string",
-          "additionalProperties": null,
           "description": "The metric type, including its DNS name prefix. It must be unique."
         },
         "description": {
           "type": "string",
-          "additionalProperties": null,
           "description": "A detailed description of the metric, which can be used in documentation."
         },
         "unit": {
           "type": "string",
-          "additionalProperties": null,
           "description": "The unit in which the metric value is reported. Follows the format\ndescribed by http://unitsofmeasure.org/ucum.html."
         },
         "type": {
-          "$ref": "#/definitions/MetricDescriptorType",
-          "additionalProperties": null
+          "$ref": "#/definitions/MetricDescriptorType"
         },
-        "label_keys": {
+        "labelKeys": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/v1LabelKey"
           },
-          "additionalProperties": null,
           "description": "The label keys associated with the metric descriptor."
         }
       },
-      "additionalProperties": null,
       "description": "Defines a metric type and its schema."
     },
     "v1Node": {
@@ -387,29 +379,24 @@
       "properties": {
         "identifier": {
           "$ref": "#/definitions/v1ProcessIdentifier",
-          "additionalProperties": null,
           "description": "Identifier that uniquely identifies a process within a VM/container."
         },
-        "library_info": {
+        "libraryInfo": {
           "$ref": "#/definitions/v1LibraryInfo",
-          "additionalProperties": null,
           "description": "Information on the OpenCensus Library that initiates the stream."
         },
-        "service_info": {
+        "serviceInfo": {
           "$ref": "#/definitions/v1ServiceInfo",
-          "additionalProperties": null,
           "description": "Additional information on service."
         },
         "attributes": {
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "additionalProperties": null
+            "type": "string"
           },
           "description": "Additional attributes."
         }
       },
-      "additionalProperties": null,
       "title": "Identifier metadata of the Node that produces the span or tracing data.\nNote, this is not the metadata about the Node or service that is described by associated spans.\nIn the future we plan to extend the identifier proto definition to support\nadditional information (e.g cloud id, etc.)"
     },
     "v1Point": {
@@ -418,57 +405,47 @@
         "timestamp": {
           "type": "string",
           "format": "date-time",
-          "additionalProperties": null,
           "description": "The moment when this point was recorded. Inclusive.\nIf not specified, the timestamp will be decided by the backend."
         },
-        "int64_value": {
+        "int64Value": {
           "type": "string",
           "format": "int64",
-          "additionalProperties": null,
           "description": "A 64-bit integer."
         },
-        "double_value": {
+        "doubleValue": {
           "type": "number",
           "format": "double",
-          "additionalProperties": null,
           "description": "A 64-bit double-precision floating-point number."
         },
-        "distribution_value": {
+        "distributionValue": {
           "$ref": "#/definitions/v1DistributionValue",
-          "additionalProperties": null,
           "description": "A distribution value."
         },
-        "summary_value": {
+        "summaryValue": {
           "$ref": "#/definitions/v1SummaryValue",
-          "additionalProperties": null,
           "description": "A summary value. This is not recommended, since it cannot be aggregated."
         }
       },
-      "additionalProperties": null,
       "description": "A timestamped measurement."
     },
     "v1ProcessIdentifier": {
       "type": "object",
       "properties": {
-        "host_name": {
+        "hostName": {
           "type": "string",
-          "additionalProperties": null,
           "description": "The host name. Usually refers to the machine/container name.\nFor example: os.Hostname() in Go, socket.gethostname() in Python."
         },
         "pid": {
           "type": "integer",
           "format": "int64",
-          "additionalProperties": null,
           "description": "Process id."
         },
-        "start_timestamp": {
+        "startTimestamp": {
           "type": "string",
           "format": "date-time",
-          "additionalProperties": null,
           "description": "Start time of this ProcessIdentifier. Represented in epoch time."
         }
       },
-      "additionalProperties": null,
       "description": "Identifier that uniquely identifies a process within a VM/container."
     },
     "v1Resource": {
@@ -476,19 +453,16 @@
       "properties": {
         "type": {
           "type": "string",
-          "additionalProperties": null,
           "description": "Type identifier for the resource."
         },
         "labels": {
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "additionalProperties": null
+            "type": "string"
           },
           "description": "Set of labels that describe the resource."
         }
       },
-      "additionalProperties": null,
       "description": "Resource information."
     },
     "v1ServiceInfo": {
@@ -496,11 +470,9 @@
       "properties": {
         "name": {
           "type": "string",
-          "additionalProperties": null,
           "description": "Name of the service."
         }
       },
-      "additionalProperties": null,
       "description": "Additional service information."
     },
     "v1SummaryValue": {
@@ -509,39 +481,33 @@
         "count": {
           "type": "string",
           "format": "int64",
-          "additionalProperties": null,
           "description": "The total number of recorded values since start_time. Optional since\nsome systems don't expose this."
         },
         "sum": {
           "type": "number",
           "format": "double",
-          "additionalProperties": null,
           "description": "The total sum of recorded values since start_time. Optional since some\nsystems don't expose this. If count is zero then this field must be zero.\nThis field must be unset if the sum is not available."
         },
         "snapshot": {
           "$ref": "#/definitions/SummaryValueSnapshot",
-          "additionalProperties": null,
           "description": "Values calculated over an arbitrary time window."
         }
       },
-      "additionalProperties": null,
       "description": "The start_timestamp only applies to the count and sum in the SummaryValue."
     },
     "v1TimeSeries": {
       "type": "object",
       "properties": {
-        "start_timestamp": {
+        "startTimestamp": {
           "type": "string",
           "format": "date-time",
-          "additionalProperties": null,
           "description": "Must be present for cumulative metrics. The time when the cumulative value\nwas reset to zero. Exclusive. The cumulative value is over the time interval\n(start_timestamp, timestamp]. If not specified, the backend can use the\nprevious recorded value."
         },
-        "label_values": {
+        "labelValues": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/v1LabelValue"
           },
-          "additionalProperties": null,
           "description": "The set of label values that uniquely identify this timeseries. Applies to\nall points. The order of label values must match that of label keys in the\nmetric descriptor."
         },
         "points": {
@@ -549,11 +515,9 @@
           "items": {
             "$ref": "#/definitions/v1Point"
           },
-          "additionalProperties": null,
           "description": "The data points of this timeseries. Point.value type MUST match the\nMetricDescriptor.type."
         }
       },
-      "additionalProperties": null,
       "description": "A collection of data points that describes the time-varying values\nof a metric."
     }
   }
