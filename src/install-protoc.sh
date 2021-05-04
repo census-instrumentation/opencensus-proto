@@ -16,8 +16,8 @@ readonly PROTOC_GEN_GO_GRPC_REPO_URL="https://github.com/grpc/grpc-go"
 readonly GRPC_ECOSYSTEM_VER="v2.4.0"
 readonly GRPC_ECOSYSTEM_URL="https://github.com/grpc-ecosystem/grpc-gateway/releases/download/${GRPC_ECOSYSTEM_VER}"
 
-readonly PROTOC_GEN_SWAGGER_BIN="protoc-gen-swagger-${GRPC_ECOSYSTEM_VER}-linux-$( uname -m )"
-readonly PROTOC_GEN_SWAGGER_URL="${GRPC_ECOSYSTEM_URL}/${PROTOC_GEN_SWAGGER_BIN}"
+readonly PROTOC_GEN_OPENAPIV2_BIN="protoc-gen-openapiv2-${GRPC_ECOSYSTEM_VER}-linux-$( uname -m )"
+readonly PROTOC_GEN_OPENAPIV2_URL="${GRPC_ECOSYSTEM_URL}/${PROTOC_GEN_OPENAPIV2_BIN}"
 
 readonly PROTOC_GEN_GRPC_GATEWAY_BIN="protoc-gen-grpc-gateway-${GRPC_ECOSYSTEM_VER}-linux-$( uname -m )"
 readonly PROTOC_GEN_GRPC_GATEWAY_URL="${GRPC_ECOSYSTEM_URL}/${PROTOC_GEN_GRPC_GATEWAY_BIN}"
@@ -28,12 +28,13 @@ get() {
     local url="$1"
     local dest="$2"
 
-    if [[ -w $dest ]]
+    if [[ ! -w $(dirname $dest) ]]
     then
-        wget --quiet "$url" -O "$dest"
-    else
-        sudo wget --quiet "$url" -O "$dest"
+        auth="sudo"
     fi
+
+
+    $auth wget --quiet "$url" -O "$dest"
 }
 
 install_bin() {
@@ -113,14 +114,14 @@ install_protoc_gen_go_grpc() {
     echo "installed protoc-gen-go-grpc v$PROTOC_VER"
 }
 
-install_protoc_gen_swagger() {
+install_protoc_gen_openapiv2() {
     local dest="$1"
 
     install_bin \
         "$dest"\
-        "$PROTOC_GEN_SWAGGER_BIN"\
-        "$PROTOC_GEN_SWAGGER_URL"\
-        "protoc-gen-swagger"
+        "$PROTOC_GEN_OPENAPIV2_BIN"\
+        "$PROTOC_GEN_OPENAPIV2_URL"\
+        "protoc-gen-openapiv2"
 }
 
 install_protoc_gen_grpc_gateway() {
@@ -139,7 +140,7 @@ main() {
     install_protoc "$dest"
     install_protoc_gen_go "$dest"
     install_protoc_gen_go_grpc
-    install_protoc_gen_swagger "$dest"
+    install_protoc_gen_openapiv2 "$dest"
     install_protoc_gen_grpc_gateway "$dest"
 }
 
