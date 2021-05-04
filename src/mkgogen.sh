@@ -31,7 +31,7 @@ protoc --go_out=$OUTDIR opencensus/proto/stats/v1/stats.proto \
 # Generate OpenApi (Swagger) documentation file for grpc-gateway endpoints.
 OPENAPI_OUTDIR=../gen-openapi
 mkdir -p $OPENAPI_OUTDIR
-protoc --swagger_out=logtostderr=true,grpc_api_configuration=./opencensus/proto/agent/trace/v1/trace_service_http.yaml:$OPENAPI_OUTDIR \
+protoc --openapiv2_out=logtostderr=true,grpc_api_configuration=./opencensus/proto/agent/trace/v1/trace_service_http.yaml:$OPENAPI_OUTDIR \
   opencensus/proto/agent/trace/v1/trace_service.proto
-protoc --swagger_out=logtostderr=true,grpc_api_configuration=./opencensus/proto/agent/metrics/v1/metrics_service_http.yaml:$OPENAPI_OUTDIR \
+protoc --openapiv2_out=logtostderr=true,grpc_api_configuration=./opencensus/proto/agent/metrics/v1/metrics_service_http.yaml:$OPENAPI_OUTDIR \
   opencensus/proto/agent/metrics/v1/metrics_service.proto
