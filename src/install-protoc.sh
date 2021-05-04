@@ -13,7 +13,7 @@ readonly PROTOC_GEN_GO_URL="https://github.com/protocolbuffers/protobuf-go/relea
 readonly PROTOC_GEN_GO_GRPC_VER="v1.30.0"
 readonly PROTOC_GEN_GO_GRPC_REPO_URL="https://github.com/grpc/grpc-go"
 
-readonly GRPC_ECOSYSTEM_VER="v1.14.6"
+readonly GRPC_ECOSYSTEM_VER="v2.4.0"
 readonly GRPC_ECOSYSTEM_URL="https://github.com/grpc-ecosystem/grpc-gateway/releases/download/${GRPC_ECOSYSTEM_VER}"
 
 readonly PROTOC_GEN_SWAGGER_BIN="protoc-gen-swagger-${GRPC_ECOSYSTEM_VER}-linux-$( uname -m )"
