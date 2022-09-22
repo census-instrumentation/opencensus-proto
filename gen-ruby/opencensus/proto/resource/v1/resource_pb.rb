@@ -4,9 +4,11 @@
 require 'google/protobuf'
 
 Google::Protobuf::DescriptorPool.generated_pool.build do
-  add_message "opencensus.proto.resource.v1.Resource" do
-    optional :type, :string, 1
-    map :labels, :string, :string, 2
+  add_file("opencensus/proto/resource/v1/resource.proto", :syntax => :proto3) do
+    add_message "opencensus.proto.resource.v1.Resource" do
+      optional :type, :string, 1
+      map :labels, :string, :string, 2
+    end
   end
 end
 
@@ -14,7 +16,7 @@ module OpenCensus
   module Proto
     module Resource
       module V1
-        Resource = Google::Protobuf::DescriptorPool.generated_pool.lookup("opencensus.proto.resource.v1.Resource").msgclass
+        Resource = ::Google::Protobuf::DescriptorPool.generated_pool.lookup("opencensus.proto.resource.v1.Resource").msgclass
       end
     end
   end

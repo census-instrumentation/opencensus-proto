@@ -31,7 +31,7 @@ module OpenCensus
             # sent/received to/from multiple Applications).
             class Service
 
-              include GRPC::GenericService
+              include ::GRPC::GenericService
 
               self.marshal_class_method = :encode
               self.unmarshal_class_method = :decode
@@ -40,10 +40,10 @@ module OpenCensus
               # After initialization, this RPC must be kept alive for the entire life of
               # the application. The agent pushes configs down to applications via a
               # stream.
-              rpc :Config, stream(CurrentLibraryConfig), stream(UpdatedLibraryConfig)
+              rpc :Config, stream(::OpenCensus::Proto::Agent::Trace::V1::CurrentLibraryConfig), stream(::OpenCensus::Proto::Agent::Trace::V1::UpdatedLibraryConfig)
               # For performance reasons, it is recommended to keep this RPC
               # alive for the entire life of the application.
-              rpc :Export, stream(ExportTraceServiceRequest), stream(ExportTraceServiceResponse)
+              rpc :Export, stream(::OpenCensus::Proto::Agent::Trace::V1::ExportTraceServiceRequest), stream(::OpenCensus::Proto::Agent::Trace::V1::ExportTraceServiceResponse)
             end
 
             Stub = Service.rpc_stub_class

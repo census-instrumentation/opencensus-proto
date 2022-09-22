@@ -4,6 +4,11 @@
     "title": "opencensus/proto/agent/metrics/v1/metrics_service.proto",
     "version": "version not set"
   },
+  "tags": [
+    {
+      "name": "MetricsService"
+    }
+  ],
   "consumes": [
     "application/json"
   ],
@@ -25,16 +30,16 @@
                   "$ref": "#/definitions/v1ExportMetricsServiceResponse"
                 },
                 "error": {
-                  "$ref": "#/definitions/runtimeStreamError"
+                  "$ref": "#/definitions/rpcStatus"
                 }
               },
               "title": "Stream result of v1ExportMetricsServiceResponse"
             }
           },
           "default": {
-            "description": "An unexpected error response",
+            "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/runtimeError"
+              "$ref": "#/definitions/rpcStatus"
             }
           }
         },
@@ -179,7 +184,7 @@
           "format": "double",
           "description": "The sum of values in the snapshot. Optional since some systems don't\nexpose this. If count is zero then this field must be zero or not set\n(if not supported)."
         },
-        "percentile_values": {
+        "percentileValues": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/SnapshotValueAtPercentile"
@@ -192,51 +197,20 @@
     "protobufAny": {
       "type": "object",
       "properties": {
-        "type_url": {
+        "@type": {
           "type": "string"
-        },
-        "value": {
-          "type": "string",
-          "format": "byte"
         }
-      }
+      },
+      "additionalProperties": {}
     },
-    "runtimeError": {
+    "rpcStatus": {
       "type": "object",
       "properties": {
-        "error": {
-          "type": "string"
-        },
         "code": {
           "type": "integer",
           "format": "int32"
         },
         "message": {
-          "type": "string"
-        },
-        "details": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/protobufAny"
-          }
-        }
-      }
-    },
-    "runtimeStreamError": {
-      "type": "object",
-      "properties": {
-        "grpc_code": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "http_code": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "message": {
-          "type": "string"
-        },
-        "http_status": {
           "type": "string"
         },
         "details": {
@@ -260,13 +234,13 @@
           "format": "double",
           "description": "The sum of the values in the population. If count is zero then this field\nmust be zero."
         },
-        "sum_of_squared_deviation": {
+        "sumOfSquaredDeviation": {
           "type": "number",
           "format": "double",
           "description": "Sum[i=1..n]((x_i - mean)^2)\n\nKnuth, \"The Art of Computer Programming\", Vol. 2, page 323, 3rd edition\ndescribes Welford's method for accumulating this sum in one pass.\n\nIf count is zero then this field must be zero.",
           "title": "The sum of squared deviations from the mean of the values in the\npopulation. For values x_i this is:"
         },
-        "bucket_options": {
+        "bucketOptions": {
           "$ref": "#/definitions/DistributionValueBucketOptions",
           "description": "Don't change bucket boundaries within a TimeSeries if your backend doesn't\nsupport this.\nTODO(issue #152): consider not required to send bucket options for\noptimization."
         },
@@ -324,9 +298,8 @@
           "type": "string",
           "description": "The value for the label."
         },
-        "has_value": {
+        "hasValue": {
           "type": "boolean",
-          "format": "boolean",
           "description": "If false the value field is ignored and considered not set.\nThis is used to differentiate a missing label from an empty string."
         }
       }
@@ -338,11 +311,11 @@
           "$ref": "#/definitions/LibraryInfoLanguage",
           "description": "Language of OpenCensus Library."
         },
-        "exporter_version": {
+        "exporterVersion": {
           "type": "string",
           "description": "Version of Agent exporter of Library."
         },
-        "core_library_version": {
+        "coreLibraryVersion": {
           "type": "string",
           "description": "Version of OpenCensus Library."
         }
@@ -352,7 +325,7 @@
     "v1Metric": {
       "type": "object",
       "properties": {
-        "metric_descriptor": {
+        "metricDescriptor": {
           "$ref": "#/definitions/v1MetricDescriptor",
           "description": "The descriptor of the Metric.\nTODO(issue #152): consider only sending the name of descriptor for\noptimization."
         },
@@ -388,7 +361,7 @@
         "type": {
           "$ref": "#/definitions/MetricDescriptorType"
         },
-        "label_keys": {
+        "labelKeys": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/v1LabelKey"
@@ -405,11 +378,11 @@
           "$ref": "#/definitions/v1ProcessIdentifier",
           "description": "Identifier that uniquely identifies a process within a VM/container."
         },
-        "library_info": {
+        "libraryInfo": {
           "$ref": "#/definitions/v1LibraryInfo",
           "description": "Information on the OpenCensus Library that initiates the stream."
         },
-        "service_info": {
+        "serviceInfo": {
           "$ref": "#/definitions/v1ServiceInfo",
           "description": "Additional information on service."
         },
@@ -431,21 +404,21 @@
           "format": "date-time",
           "description": "The moment when this point was recorded. Inclusive.\nIf not specified, the timestamp will be decided by the backend."
         },
-        "int64_value": {
+        "int64Value": {
           "type": "string",
           "format": "int64",
           "description": "A 64-bit integer."
         },
-        "double_value": {
+        "doubleValue": {
           "type": "number",
           "format": "double",
           "description": "A 64-bit double-precision floating-point number."
         },
-        "distribution_value": {
+        "distributionValue": {
           "$ref": "#/definitions/v1DistributionValue",
           "description": "A distribution value."
         },
-        "summary_value": {
+        "summaryValue": {
           "$ref": "#/definitions/v1SummaryValue",
           "description": "A summary value. This is not recommended, since it cannot be aggregated."
         }
@@ -455,7 +428,7 @@
     "v1ProcessIdentifier": {
       "type": "object",
       "properties": {
-        "host_name": {
+        "hostName": {
           "type": "string",
           "description": "The host name. Usually refers to the machine/container name.\nFor example: os.Hostname() in Go, socket.gethostname() in Python."
         },
@@ -464,7 +437,7 @@
           "format": "int64",
           "description": "Process id."
         },
-        "start_timestamp": {
+        "startTimestamp": {
           "type": "string",
           "format": "date-time",
           "description": "Start time of this ProcessIdentifier. Represented in epoch time."
@@ -522,12 +495,12 @@
     "v1TimeSeries": {
       "type": "object",
       "properties": {
-        "start_timestamp": {
+        "startTimestamp": {
           "type": "string",
           "format": "date-time",
           "description": "Must be present for cumulative metrics. The time when the cumulative value\nwas reset to zero. Exclusive. The cumulative value is over the time interval\n(start_timestamp, timestamp]. If not specified, the backend can use the\nprevious recorded value."
         },
-        "label_values": {
+        "labelValues": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/v1LabelValue"

@@ -30,7 +30,7 @@ module OpenCensus
             # central collector.
             class Service
 
-              include GRPC::GenericService
+              include ::GRPC::GenericService
 
               self.marshal_class_method = :encode
               self.unmarshal_class_method = :decode
@@ -38,7 +38,7 @@ module OpenCensus
 
               # For performance reasons, it is recommended to keep this RPC
               # alive for the entire life of the application.
-              rpc :Export, stream(ExportMetricsServiceRequest), stream(ExportMetricsServiceResponse)
+              rpc :Export, stream(::OpenCensus::Proto::Agent::Metrics::V1::ExportMetricsServiceRequest), stream(::OpenCensus::Proto::Agent::Metrics::V1::ExportMetricsServiceResponse)
             end
 
             Stub = Service.rpc_stub_class
