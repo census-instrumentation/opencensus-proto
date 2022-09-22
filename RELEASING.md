@@ -17,55 +17,55 @@ Follow the instructions [here](http://google.github.io/proto-lens/installing-pro
 Then run the following commands to re-generate the gen-go files:
 
 ```bash
-$ cd $(go env GOPATH)/src/github.com/census-instrumentation/opencensus-proto
 $ git checkout -b update-gen-go
-$ rm -rf gen-go
-$ cd src
-$ ./mkgogen.sh
+$ rm -rf gen-go/*
+$ make gen-go
 $ git add -A
 $ git commit -m "Update gen-go files."
 ```
 
 Go through PR review and merge the changes to GitHub.
 
-## Release Ruby files
+## Release OpenAPI files
 
-To generate the Ruby files from protos, you'll need to install grpc-tools gem.
+Then run the following commands to re-generate the gen-openapi files:
 
 ```bash
-gem install grpc-tools
+$ git checkout -b update-gen-ruby
+$ rm -rf gen-openapi/*
+$ make gen-openapi
+$ git add -A
+$ git commit -m "Update gen-openapi files."
 ```
+
+Go through PR review and merge the changes to GitHub.
+
+## Release Ruby files
 
 Then run the following commands to re-generate the gen-ruby files:
 
 ```bash
-$ git@github.com:census-instrumentation/opencensus-proto.git
-$ cd opencensus-proto
 $ git checkout -b update-gen-ruby
-$ rm -rf gen-ruby
-$ cd src
-$ ./mkrubygen.sh
+$ rm -rf gen-ruby/*
+$ make gen-ruby
 $ git add -A
 $ git commit -m "Update gen-ruby files."
 ```
 
+Go through PR review and merge the changes to GitHub.
+
 ## Release Python files
-
-To generate the Python files from protos, you'll need to install grpc-tools from PIP.
-
-```bash
-python -m pip install grpcio-tools
-```
 
 Then run the following commands to re-generate the gen-python files:
 
 ```bash
 $ git checkout -b update-gen-python # Assume you're under opencensus-proto/
-$ cd src
-$ ./mkpygen.sh
+$ make gen-python
 $ git add -A
 $ git commit -m "Update gen-python files."
 ```
+
+Go through PR review and merge the changes to GitHub.
 
 ## Tagging the Release
 

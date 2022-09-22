@@ -4,6 +4,11 @@
     "title": "opencensus/proto/agent/trace/v1/trace_service.proto",
     "version": "version not set"
   },
+  "tags": [
+    {
+      "name": "TraceService"
+    }
+  ],
   "consumes": [
     "application/json"
   ],
@@ -25,16 +30,16 @@
                   "$ref": "#/definitions/v1ExportTraceServiceResponse"
                 },
                 "error": {
-                  "$ref": "#/definitions/runtimeStreamError"
+                  "$ref": "#/definitions/googlerpcStatus"
                 }
               },
               "title": "Stream result of v1ExportTraceServiceResponse"
             }
           },
           "default": {
-            "description": "An unexpected error response",
+            "description": "An unexpected error response.",
             "schema": {
-              "$ref": "#/definitions/runtimeError"
+              "$ref": "#/definitions/googlerpcStatus"
             }
           }
         },
@@ -86,7 +91,7 @@
     "SpanAttributes": {
       "type": "object",
       "properties": {
-        "attribute_map": {
+        "attributeMap": {
           "type": "object",
           "additionalProperties": {
             "$ref": "#/definitions/v1AttributeValue"
@@ -94,7 +99,7 @@
           "description": "\"/http/user_agent\": \"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36\"\n    \"/http/server_latency\": 300\n    \"abc.com/myattribute\": true\n    \"abc.com/score\": 10.239",
           "title": "The set of attributes. The value can be a string, an integer, a double\nor the Boolean values `true` or `false`. Note, global attributes like \nserver name can be set as tags using resource API. Examples of attributes:"
         },
-        "dropped_attributes_count": {
+        "droppedAttributesCount": {
           "type": "integer",
           "format": "int32",
           "description": "The number of attributes that were discarded. Attributes can be discarded\nbecause their keys are too long or because there are too many attributes.\nIf this value is 0, then no attributes were dropped."
@@ -105,12 +110,12 @@
     "SpanLink": {
       "type": "object",
       "properties": {
-        "trace_id": {
+        "traceId": {
           "type": "string",
           "format": "byte",
           "description": "A unique identifier of a trace that this linked span is part of. The ID is a \n16-byte array."
         },
-        "span_id": {
+        "spanId": {
           "type": "string",
           "format": "byte",
           "description": "A unique identifier for the linked span. The ID is an 8-byte array."
@@ -150,7 +155,7 @@
           },
           "description": "A collection of links."
         },
-        "dropped_links_count": {
+        "droppedLinksCount": {
           "type": "integer",
           "format": "int32",
           "description": "The number of dropped links after the maximum size was enforced. If\nthis value is 0, then no links were dropped."
@@ -180,7 +185,7 @@
           "$ref": "#/definitions/TimeEventAnnotation",
           "description": "A text annotation with a set of attributes."
         },
-        "message_event": {
+        "messageEvent": {
           "$ref": "#/definitions/TimeEventMessageEvent",
           "description": "An event describing a message sent/received between Spans."
         }
@@ -190,19 +195,19 @@
     "SpanTimeEvents": {
       "type": "object",
       "properties": {
-        "time_event": {
+        "timeEvent": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/SpanTimeEvent"
           },
           "description": "A collection of `TimeEvent`s."
         },
-        "dropped_annotations_count": {
+        "droppedAnnotationsCount": {
           "type": "integer",
           "format": "int32",
           "description": "The number of dropped annotations in all the included time events.\nIf the value is 0, then no annotations were dropped."
         },
-        "dropped_message_events_count": {
+        "droppedMessageEventsCount": {
           "type": "integer",
           "format": "int32",
           "description": "The number of dropped message events in all the included time events.\nIf the value is 0, then no message events were dropped."
@@ -226,33 +231,33 @@
     "StackTraceStackFrame": {
       "type": "object",
       "properties": {
-        "function_name": {
+        "functionName": {
           "$ref": "#/definitions/v1TruncatableString",
           "description": "The fully-qualified name that uniquely identifies the function or\nmethod that is active in this frame."
         },
-        "original_function_name": {
+        "originalFunctionName": {
           "$ref": "#/definitions/v1TruncatableString",
           "description": "An un-mangled function name, if `function_name` is\n[mangled](http://www.avabodh.com/cxxin/namemangling.html). The name can\nbe fully qualified."
         },
-        "file_name": {
+        "fileName": {
           "$ref": "#/definitions/v1TruncatableString",
           "description": "The name of the source file where the function call appears."
         },
-        "line_number": {
+        "lineNumber": {
           "type": "string",
           "format": "int64",
           "description": "The line number in `file_name` where the function call appears."
         },
-        "column_number": {
+        "columnNumber": {
           "type": "string",
           "format": "int64",
           "description": "The column number where the function call appears, if available.\nThis is important in JavaScript because of its anonymous functions."
         },
-        "load_module": {
+        "loadModule": {
           "$ref": "#/definitions/v1Module",
           "description": "The binary module from where the code was loaded."
         },
-        "source_version": {
+        "sourceVersion": {
           "$ref": "#/definitions/v1TruncatableString",
           "description": "The version of the deployed source code."
         }
@@ -269,7 +274,7 @@
           },
           "description": "Stack frames in this call stack."
         },
-        "dropped_frames_count": {
+        "droppedFramesCount": {
           "type": "integer",
           "format": "int32",
           "description": "The number of stack frames that were dropped because there\nwere too many stack frames.\nIf this value is 0, then no stack frames were dropped."
@@ -303,12 +308,12 @@
           "format": "uint64",
           "description": "An identifier for the MessageEvent's message that can be used to match\nSENT and RECEIVED MessageEvents. For example, this field could\nrepresent a sequence ID for a streaming RPC. It is recommended to be\nunique within a Span."
         },
-        "uncompressed_size": {
+        "uncompressedSize": {
           "type": "string",
           "format": "uint64",
           "description": "The number of uncompressed bytes sent or received."
         },
-        "compressed_size": {
+        "compressedSize": {
           "type": "string",
           "format": "uint64",
           "description": "The number of compressed bytes sent or received. If zero, assumed to\nbe the same size as uncompressed."
@@ -339,24 +344,9 @@
         }
       }
     },
-    "protobufAny": {
+    "googlerpcStatus": {
       "type": "object",
       "properties": {
-        "type_url": {
-          "type": "string"
-        },
-        "value": {
-          "type": "string",
-          "format": "byte"
-        }
-      }
-    },
-    "runtimeError": {
-      "type": "object",
-      "properties": {
-        "error": {
-          "type": "string"
-        },
         "code": {
           "type": "integer",
           "format": "int32"
@@ -372,49 +362,47 @@
         }
       }
     },
-    "runtimeStreamError": {
+    "protobufAny": {
       "type": "object",
       "properties": {
-        "grpc_code": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "tracev1Status": {
+      "type": "object",
+      "properties": {
+        "code": {
           "type": "integer",
-          "format": "int32"
-        },
-        "http_code": {
-          "type": "integer",
-          "format": "int32"
+          "format": "int32",
+          "description": "The status code. This is optional field. It is safe to assume 0 (OK)\nwhen not set."
         },
         "message": {
-          "type": "string"
-        },
-        "http_status": {
-          "type": "string"
-        },
-        "details": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/protobufAny"
-          }
+          "type": "string",
+          "description": "A developer-facing error message, which should be in English."
         }
-      }
+      },
+      "description": "The `Status` type defines a logical error model that is suitable for different\nprogramming environments, including REST APIs and RPC APIs. This proto's fields\nare a subset of those of\n[google.rpc.Status](https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto),\nwhich is used by [gRPC](https://github.com/grpc)."
     },
     "v1AttributeValue": {
       "type": "object",
       "properties": {
-        "string_value": {
+        "stringValue": {
           "$ref": "#/definitions/v1TruncatableString",
           "description": "A string up to 256 bytes long."
         },
-        "int_value": {
+        "intValue": {
           "type": "string",
           "format": "int64",
           "description": "A 64-bit signed integer."
         },
-        "bool_value": {
+        "boolValue": {
           "type": "boolean",
-          "format": "boolean",
           "description": "A Boolean value represented by `true` or `false`."
         },
-        "double_value": {
+        "doubleValue": {
           "type": "number",
           "format": "double",
           "description": "A double value."
@@ -461,11 +449,11 @@
           "$ref": "#/definitions/LibraryInfoLanguage",
           "description": "Language of OpenCensus Library."
         },
-        "exporter_version": {
+        "exporterVersion": {
           "type": "string",
           "description": "Version of Agent exporter of Library."
         },
-        "core_library_version": {
+        "coreLibraryVersion": {
           "type": "string",
           "description": "Version of OpenCensus Library."
         }
@@ -479,7 +467,7 @@
           "$ref": "#/definitions/v1TruncatableString",
           "description": "TODO: document the meaning of this field.\nFor example: main binary, kernel modules, and dynamic libraries\nsuch as libc.so, sharedlib.so."
         },
-        "build_id": {
+        "buildId": {
           "$ref": "#/definitions/v1TruncatableString",
           "description": "A unique identifier for the module, usually a hash of its\ncontents."
         }
@@ -493,11 +481,11 @@
           "$ref": "#/definitions/v1ProcessIdentifier",
           "description": "Identifier that uniquely identifies a process within a VM/container."
         },
-        "library_info": {
+        "libraryInfo": {
           "$ref": "#/definitions/v1LibraryInfo",
           "description": "Information on the OpenCensus Library that initiates the stream."
         },
-        "service_info": {
+        "serviceInfo": {
           "$ref": "#/definitions/v1ServiceInfo",
           "description": "Additional information on service."
         },
@@ -525,7 +513,7 @@
     "v1ProcessIdentifier": {
       "type": "object",
       "properties": {
-        "host_name": {
+        "hostName": {
           "type": "string",
           "description": "The host name. Usually refers to the machine/container name.\nFor example: os.Hostname() in Go, socket.gethostname() in Python."
         },
@@ -534,7 +522,7 @@
           "format": "int64",
           "description": "Process id."
         },
-        "start_timestamp": {
+        "startTimestamp": {
           "type": "string",
           "format": "date-time",
           "description": "Start time of this ProcessIdentifier. Represented in epoch time."
@@ -583,12 +571,12 @@
     "v1Span": {
       "type": "object",
       "properties": {
-        "trace_id": {
+        "traceId": {
           "type": "string",
           "format": "byte",
           "description": "A unique identifier for a trace. All spans from the same trace share\nthe same `trace_id`. The ID is a 16-byte array. An ID with all zeroes\nis considered invalid.\n\nThis field is semantically required. Receiver should generate new\nrandom trace_id if empty or invalid trace_id was received.\n\nThis field is required."
         },
-        "span_id": {
+        "spanId": {
           "type": "string",
           "format": "byte",
           "description": "A unique identifier for a span within a trace, assigned when the span\nis created. The ID is an 8-byte array. An ID with all zeroes is considered\ninvalid.\n\nThis field is semantically required. Receiver should generate new\nrandom span_id if empty or invalid span_id was received.\n\nThis field is required."
@@ -597,7 +585,7 @@
           "$ref": "#/definitions/SpanTracestate",
           "description": "The Tracestate on the span."
         },
-        "parent_span_id": {
+        "parentSpanId": {
           "type": "string",
           "format": "byte",
           "description": "The `span_id` of this span's parent span. If this is a root span, then this\nfield must be empty. The ID is an 8-byte array."
@@ -610,12 +598,12 @@
           "$ref": "#/definitions/SpanSpanKind",
           "description": "Distinguishes between spans generated in a particular context. For example,\ntwo spans with the same name may be distinguished using `CLIENT` (caller)\nand `SERVER` (callee) to identify queueing latency associated with the span."
         },
-        "start_time": {
+        "startTime": {
           "type": "string",
           "format": "date-time",
           "description": "The start time of the span. On the client side, this is the time kept by\nthe local machine where the span execution starts. On the server side, this\nis the time when the server's application handler starts running.\n\nThis field is semantically required. When not set on receive -\nreceiver should set it to the value of end_time field if it was\nset. Or to the current time if neither was set. It is important to\nkeep end_time \u003e start_time for consistency.\n\nThis field is required."
         },
-        "end_time": {
+        "endTime": {
           "type": "string",
           "format": "date-time",
           "description": "The end time of the span. On the client side, this is the time kept by\nthe local machine where the span execution ends. On the server side, this\nis the time when the server application handler stops running.\n\nThis field is semantically required. When not set on receive -\nreceiver should set it to start_time value. It is important to\nkeep end_time \u003e start_time for consistency.\n\nThis field is required."
@@ -624,11 +612,11 @@
           "$ref": "#/definitions/SpanAttributes",
           "description": "A set of attributes on the span."
         },
-        "stack_trace": {
+        "stackTrace": {
           "$ref": "#/definitions/v1StackTrace",
           "description": "A stack trace captured at the start of the span."
         },
-        "time_events": {
+        "timeEvents": {
           "$ref": "#/definitions/SpanTimeEvents",
           "description": "The included time events."
         },
@@ -637,19 +625,18 @@
           "description": "The included links."
         },
         "status": {
-          "$ref": "#/definitions/v1Status",
+          "$ref": "#/definitions/tracev1Status",
           "description": "An optional final status for this span. Semantically when Status\nwasn't set it is means span ended without errors and assume\nStatus.Ok (code = 0)."
         },
         "resource": {
           "$ref": "#/definitions/v1Resource",
           "description": "An optional resource that is associated with this span. If not set, this span \nshould be part of a batch that does include the resource information, unless resource \ninformation is unknown."
         },
-        "same_process_as_parent_span": {
+        "sameProcessAsParentSpan": {
           "type": "boolean",
-          "format": "boolean",
           "description": "A highly recommended but not required flag that identifies when a\ntrace crosses a process boundary. True when the parent_span belongs\nto the same process as the current span. This flag is most commonly\nused to indicate the need to adjust time as clocks in different\nprocesses may not be synchronized."
         },
-        "child_span_count": {
+        "childSpanCount": {
           "type": "integer",
           "format": "int64",
           "description": "An optional number of child spans that were generated while this span\nwas active. If set, allows an implementation to detect missing child spans."
@@ -660,11 +647,11 @@
     "v1StackTrace": {
       "type": "object",
       "properties": {
-        "stack_frames": {
+        "stackFrames": {
           "$ref": "#/definitions/StackTraceStackFrames",
           "description": "Stack frames in this stack trace."
         },
-        "stack_trace_hash_id": {
+        "stackTraceHashId": {
           "type": "string",
           "format": "uint64",
           "description": "The hash ID is used to conserve network bandwidth for duplicate\nstack traces within a single trace.\n\nOften multiple spans will have identical stack traces.\nThe first occurrence of a stack trace should contain both\n`stack_frames` and a value in `stack_trace_hash_id`.\n\nSubsequent spans within the same request can refer\nto that stack trace by setting only `stack_trace_hash_id`.\n\nTODO: describe how to deal with the case where stack_trace_hash_id is\nzero because it was not set."
@@ -672,49 +659,34 @@
       },
       "description": "The call stack which originated this span."
     },
-    "v1Status": {
-      "type": "object",
-      "properties": {
-        "code": {
-          "type": "integer",
-          "format": "int32",
-          "description": "The status code. This is optional field. It is safe to assume 0 (OK)\nwhen not set."
-        },
-        "message": {
-          "type": "string",
-          "description": "A developer-facing error message, which should be in English."
-        }
-      },
-      "description": "The `Status` type defines a logical error model that is suitable for different\nprogramming environments, including REST APIs and RPC APIs. This proto's fields\nare a subset of those of\n[google.rpc.Status](https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto),\nwhich is used by [gRPC](https://github.com/grpc)."
-    },
     "v1TraceConfig": {
       "type": "object",
       "properties": {
-        "probability_sampler": {
+        "probabilitySampler": {
           "$ref": "#/definitions/v1ProbabilitySampler"
         },
-        "constant_sampler": {
+        "constantSampler": {
           "$ref": "#/definitions/v1ConstantSampler"
         },
-        "rate_limiting_sampler": {
+        "rateLimitingSampler": {
           "$ref": "#/definitions/v1RateLimitingSampler"
         },
-        "max_number_of_attributes": {
+        "maxNumberOfAttributes": {
           "type": "string",
           "format": "int64",
           "description": "The global default max number of attributes per span."
         },
-        "max_number_of_annotations": {
+        "maxNumberOfAnnotations": {
           "type": "string",
           "format": "int64",
           "description": "The global default max number of annotation events per span."
         },
-        "max_number_of_message_events": {
+        "maxNumberOfMessageEvents": {
           "type": "string",
           "format": "int64",
           "description": "The global default max number of message events per span."
         },
-        "max_number_of_links": {
+        "maxNumberOfLinks": {
           "type": "string",
           "format": "int64",
           "description": "The global default max number of link entries per span."
@@ -729,7 +701,7 @@
           "type": "string",
           "description": "The shortened string. For example, if the original string was 500 bytes long and\nthe limit of the string was 128 bytes, then this value contains the first 128\nbytes of the 500-byte string. Note that truncation always happens on a\ncharacter boundary, to ensure that a truncated string is still valid UTF-8.\nBecause it may contain multi-byte characters, the size of the truncated string\nmay be less than the truncation limit."
         },
-        "truncated_byte_count": {
+        "truncatedByteCount": {
           "type": "integer",
           "format": "int32",
           "description": "The number of bytes removed from the original string. If this\nvalue is 0, then the string was not shortened."
