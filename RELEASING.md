@@ -10,15 +10,10 @@ Other systems may also work, but we haven't verified them.
 
 ## Release Go files
 
-To generate the Go files from protos, you'll need to install protoc, protoc-gen-go and grpc-gateway plugins first.
-Follow the instructions [here](http://google.github.io/proto-lens/installing-protoc.html),
-[here](https://github.com/golang/protobuf#installation) and [here](https://github.com/grpc-ecosystem/grpc-gateway#installation).
-
-Then run the following commands to re-generate the gen-go files:
+Run the following commands to re-generate the gen-go files:
 
 ```bash
 $ git checkout -b update-gen-go
-$ rm -rf gen-go/*
 $ make gen-go
 $ git add -A
 $ git commit -m "Update gen-go files."
@@ -28,11 +23,10 @@ Go through PR review and merge the changes to GitHub.
 
 ## Release OpenAPI files
 
-Then run the following commands to re-generate the gen-openapi files:
+Run the following commands to re-generate the gen-openapi files:
 
 ```bash
 $ git checkout -b update-gen-ruby
-$ rm -rf gen-openapi/*
 $ make gen-openapi
 $ git add -A
 $ git commit -m "Update gen-openapi files."
@@ -42,11 +36,10 @@ Go through PR review and merge the changes to GitHub.
 
 ## Release Ruby files
 
-Then run the following commands to re-generate the gen-ruby files:
+Run the following commands to re-generate the gen-ruby files:
 
 ```bash
 $ git checkout -b update-gen-ruby
-$ rm -rf gen-ruby/*
 $ make gen-ruby
 $ git add -A
 $ git commit -m "Update gen-ruby files."
@@ -56,10 +49,10 @@ Go through PR review and merge the changes to GitHub.
 
 ## Release Python files
 
-Then run the following commands to re-generate the gen-python files:
+Run the following commands to re-generate the gen-python files:
 
 ```bash
-$ git checkout -b update-gen-python # Assume you're under opencensus-proto/
+$ git checkout -b update-gen-python
 $ make gen-python
 $ git add -A
 $ git commit -m "Update gen-python files."
