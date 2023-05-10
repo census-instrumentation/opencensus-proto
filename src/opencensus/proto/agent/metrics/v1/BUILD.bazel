@@ -22,10 +22,11 @@ load("@com_github_grpc_grpc//bazel:cc_grpc_library.bzl", "cc_grpc_library")
 proto_library(
     name = "metrics_service_proto",
     srcs = ["metrics_service.proto"],
+    strip_import_prefix = "/src",
     deps = [
-        "//opencensus/proto/agent/common/v1:common_proto",
-        "//opencensus/proto/metrics/v1:metrics_proto",
-        "//opencensus/proto/resource/v1:resource_proto",
+        "//src/opencensus/proto/agent/common/v1:common_proto",
+        "//src/opencensus/proto/metrics/v1:metrics_proto",
+        "//src/opencensus/proto/resource/v1:resource_proto",
     ],
 )
 
@@ -46,8 +47,8 @@ go_proto_library(
     importpath = "github.com/census-instrumentation/opencensus-proto/gen-go/agent/metrics/v1",
     proto = ":metrics_service_proto",
     deps = [
-        "//opencensus/proto/agent/common/v1:common_proto_go",
-        "//opencensus/proto/metrics/v1:metrics_proto_go",
-        "//opencensus/proto/resource/v1:resource_proto_go",
+        "//src/opencensus/proto/agent/common/v1:common_proto_go",
+        "//src/opencensus/proto/metrics/v1:metrics_proto_go",
+        "//src/opencensus/proto/resource/v1:resource_proto_go",
     ],
 )

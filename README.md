@@ -71,7 +71,6 @@ In WORKSPACE, add:
 ```
 git_repository(
     name = "io_opencensus_proto",
-    strip_prefix = "src",
     tag = "v0.2.0", # CURRENT_OPENCENSUS_PROTO_VERSION
     remote = "https://github.com/census-instrumentation/opencensus-proto",
 )
@@ -81,7 +80,7 @@ or
 ```
 http_archive(
     name = "io_opencensus_proto",
-    strip_prefix = "opencensus-proto-master/src",
+    strip_prefix = "opencensus-proto-master",
     urls = ["https://github.com/census-instrumentation/opencensus-proto/archive/master.zip"],
 )
 ```
@@ -92,8 +91,8 @@ proto_library(
     name = "foo_proto",
     srcs = ["foo.proto"],
     deps = [
-      "@io_opencensus_proto//opencensus/proto/metrics/v1:metrics_proto",
-      "@io_opencensus_proto//opencensus/proto/trace/v1:trace_proto",
+      "@io_opencensus_proto//src/opencensus/proto/metrics/v1:metrics_proto",
+      "@io_opencensus_proto//src/opencensus/proto/trace/v1:trace_proto",
       # etc.
     ],
 )
